@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Signing you in… – Faith &amp; Fragrance Co.</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: radial-gradient(circle at top, #14141b, #050506);
+      color: #f5f3ee;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      -webkit-font-smoothing: antialiased;
+    }
+    .card {
+      background: #101018;
+      border-radius: 16px;
+      border: 1px solid rgba(255,255,255,0.08);
+      padding: 1.6rem 1.8rem;
+      max-width: 360px;
+      text-align: center;
+      box-shadow: 0 26px 60px rgba(0,0,0,0.7);
+    }
+    h1 {
+      font-size: 1rem;
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+      margin-bottom: 0.6rem;
+    }
+    p {
+      font-size: 0.9rem;
+      color: #9a958a;
+      margin-bottom: 0.4rem;
+    }
+    .small {
+      font-size: 0.78rem;
+      opacity: 0.8;
+    }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <h1>Signing you in…</h1>
+    <p id="status">Finishing your sign in and sending you back to the shop.</p>
+    <p class="small">You can close this tab if nothing happens.</p>
+  </div>
+
+  <script>
+    (function () {
+      const params = new URLSearchParams(window.location.search);
+      const token = params.get("token");
+      const provider = params.get("provider") || "";
+
+      const statusEl = document.getElementById("status");
+
+      if (!token) {
+        statusEl.textContent = "We couldn't complete sign in. Please try again.";
+        return;
+      }
+
+      try {
+        localStorage.setItem("ff_user_token", token);
+        statusEl.textContent = provider
+          ? "Signed in with " + provider + ". Redirecting to the shop…"
+          : "Signed in. Redirecting to the shop…";
+      } catch {
+        statusEl.textContent = "Sign in succeeded, but we couldn't store your session.";
+      }
+
+      // Send them back to shop
+      setTimeout(() => {
+        window.location.href = "shop.html";
+      }, 800);
+    })();
+  </script>
+</body>
+</html>
