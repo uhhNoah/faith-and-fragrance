@@ -181,7 +181,43 @@ function authAdmin(req, res, next) {
 }
 
 // ===== MIDDLEWARE =====
-app.use(cors());
+// ===== CORS FIX (Production Safe) =====
+const allowedOrigins = [
+  "http://localhost:3000",
+  "http://127.0.0.1:3000",
+  "http://localhost:5173",
+  "http://127.0.0.1:5173",
+  "http://localhost:5500",
+  "http://127.0.0.1:5500",
+
+  // Netlify preview deploys
+  /\.netlify\.app$/,
+
+  // Production frontend
+  "https://faithandfragrance.netlify.app",
+  "https://www.faithandfragrance.netlify.app",
+  "https://faithandfragrance.co",
+  "https://www.faithandfragrance.co",
+];
+
+app.use(
+  cors({
+    origin: function (origin, callback) {
+      // Allow mobile apps or curl (no origin)
+      if (!origin) return callback(null, true);
+
+      // Allow Netlify wildcard deploys (*.netlify.app)
+      if (/\.netlify\.app$/.test(origin)) return callback(null, true);
+
+      if (allowedOrigins.includes(origin)) return callback(null, true);
+
+      console.warn("Blocked CORS:", origin);
+      return callback(new Error("Not allowed by CORS"));
+    },
+    credentials: true,
+  })
+);
+
 app.use(express.json());
 app.use("/uploads", express.static(UPLOADS_DIR));
 
