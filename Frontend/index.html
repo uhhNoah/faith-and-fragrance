@@ -1,0 +1,760 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Faith & Fragrance Co. – Where fragrance meets faith.</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <style>
+    :root {
+      --bg: #050506;
+      --bg-alt: #0d0d10;
+      --bg-soft: #121218;
+      --text: #f5f3ee;
+      --muted: #9a958a;
+      --accent: #d3b46a;
+      --accent-soft: rgba(211,180,106,0.14);
+      --border: #26252f;
+      --radius-lg: 26px;
+      --radius: 16px;
+      --shadow-soft: 0 26px 60px rgba(0,0,0,0.7);
+      --max-width: 1120px;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: radial-gradient(circle at top, #14141b, var(--bg));
+      color: var(--text);
+      line-height: 1.7;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    a {
+      text-decoration: none;
+      color: inherit;
+    }
+
+    /* HEADER / NAV */
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      background: rgba(5,5,8,0.95);
+      backdrop-filter: blur(14px);
+      border-bottom: 1px solid rgba(255,255,255,0.04);
+    }
+
+    .nav {
+      max-width: var(--max-width);
+      margin: 0 auto;
+      padding: 0.7rem 1.3rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1.5rem;
+    }
+
+    .nav-left {
+      display: flex;
+      align-items: center;
+      gap: 0.65rem;
+    }
+
+    .site-logo {
+      height: 40px;
+      width: auto;
+      display: block;
+    }
+
+    .logo-text {
+      font-size: 0.78rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: #f8f5f0;
+      opacity: 0.9;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 1.8rem;
+      font-size: 0.88rem;
+    }
+
+    .nav-links a {
+      color: var(--muted);
+      position: relative;
+      padding-bottom: 0.1rem;
+    }
+
+    .nav-links a::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      bottom: 0;
+      width: 0;
+      height: 1px;
+      background: var(--accent);
+      transition: width 0.18s ease-out;
+    }
+
+    .nav-links a:hover::after {
+      width: 100%;
+    }
+
+    .nav-cta {
+      padding: 0.45rem 1.3rem;
+      border-radius: 999px;
+      border: 1px solid var(--accent);
+      font-size: 0.8rem;
+      background: rgba(211,180,106,0.08);
+      color: var(--text);
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+    }
+
+    .nav-cta:hover {
+      background: var(--accent);
+      color: #050506;
+    }
+
+    main {
+      max-width: var(--max-width);
+      margin: 0 auto;
+      padding: 2.4rem 1.3rem 3.3rem;
+    }
+
+    /* HERO */
+    .hero {
+      display: grid;
+      grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr);
+      gap: 2.6rem;
+      align-items: center;
+      padding: 2.5rem 2.3rem;
+      margin-top: 1.9rem;
+      background: radial-gradient(circle at top left, #181824, var(--bg-alt));
+      border-radius: var(--radius-lg);
+      border: 1px solid rgba(255,255,255,0.04);
+      box-shadow: var(--shadow-soft);
+    }
+
+    .hero-tag {
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.24em;
+      color: var(--muted);
+      margin-bottom: 0.9rem;
+    }
+
+    .hero h1 {
+      font-size: clamp(2.5rem, 3.2vw, 3rem);
+      margin-bottom: 0.7rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+    }
+
+    .hero-subtitle {
+      font-size: 1.02rem;
+      color: var(--muted);
+      margin-bottom: 1.3rem;
+      max-width: 460px;
+    }
+
+    .hero-body {
+      font-size: 0.96rem;
+      color: var(--muted);
+      margin-bottom: 1.9rem;
+      max-width: 520px;
+    }
+
+    .hero-body span {
+      color: var(--accent);
+    }
+
+    .hero-buttons {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+    }
+
+    .btn-primary,
+    .btn-secondary {
+      padding: 0.85rem 1.9rem;
+      border-radius: 999px;
+      font-size: 0.85rem;
+      border: 1px solid transparent;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.4rem;
+      transition: background 0.16s ease-out, border-color 0.16s ease-out, transform 0.08s ease-out, box-shadow 0.16s;
+      text-align: center;
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+    }
+
+    .btn-primary {
+      background: var(--accent);
+      color: #050506;
+      border-color: var(--accent);
+      box-shadow: 0 20px 40px rgba(0,0,0,0.6);
+    }
+
+    .btn-primary:hover {
+      background: #e0c782;
+      border-color: #e0c782;
+      transform: translateY(-1px);
+      box-shadow: 0 28px 60px rgba(0,0,0,0.7);
+    }
+
+    .btn-secondary {
+      background: transparent;
+      color: var(--text);
+      border-color: rgba(255,255,255,0.16);
+    }
+
+    .btn-secondary:hover {
+      border-color: var(--accent);
+      background: rgba(211,180,106,0.08);
+    }
+
+    .hero-image {
+      background: linear-gradient(145deg, #151521, #101019);
+      border-radius: 22px;
+      border: 1px solid rgba(255,255,255,0.06);
+      min-height: 230px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: 1.6rem;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero-image::before {
+      content: "";
+      position: absolute;
+      inset: -40%;
+      background: radial-gradient(circle at top, rgba(211,180,106,0.35), transparent 55%);
+      opacity: 0.8;
+      pointer-events: none;
+    }
+
+    .hero-image-inner {
+      position: relative;
+      z-index: 1;
+    }
+
+    .hero-image-top {
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 0.18em;
+      color: var(--muted);
+    }
+
+    .hero-image-main {
+      font-size: 0.92rem;
+      margin: 0.8rem 0 1rem;
+      color: var(--text);
+    }
+
+    .pill-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.4rem;
+      font-size: 0.75rem;
+    }
+
+    .pill {
+      padding: 0.3rem 0.85rem;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,0.08);
+      background: rgba(5,5,8,0.6);
+      backdrop-filter: blur(10px);
+      color: var(--muted);
+    }
+
+    .hero-image-bottom {
+      position: relative;
+      z-index: 1;
+      font-size: 0.8rem;
+      color: var(--muted);
+      border-top: 1px solid rgba(255,255,255,0.08);
+      padding-top: 0.9rem;
+      margin-top: 1rem;
+      font-style: italic;
+    }
+
+    /* SECTIONS */
+    section {
+      margin-top: 3.2rem;
+    }
+
+    .section-header {
+      display: flex;
+      flex-direction: column;
+      gap: 0.35rem;
+      margin-bottom: 1.7rem;
+    }
+
+    .section-label {
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.22em;
+      color: var(--muted);
+    }
+
+    .section-title {
+      font-size: 1.4rem;
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+    }
+
+    .section-subtitle {
+      font-size: 0.94rem;
+      color: var(--muted);
+      max-width: 520px;
+    }
+
+    .card-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+      gap: 1.5rem;
+    }
+
+    .card {
+      background: var(--bg-soft);
+      border-radius: var(--radius);
+      border: 1px solid var(--border);
+      padding: 1.4rem 1.4rem 1.25rem;
+      transition: transform 0.12s ease-out, box-shadow 0.16s ease-out, border-color 0.16s, background 0.16s;
+    }
+
+    .card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 18px 40px rgba(0,0,0,0.7);
+      border-color: rgba(211,180,106,0.28);
+      background: #15151f;
+    }
+
+    .card-title {
+      font-size: 0.98rem;
+      margin-bottom: 0.45rem;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+    }
+
+    .card-tag {
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+      color: var(--muted);
+      margin-bottom: 0.6rem;
+    }
+
+    .card-body {
+      font-size: 0.9rem;
+      color: var(--muted);
+      margin-bottom: 0.6rem;
+    }
+
+    .two-column {
+      display: grid;
+      grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr);
+      gap: 2.4rem;
+      align-items: start;
+    }
+
+    .pill-list {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 0.75rem;
+    }
+
+    .pill-item {
+      background: #14141f;
+      border-radius: 999px;
+      border: 1px solid var(--border);
+      padding: 0.6rem 1rem;
+      font-size: 0.85rem;
+      color: var(--muted);
+    }
+
+    .muted {
+      color: var(--muted);
+    }
+
+    .callout {
+      background: #111118;
+      border-radius: var(--radius);
+      border: 1px solid rgba(211,180,106,0.22);
+      padding: 1.4rem 1.6rem;
+      font-size: 0.9rem;
+      box-shadow: 0 20px 50px rgba(0,0,0,0.8);
+    }
+
+    .callout strong {
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+      font-size: 0.8rem;
+      color: var(--accent);
+    }
+
+    /* EMAIL SIGNUP */
+    .email-box {
+      background: radial-gradient(circle at top left, #171722, #101017);
+      border-radius: var(--radius-lg);
+      border: 1px solid rgba(211,180,106,0.25);
+      padding: 1.9rem 2rem 1.7rem;
+      max-width: 650px;
+      box-shadow: var(--shadow-soft);
+    }
+
+    .email-form {
+      margin-top: 1rem;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.8rem;
+    }
+
+    .email-form input[type="email"] {
+      flex: 1 1 190px;
+      padding: 0.85rem 1rem;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,0.12);
+      font-size: 0.9rem;
+      background: rgba(5,5,8,0.85);
+      color: var(--text);
+      outline: none;
+      transition: border-color 0.15s ease-out, background 0.15s, box-shadow 0.15s;
+    }
+
+    .email-form input[type="email"]::placeholder {
+      color: #6f6a61;
+    }
+
+    .email-form input[type="email"]:focus {
+      border-color: var(--accent);
+      background: #050506;
+      box-shadow: 0 0 0 1px rgba(211,180,106,0.5);
+    }
+
+    .status-message {
+      margin-top: 0.7rem;
+      font-size: 0.82rem;
+      min-height: 1.2em;
+    }
+
+    .status-success {
+      color: #8bd59a;
+    }
+
+    .status-error {
+      color: #f28b82;
+    }
+
+    footer {
+      margin-top: 3.4rem;
+      padding-top: 1.7rem;
+      border-top: 1px solid rgba(255,255,255,0.05);
+      font-size: 0.82rem;
+      color: var(--muted);
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      gap: 1rem;
+      align-items: center;
+    }
+
+    .footer-links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+
+    .footer-links a {
+      color: var(--muted);
+    }
+
+    .footer-links a:hover {
+      color: var(--text);
+    }
+
+    @media (max-width: 900px) {
+      .hero {
+        grid-template-columns: 1fr;
+        padding: 2rem 1.6rem;
+      }
+
+      .two-column {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .nav-links {
+        display: none;
+      }
+
+      main {
+        padding-inline: 1rem;
+      }
+
+      .hero {
+        margin-top: 1.3rem;
+      }
+
+      section {
+        margin-top: 2.5rem;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="nav">
+    <div class="nav-left">
+      <img src="assets/logo.png" class="site-logo" alt="Faith &amp; Fragrance Co. Logo">
+      <div class="logo-text">FAITH &amp; FRAGRANCE CO.</div>
+    </div>
+
+    <nav class="nav-links">
+      <a href="index.html">Home</a>
+      <a href="shop.html">Shop</a>
+      <a href="#contact">Contact</a>
+      <a href="about.html">About</a>
+    </nav>
+
+    <a href="shop.html" class="nav-cta">Shop</a>
+  </div>
+</header>
+
+<main>
+  <!-- HERO -->
+  <section id="home" class="hero">
+    <div>
+      <div class="hero-tag">Where fragrance meets faith.</div>
+      <h1>Faith &amp; Fragrance Co.</h1>
+      <div class="hero-subtitle">
+        Luxurious, faith-inspired home fragrance designed to feel calm, intentional, and quietly bold.
+      </div>
+      <p class="hero-body">
+        Born from a home that needed peace more than noise, Faith &amp; Fragrance Co. creates subtle, elevated scents
+        for <span>anyone</span> who wants their space to feel like a soft reset — no matter what their days look like.
+      </p>
+      <div class="hero-buttons">
+        <a href="shop.html" class="btn-primary">Browse collections</a>
+        <a href="about.html" class="btn-secondary">About us</a>
+      </div>
+    </div>
+
+    <div class="hero-image">
+      <div class="hero-image-inner">
+        <div class="hero-image-top">First release · Limited small batch</div>
+        <p class="hero-image-main">
+          Clean, considered fragrance with a quiet luxury feel — think candlelight on a black countertop, not clutter on a shelf.
+        </p>
+        <div class="pill-row">
+          <div class="pill">Jelly wax melts</div>
+          <div class="pill">Classic wax melts</div>
+          <div class="pill">Candles</div>
+          <div class="pill">Faith-driven, for everyone</div>
+        </div>
+      </div>
+      <div class="hero-image-bottom">
+        “Mercy is new every morning. Sometimes that mercy smells like vanilla, cedar, or clean linen in a still room.”
+      </div>
+    </div>
+  </section>
+
+  <!-- SHOP TEASER -->
+  <section id="shop">
+    <div class="section-header">
+      <div class="section-label">Collections</div>
+      <h2 class="section-title">Faith &amp; Fragrance Co. launch lineup</h2>
+      <p class="section-subtitle">
+        We’re starting with a small, intentional edit of everyday scents — elevated enough for an evening in, soft enough for daily use.
+      </p>
+    </div>
+
+    <div class="card-grid">
+      <div class="card collection-card" data-target="jelly-melts">
+        <div class="card-tag">Collection</div>
+        <h3 class="card-title">Jelly Wax Melts</h3>
+        <p class="card-body">
+          Rich scent payoff with a modern, jelly texture. Scoop, melt, and let the room shift without a single flame.
+        </p>
+        <div class="muted">Coming soon: full scent menu & curated bundles.</div>
+      </div>
+
+      <div class="card collection-card" data-target="wax-melts">
+        <div class="card-tag">Collection</div>
+        <h3 class="card-title">Classic Wax Melts</h3>
+        <p class="card-body">
+          Minimal, reliable, and low-profile. Drop a cube into your warmer and get that “hotel lobby” calm in any size space.
+        </p>
+        <div class="muted">
+          Ideal for apartments, dorms, offices, and cozy corners.
+        </div>
+      </div>
+
+      <div class="card collection-card" data-target="candles">
+        <div class="card-tag">Collection</div>
+        <h3 class="card-title">Candles</h3>
+        <p class="card-body">
+          Soft light with a slow, steady fragrance throw. Clean glass vessels and understated labels that match any room, not compete with it.
+        </p>
+        <div class="muted">Designed to look as good unlit as they feel lit.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- WHY FFCO -->
+  <section>
+    <div class="section-header">
+      <div class="section-label">Why Faith &amp; Fragrance Co.</div>
+      <h2 class="section-title">Quiet luxury for real life</h2>
+      <p class="section-subtitle">
+        No cluttered branding, no chaotic scent blends. Just intentional fragrance and design that makes your space feel more grounded, not busier.
+      </p>
+    </div>
+
+    <div class="card-grid">
+      <div class="card">
+        <h3 class="card-title">Intentional craft</h3>
+        <p class="card-body">
+          Small-batch pours, thoughtful formulas, and hands-on quality checks. Every melt and candle passes through our hands before it reaches yours.
+        </p>
+      </div>
+
+      <div class="card">
+        <h3 class="card-title">Faith at the core</h3>
+        <p class="card-body">
+          The branding is bold about what we believe — the experience is gentle and welcoming. You don’t have to share our faith to feel at home here.
+        </p>
+      </div>
+
+      <div class="card">
+        <h3 class="card-title">Built for busy lives</h3>
+        <p class="card-body">
+          Long shifts, little kids, late nights, early alarms — our products exist for people who carry a lot, and still want their space to feel soft.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- EMAIL SIGNUP (BACKEND HOOKED) -->
+  <section>
+    <div class="email-box">
+      <div class="section-header" style="margin-bottom: 0.75rem;">
+        <div class="section-label">Stay ahead of the drop</div>
+        <h2 class="section-title">Be first in line for new scents</h2>
+      </div>
+      <p class="muted">
+        Join the list for early access to launches, limited small batches, and quietly generous offers. No spam — just considered updates.
+      </p>
+      <form class="email-form" id="subscribeForm">
+        <input type="email" name="email" id="subscribeEmail" placeholder="Enter your email" required>
+        <button type="submit" class="btn-primary" id="subscribeButton">Join the list</button>
+      </form>
+      <p class="status-message" id="subscribeStatus"></p>
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <section id="contact">
+    <div class="section-header">
+      <div class="section-label">Contact</div>
+      <h2 class="section-title">Wholesale, custom, or questions?</h2>
+      <p class="section-subtitle">
+        Reach out and we’ll respond as quickly as we can between life, work, and pouring the next batch.
+      </p>
+    </div>
+    <p class="muted">
+      Email: <a href="mailto:hello@faithandfragrance.co">hello@faithandfragrance.co</a><br>
+      Instagram: @faithandfragranceco
+    </p>
+  </section>
+
+  <footer>
+    <div>© <span id="year"></span> Faith &amp; Fragrance Co. All rights reserved.</div>
+    <div class="footer-links">
+      <a href="index.html">Home</a>
+      <a href="shop.html">Shop</a>
+      <a href="#contact">Contact</a>
+      <a href="about.html">About</a>
+    </div>
+  </footer>
+</main>
+
+<script>
+  // Set year dynamically
+  document.getElementById("year").textContent = new Date().getFullYear();
+
+  // Email subscribe logic (backend: http://localhost:4000/api/subscribe)
+  const subscribeForm = document.getElementById("subscribeForm");
+  const subscribeEmail = document.getElementById("subscribeEmail");
+  const subscribeButton = document.getElementById("subscribeButton");
+  const subscribeStatus = document.getElementById("subscribeStatus");
+
+  subscribeForm.addEventListener("submit", async (e) => {
+    e.preventDefault();
+
+    const email = subscribeEmail.value.trim();
+    if (!email) return;
+
+    subscribeButton.disabled = true;
+    subscribeButton.textContent = "Subscribing...";
+    subscribeStatus.textContent = "";
+    subscribeStatus.className = "status-message";
+
+    try {
+      const res = await fetch("http://localhost:4000/api/subscribe", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ email })
+      });
+
+      const data = await res.json();
+
+      if (!res.ok) {
+        subscribeStatus.textContent = data.error || "Something went wrong. Please try again.";
+        subscribeStatus.className = "status-message status-error";
+      } else {
+        subscribeStatus.textContent = data.message || "Subscribed successfully.";
+        subscribeStatus.className = "status-message status-success";
+        if (data.message === "Subscribed successfully." || res.status === 201) {
+          subscribeEmail.value = "";
+        }
+      }
+    } catch (err) {
+      subscribeStatus.textContent = "Unable to reach server. Is the backend running?";
+      subscribeStatus.className = "status-message status-error";
+    } finally {
+      subscribeButton.disabled = false;
+      subscribeButton.textContent = "Join the list";
+    }
+  });
+</script>
+<script>
+  // Make only the three collection cards clickable → go to the right section in the shop
+  document.querySelectorAll(".collection-card").forEach(card => {
+    const target = card.dataset.target || "all"; // jelly-melts, wax-melts, candles
+    card.style.cursor = "pointer";
+    card.addEventListener("click", () => {
+      window.location.href = `shop.html#${target}`;
+    });
+  });
+</script>
+
+
+</body>
+</html>

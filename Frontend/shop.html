@@ -1,0 +1,500 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Shop – Faith & Fragrance Co.</title>
+
+  <style>
+    :root {
+      --bg: #050506;
+      --bg-alt: #0d0d10;
+      --bg-soft: #121218;
+      --text: #f5f3ee;
+      --muted: #9a958a;
+      --accent: #d3b46a;
+      --border: #26252f;
+      --radius: 16px;
+      --radius-lg: 28px;
+      --shadow-soft: 0 30px 60px rgba(0,0,0,0.65);
+      --max-width: 1120px;
+    }
+
+    body {
+      margin: 0;
+      padding: 0;
+      background: radial-gradient(circle at top, #14141b, var(--bg));
+      color: var(--text);
+      font-family: system-ui, -apple-system, sans-serif;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    /* HEADER */
+    header {
+      background: rgba(5,5,8,0.94);
+      backdrop-filter: blur(14px);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      border-bottom: 1px solid rgba(255,255,255,0.04);
+    }
+
+    .nav {
+      max-width: var(--max-width);
+      margin: auto;
+      padding: 0.8rem 1.3rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .nav-left {
+      display: flex;
+      align-items: center;
+      gap: 0.65rem;
+    }
+
+    .site-logo {
+      height: 42px;
+      width: auto;
+    }
+
+    .logo-text {
+      font-size: 0.78rem;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 1.8rem;
+      font-size: 0.88rem;
+    }
+
+    .nav-links a {
+      padding-bottom: 0.1rem;
+      color: var(--muted);
+      position: relative;
+    }
+
+    .nav-links a.active {
+      color: var(--text);
+    }
+
+    .nav-links a.active::after {
+      width: 100%;
+    }
+
+    .nav-links a::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      bottom: 0;
+      width: 0;
+      height: 1px;
+      background: var(--accent);
+      transition: 0.18s;
+    }
+
+    .nav-links a:hover::after {
+      width: 100%;
+    }
+
+    .nav-cta {
+      padding: 0.45rem 1.3rem;
+      border-radius: 999px;
+      border: 1px solid var(--accent);
+      font-size: 0.8rem;
+      background: rgba(211,180,106,0.08);
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+    }
+
+    .nav-cta:hover {
+      background: var(--accent);
+      color: #050506;
+    }
+
+    main {
+      max-width: var(--max-width);
+      margin: auto;
+      padding: 2.5rem 1.3rem 3rem;
+    }
+
+    /* SHOP HEADER */
+    .shop-hero {
+      text-align: center;
+      margin-bottom: 3rem;
+    }
+
+    .shop-title {
+      font-size: 2.2rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      margin-bottom: 0.8rem;
+    }
+
+    .shop-subtitle {
+      max-width: 600px;
+      margin: 0 auto;
+      color: var(--muted);
+      font-size: 1rem;
+    }
+
+    /* FILTER BAR */
+    .shop-filters {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+      margin-top: 1.8rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .filter-pill {
+      padding: 0.45rem 1.1rem;
+      border-radius: 999px;
+      border: 1px solid var(--border);
+      background: rgba(13,13,16,0.9);
+      color: var(--muted);
+      font-size: 0.82rem;
+      cursor: pointer;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+    }
+
+    .filter-pill.active {
+      border-color: var(--accent);
+      color: var(--text);
+      background: rgba(211,180,106,0.16);
+    }
+
+    /* PRODUCT GRID */
+    .product-grid {
+      display: grid;
+      gap: 1.8rem;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      margin-top: 2.5rem;
+    }
+
+    .product-card {
+      background: var(--bg-alt);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 1.4rem;
+      box-shadow: var(--shadow-soft);
+      transition: 0.2s ease-out;
+      display: flex;
+      flex-direction: column;
+      min-height: 220px;
+    }
+
+    .product-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 40px 80px rgba(0,0,0,0.8);
+      border-color: rgba(211,180,106,0.3);
+    }
+
+    .product-image-wrapper {
+      width: 100%;
+      border-radius: 18px;
+      overflow: hidden;
+      margin-bottom: 0.9rem;
+      background: #101018;
+    }
+
+    .product-image {
+      width: 100%;
+      display: block;
+      object-fit: cover;
+      aspect-ratio: 4 / 3;
+    }
+
+    .product-collection {
+      font-size: 0.78rem;
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+      color: var(--muted);
+      margin-bottom: 0.35rem;
+    }
+
+    .product-name {
+      font-size: 1.02rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      margin-bottom: 0.5rem;
+    }
+
+    .product-desc {
+      font-size: 0.9rem;
+      color: var(--muted);
+      margin-bottom: 0.8rem;
+      flex: 1;
+    }
+
+    .product-price {
+      font-size: 1rem;
+      color: var(--accent);
+      font-weight: bold;
+      margin-bottom: 1rem;
+    }
+
+    .btn-buy {
+      width: 100%;
+      padding: 0.75rem;
+      font-size: 0.82rem;
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+      border-radius: 999px;
+      background: var(--accent);
+      border: none;
+      cursor: pointer;
+      color: #050506;
+      transition: 0.18s;
+    }
+
+    .btn-buy:hover {
+      background: #f1d188;
+    }
+
+    .status {
+      text-align: center;
+      margin-top: 2.2rem;
+      font-size: 0.92rem;
+      color: var(--muted);
+      min-height: 1.3rem;
+    }
+
+    .status-error {
+      color: #f28b82;
+    }
+
+    footer {
+      margin-top: 3rem;
+      padding-top: 1.6rem;
+      border-top: 1px solid rgba(255,255,255,0.05);
+      display: flex;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 1rem;
+      font-size: 0.82rem;
+      color: var(--muted);
+    }
+
+    .footer-links {
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+
+    .footer-links a:hover {
+      color: var(--text);
+    }
+
+    @media (max-width: 768px) {
+      .nav-links {
+        display: none;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+<header>
+  <div class="nav">
+    <div class="nav-left">
+      <img src="logo.png" class="site-logo" alt="Faith &amp; Fragrance Co. Logo">
+      <div class="logo-text">FAITH &amp; FRAGRANCE CO.</div>
+    </div>
+
+    <nav class="nav-links">
+      <a href="index.html">Home</a>
+      <a href="shop.html" class="active">Shop</a>
+      <a href="contact.html">Contact</a>
+      <a href="about.html">About</a>
+    </nav>
+
+    <a href="shop.html" class="nav-cta">Shop</a>
+  </div>
+</header>
+
+<main>
+
+  <!-- SHOP HERO -->
+  <div class="shop-hero">
+    <h1 class="shop-title">Our Collections</h1>
+    <p class="shop-subtitle">
+      Small-batch, hand-poured fragrance designed to bring peace, warmth, and stillness into your home.
+    </p>
+  </div>
+
+  <!-- FILTERS -->
+  <div class="shop-filters">
+    <button class="filter-pill active" data-filter="all">All</button>
+    <button class="filter-pill" data-filter="jelly-melts">Jelly Wax Melts</button>
+    <button class="filter-pill" data-filter="wax-melts">Classic Wax Melts</button>
+    <button class="filter-pill" data-filter="candles">Candles</button>
+  </div>
+
+  <!-- PRODUCT GRID -->
+  <div id="productGrid" class="product-grid"></div>
+
+  <!-- STATUS MESSAGE -->
+  <div id="shopStatus" class="status"></div>
+
+</main>
+
+<footer>
+  <div>© <span id="year"></span> Faith &amp; Fragrance Co.</div>
+  <div class="footer-links">
+    <a href="index.html">Home</a>
+    <a href="shop.html">Shop</a>
+    <a href="about.html">About</a>
+  </div>
+</footer>
+
+<script>
+  const API_BASE = "http://localhost:4000";
+
+  document.getElementById("year").textContent = new Date().getFullYear();
+
+  const productGrid = document.getElementById("productGrid");
+  const shopStatus = document.getElementById("shopStatus");
+  const filterButtons = document.querySelectorAll(".filter-pill");
+
+  let allProducts = [];
+  let currentFilter = "all";
+
+  function formatPrice(cents) {
+    if (typeof cents !== "number") return "";
+    return "$" + (cents / 100).toFixed(2);
+  }
+
+  function resolveImageUrl(raw) {
+    if (!raw) return null;
+    if (raw.startsWith("http://") || raw.startsWith("https://")) return raw;
+    // if it's "/uploads/...", prefix with backend base
+    if (raw.startsWith("/")) return API_BASE + raw;
+    return API_BASE + "/" + raw;
+  }
+
+  function renderProducts(filter = "all") {
+    productGrid.innerHTML = "";
+
+    let productsToShow = allProducts;
+    if (filter !== "all") {
+      productsToShow = allProducts.filter(
+        (p) => (p.collection || "").toLowerCase() === filter
+      );
+    }
+
+    if (!productsToShow.length) {
+      shopStatus.textContent = allProducts.length
+        ? "No products found in this collection yet."
+        : "No products available yet. Check back soon.";
+      return;
+    }
+
+    shopStatus.textContent = "";
+
+    productsToShow.forEach((product) => {
+      const card = document.createElement("div");
+      card.className = "product-card";
+
+      const collection = (product.collection || "").replace("-", " ");
+      const imgUrl = resolveImageUrl(product.imageUrl);
+
+      const imageHtml = imgUrl
+        ? `
+          <div class="product-image-wrapper">
+            <img src="${imgUrl}"
+                 alt="${(product.name || "Product image")
+                   .replace(/"/g, "&quot;")}"
+                 class="product-image"
+                 loading="lazy">
+          </div>
+        `
+        : "";
+
+      card.innerHTML = `
+        ${imageHtml}
+        <div class="product-collection">
+          ${collection ? collection.toUpperCase() : "COLLECTION"}
+        </div>
+        <div class="product-name">${product.name || "Untitled Product"}</div>
+        <div class="product-desc">${product.description || ""}</div>
+        <div class="product-price">${formatPrice(product.priceCents || 0)}</div>
+        <button class="btn-buy" data-id="${product.id || ""}">Buy</button>
+      `;
+
+      productGrid.appendChild(card);
+    });
+  }
+
+  async function loadProducts(initialFilter = "all") {
+    currentFilter = initialFilter;
+    shopStatus.textContent = "Loading products…";
+
+    try {
+      const res = await fetch(API_BASE + "/api/products", {
+        headers: { "Accept": "application/json" }
+      });
+
+      if (!res.ok) {
+        throw new Error("Failed to fetch products (status " + res.status + ")");
+      }
+
+      const data = await res.json();
+
+      if (!Array.isArray(data)) {
+        throw new Error("Invalid products format from API");
+      }
+
+      allProducts = data;
+      renderProducts(currentFilter);
+      shopStatus.textContent = "";
+    } catch (err) {
+      console.error(err);
+      shopStatus.textContent =
+        "We’re having trouble loading products right now. Please try again later.";
+      shopStatus.classList.add("status-error");
+    }
+  }
+
+  // Read ?collection=jelly-melts etc from URL so home cards can link with filters
+  (function initFilterFromUrl() {
+    const params = new URLSearchParams(window.location.search);
+    const collection = (params.get("collection") || "").toLowerCase();
+
+    if (collection && collection !== "all") {
+      currentFilter = collection;
+      filterButtons.forEach((btn) => {
+        const f = btn.getAttribute("data-filter");
+        btn.classList.toggle("active", f === collection);
+      });
+    }
+  })();
+
+  // Filter click handling
+  filterButtons.forEach((btn) => {
+    btn.addEventListener("click", () => {
+      filterButtons.forEach((b) => b.classList.remove("active"));
+      btn.classList.add("active");
+      const filter = btn.getAttribute("data-filter");
+      currentFilter = filter;
+      renderProducts(filter);
+    });
+  });
+
+  // Initial load
+  loadProducts(currentFilter);
+</script>
+
+</body>
+</html>

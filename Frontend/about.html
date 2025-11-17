@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>About – Faith & Fragrance Co.</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <style>
+    :root {
+      --bg: #050506;
+      --bg-alt: #0d0d10;
+      --bg-soft: #121218;
+      --text: #f5f3ee;
+      --muted: #9a958a;
+      --accent: #d3b46a;
+      --border: #26252f;
+      --radius-lg: 26px;
+      --radius: 16px;
+      --shadow-soft: 0 26px 60px rgba(0,0,0,0.7);
+      --max-width: 1120px;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: radial-gradient(circle at top, #14141b, var(--bg));
+      color: var(--text);
+      line-height: 1.7;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    a {
+      text-decoration: none;
+      color: inherit;
+    }
+
+    /* HEADER / NAV */
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      background: rgba(5,5,8,0.95);
+      backdrop-filter: blur(14px);
+      border-bottom: 1px solid rgba(255,255,255,0.04);
+    }
+
+    .nav {
+      max-width: var(--max-width);
+      margin: 0 auto;
+      padding: 0.7rem 1.3rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1.5rem;
+    }
+
+    .nav-left {
+      display: flex;
+      align-items: center;
+      gap: 0.65rem;
+    }
+
+    .site-logo {
+      height: 40px;
+      width: auto;
+      display: block;
+    }
+
+    .logo-text {
+      font-size: 0.78rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: #f8f5f0;
+      opacity: 0.9;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 1.8rem;
+      font-size: 0.88rem;
+    }
+
+    .nav-links a {
+      color: var(--muted);
+      position: relative;
+      padding-bottom: 0.1rem;
+    }
+
+    .nav-links a::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      bottom: 0;
+      width: 0;
+      height: 1px;
+      background: var(--accent);
+      transition: width 0.18s ease-out;
+    }
+
+    .nav-links a:hover::after {
+      width: 100%;
+    }
+
+    .nav-links a.active {
+      color: var(--text);
+    }
+
+    .nav-links a.active::after {
+      width: 100%;
+    }
+
+    .nav-cta {
+      padding: 0.45rem 1.3rem;
+      border-radius: 999px;
+      border: 1px solid var(--accent);
+      font-size: 0.8rem;
+      background: rgba(211,180,106,0.08);
+      color: var(--text);
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+    }
+
+    .nav-cta:hover {
+      background: var(--accent);
+      color: #050506;
+    }
+
+    main {
+      max-width: var(--max-width);
+      margin: 0 auto;
+      padding: 2.4rem 1.3rem 3.3rem;
+    }
+
+    /* LAYOUT */
+    .page-hero {
+      margin-top: 2.2rem;
+      background: radial-gradient(circle at top left, #181824, var(--bg-alt));
+      border-radius: var(--radius-lg);
+      border: 1px solid rgba(255,255,255,0.05);
+      box-shadow: var(--shadow-soft);
+      padding: 2.4rem 2.4rem 2rem;
+      display: grid;
+      grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr);
+      gap: 2.4rem;
+      align-items: flex-start;
+    }
+
+    .page-label {
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.22em;
+      color: var(--muted);
+      margin-bottom: 0.9rem;
+    }
+
+    .page-title {
+      font-size: clamp(2.1rem, 3vw, 2.6rem);
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+      margin-bottom: 1.1rem;
+    }
+
+    .lead {
+      font-size: 0.98rem;
+      color: var(--muted);
+      margin-bottom: 1.1rem;
+      max-width: 520px;
+    }
+
+    .body-text {
+      font-size: 0.9rem;
+      color: var(--muted);
+      margin-bottom: 1rem;
+    }
+
+    .highlight-link {
+      color: var(--accent);
+    }
+
+    .side-card {
+      background: #151521;
+      border-radius: 18px;
+      border: 1px solid rgba(255,255,255,0.06);
+      padding: 1.6rem 1.8rem;
+    }
+
+    .side-label {
+      font-size: 0.78rem;
+      text-transform: uppercase;
+      letter-spacing: 0.18em;
+      color: var(--muted);
+      margin-bottom: 0.7rem;
+    }
+
+    .side-title {
+      font-size: 1rem;
+      font-weight: 600;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      margin-bottom: 0.8rem;
+    }
+
+    .side-text {
+      font-size: 0.9rem;
+      color: var(--muted);
+      margin-bottom: 0.85rem;
+    }
+
+    .side-note {
+      font-size: 0.82rem;
+      color: var(--muted);
+      border-top: 1px solid rgba(255,255,255,0.12);
+      padding-top: 0.9rem;
+      margin-top: 0.7rem;
+      font-style: italic;
+    }
+
+    /* SECTIONS */
+    section {
+      margin-top: 3rem;
+    }
+
+    .section-header {
+      margin-bottom: 1.5rem;
+    }
+
+    .section-label {
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.22em;
+      color: var(--muted);
+      margin-bottom: 0.4rem;
+    }
+
+    .section-title {
+      font-size: 1.2rem;
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+      margin-bottom: 0.4rem;
+    }
+
+    .muted {
+      color: var(--muted);
+    }
+
+    .value-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+      gap: 1.5rem;
+    }
+
+    .value-card {
+      background: var(--bg-soft);
+      border-radius: var(--radius);
+      border: 1px solid var(--border);
+      padding: 1.4rem 1.4rem 1.2rem;
+    }
+
+    .value-label {
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.2em;
+      color: var(--muted);
+      margin-bottom: 0.4rem;
+    }
+
+    .value-title {
+      font-size: 0.96rem;
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+      margin-bottom: 0.5rem;
+    }
+
+    .value-body {
+      font-size: 0.9rem;
+      color: var(--muted);
+    }
+
+    footer {
+      margin-top: 3.4rem;
+      padding-top: 1.7rem;
+      border-top: 1px solid rgba(255,255,255,0.05);
+      font-size: 0.82rem;
+      color: var(--muted);
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      gap: 1rem;
+      align-items: center;
+    }
+
+    .footer-links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+
+    .footer-links a {
+      color: var(--muted);
+    }
+
+    .footer-links a:hover {
+      color: var(--text);
+    }
+
+    @media (max-width: 900px) {
+      .page-hero {
+        grid-template-columns: 1fr;
+        padding: 2rem 1.8rem;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .nav-links {
+        display: none;
+      }
+
+      main {
+        padding-inline: 1rem;
+      }
+
+      .page-hero {
+        margin-top: 1.6rem;
+      }
+
+      section {
+        margin-top: 2.4rem;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="nav">
+    <div class="nav-left">
+      <img src="assets/logo.png" class="site-logo" alt="Faith &amp; Fragrance Co. Logo">
+      <div class="logo-text">FAITH &amp; FRAGRANCE CO.</div>
+    </div>
+
+    <nav class="nav-links">
+      <a href="index.html">Home</a>
+      <a href="shop.html">Shop</a>
+      <a href="index.html#contact">Contact</a>
+      <a href="about.html" class="active">About</a>
+    </nav>
+
+    <a href="shop.html" class="nav-cta">Shop</a>
+  </div>
+</header>
+
+<main>
+  <!-- TOP ABOUT BLOCK -->
+  <section class="page-hero">
+    <div>
+      <div class="page-label">Meet the creators</div>
+      <h1 class="page-title">Behind Faith &amp; Fragrance Co.</h1>
+      <p class="lead">
+        A young husband-and-wife team, building a brand rooted in calm, quiet luxury, and a shared devotion to Christ.
+      </p>
+      <p class="body-text">
+        Faith &amp; Fragrance Co. started in a season where life felt loud, busy, and a little heavier than it should have.
+        Between work, family, and everything else, our home didn’t always feel as peaceful as we wanted it to be.
+        We began looking for small, intentional ways to slow down, reconnect, and invite peace back into our space.
+      </p>
+      <p class="body-text">
+        One of those ways was fragrance — simple evenings testing wax melts and candles, talking, and turning the noise down.
+        Over time, that practice became more than a hobby. It became a reminder that
+        <span class="highlight-link">God still meets us in the quiet, everyday moments</span>, and that home should feel like a place
+        where you can breathe again.
+      </p>
+    </div>
+
+    <aside class="side-card">
+      <div class="side-label">Founders</div>
+      <div class="side-title">Young, married &amp; building with faith</div>
+      <p class="side-text">
+        We’re young, still growing, still learning, and still becoming who God wants us to be. Through it all,
+        we’re devoted to Christ and committed to building something that reflects His peace, His grace,
+        and His presence in everyday life.
+      </p>
+      <p class="side-text">
+        Every product we make is shaped by that — not to preach at anyone, but to quietly carry faith, comfort,
+        and intention into the spaces where real life happens.
+      </p>
+      <p class="side-note">
+        If our products bring even a moment of stillness or comfort into your day, then this brand has already
+        done what we hoped it would.
+      </p>
+    </aside>
+  </section>
+
+  <!-- STORY SECTION -->
+  <section>
+    <div class="section-header">
+      <div class="section-label">Story</div>
+      <h2 class="section-title">How this all started</h2>
+    </div>
+    <p class="muted" style="margin-bottom: 1rem;">
+      We didn’t build Faith &amp; Fragrance Co. to look perfect on a shelf — we built it for evenings where the house
+      is finally quiet, the lights are low, and you can feel the stress of the day start to lift just a little.
+    </p>
+    <p class="muted" style="margin-bottom: 1rem;">
+      We know what it’s like to juggle long shifts, big responsibilities, little ones who need you,
+      and a calling that requires your whole heart. That’s why our brand is designed to feel simple, peaceful,
+      and honest — never overwhelming, never overcomplicated.
+    </p>
+    <p class="muted">
+      This is our way of saying: you are allowed to have a home that feels soft, even when life doesn’t.
+      A space that smells like rest, even when everything else feels like work.
+    </p>
+  </section>
+
+  <!-- VALUES -->
+  <section>
+    <div class="section-header">
+      <div class="section-label">Values</div>
+      <h2 class="section-title">What we care about most</h2>
+    </div>
+
+    <div class="value-grid">
+      <div class="value-card">
+        <div class="value-label">Value</div>
+        <div class="value-title">Faith first</div>
+        <p class="value-body">
+          Our faith in Christ shapes how we treat people, how we build this brand, and why we care so much about creating
+          products that bring comfort and peace instead of more noise.
+        </p>
+      </div>
+
+      <div class="value-card">
+        <div class="value-label">Value</div>
+        <div class="value-title">Quiet excellence</div>
+        <p class="value-body">
+          We’re not chasing trends. We’re focused on quality — from scent profiles to packaging — so every detail feels
+          intentional, not loud or overdone.
+        </p>
+      </div>
+
+      <div class="value-card">
+        <div class="value-label">Value</div>
+        <div class="value-title">Real-life friendly</div>
+        <p class="value-body">
+          Our products are meant for real homes: military families, healthcare workers, young parents, students,
+          and anyone else carrying a lot. Easy to use, easy to enjoy, no fuss.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div>© <span id="year"></span> Faith &amp; Fragrance Co. All rights reserved.</div>
+    <div class="footer-links">
+      <a href="index.html">Home</a>
+      <a href="shop.html">Shop</a>
+      <a href="index.html#contact">Contact</a>
+      <a href="about.html">About</a>
+    </div>
+  </footer>
+</main>
+
+<script>
+  document.getElementById("year").textContent = new Date().getFullYear();
+</script>
+
+</body>
+</html>

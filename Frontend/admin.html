@@ -1,0 +1,1356 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Admin – Faith & Fragrance Co.</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <style>
+    :root {
+      --bg: #050506;
+      --bg-alt: #0d0d10;
+      --bg-soft: #121218;
+      --text: #f5f3ee;
+      --muted: #9a958a;
+      --accent: #d3b46a;
+      --accent-soft: rgba(211,180,106,0.16);
+      --border: #26252f;
+      --radius: 16px;
+      --radius-lg: 26px;
+      --radius-pill: 999px;
+      --shadow-soft: 0 26px 60px rgba(0,0,0,0.7);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: radial-gradient(circle at top, #14141b, var(--bg));
+      color: var(--text);
+      -webkit-font-smoothing: antialiased;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      background: rgba(5,5,8,0.95);
+      backdrop-filter: blur(14px);
+      border-bottom: 1px solid rgba(255,255,255,0.04);
+    }
+
+    .nav {
+      width: 100%;
+      padding: 0.7rem 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+    }
+
+    .nav-left {
+      display: flex;
+      align-items: center;
+      gap: 0.65rem;
+    }
+
+    .site-logo {
+      height: 38px;
+      width: auto;
+    }
+
+    .logo-text {
+      font-size: 0.78rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: #f8f5f0;
+      opacity: 0.9;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 1.5rem;
+      font-size: 0.85rem;
+    }
+
+    .nav-links a {
+      color: var(--muted);
+      position: relative;
+      padding-bottom: 0.1rem;
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+      font-size: 0.78rem;
+    }
+
+    .nav-links a::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      bottom: 0;
+      width: 0;
+      height: 1px;
+      background: var(--accent);
+      transition: width 0.18s ease-out;
+    }
+
+    .nav-links a:hover::after {
+      width: 100%;
+    }
+
+    main {
+      width: 100%;
+      margin: 0 auto;
+      padding: 2.4rem 2rem 3rem;
+    }
+
+    .page-tag {
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.24em;
+      color: var(--muted);
+      margin-bottom: 0.6rem;
+    }
+
+    h1 {
+      font-size: 1.8rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      margin-bottom: 0.3rem;
+    }
+
+    .page-subtitle {
+      font-size: 0.94rem;
+      color: var(--muted);
+      margin-bottom: 1.6rem;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: 1.1fr 1fr;
+      gap: 2rem;
+      align-items: flex-start;
+      width: 100%;
+    }
+
+    .card {
+      background: var(--bg-soft);
+      border-radius: var(--radius-lg);
+      border: 1px solid var(--border);
+      padding: 1.7rem 1.8rem;
+      box-shadow: var(--shadow-soft);
+    }
+
+    .card-title {
+      font-size: 0.92rem;
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+      margin-bottom: 0.9rem;
+    }
+
+    label {
+      display: block;
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+      color: var(--muted);
+      margin-bottom: 0.4rem;
+    }
+
+    input[type="email"],
+    input[type="password"],
+    input[type="text"],
+    input[type="number"],
+    textarea {
+      width: 100%;
+      padding: 0.75rem 0.9rem;
+      border-radius: var(--radius-pill);
+      border: 1px solid rgba(255,255,255,0.12);
+      background: rgba(5,5,8,0.9);
+      color: var(--text);
+      font-size: 0.9rem;
+      outline: none;
+      margin-bottom: 0.85rem;
+    }
+
+    textarea {
+      border-radius: 16px;
+      resize: vertical;
+      min-height: 80px;
+    }
+
+    input:focus,
+    textarea:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 1px rgba(211,180,106,0.5);
+      background: #050506;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0.75rem 1.6rem;
+      border-radius: var(--radius-pill);
+      border: 1px solid transparent;
+      font-size: 0.82rem;
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+      cursor: pointer;
+      transition: background 0.15s, border-color 0.15s, transform 0.08s,
+        box-shadow 0.15s;
+    }
+
+    .btn-primary {
+      background: var(--accent);
+      border-color: var(--accent);
+      color: #050506;
+    }
+
+    .btn-primary:hover {
+      background: #e0c782;
+      border-color: #e0c782;
+      transform: translateY(-1px);
+      box-shadow: 0 18px 40px rgba(0,0,0,0.7);
+    }
+
+    .btn-ghost {
+      border-color: var(--border);
+      background: #101018;
+      color: var(--muted);
+    }
+
+    .btn-ghost:hover {
+      border-color: var(--accent);
+      color: var(--text);
+      box-shadow: 0 12px 26px rgba(0,0,0,0.6);
+    }
+
+    .btn-small {
+      padding: 0.45rem 0.9rem;
+      font-size: 0.75rem;
+      letter-spacing: 0.14em;
+    }
+
+    .btn-xs {
+      padding: 0.3rem 0.7rem;
+      font-size: 0.7rem;
+      letter-spacing: 0.12em;
+    }
+
+    .status {
+      margin-top: 0.7rem;
+      font-size: 0.82rem;
+      min-height: 1.2em;
+    }
+
+    .status-error {
+      color: #f28b82;
+    }
+
+    .status-success {
+      color: #8bd59a;
+    }
+
+    .muted {
+      color: var(--muted);
+      font-size: 0.88rem;
+    }
+
+    .admin-panel {
+      margin-top: 1rem;
+      padding-top: 1.1rem;
+      border-top: 1px solid rgba(255,255,255,0.08);
+      display: none;
+    }
+
+    .admin-panel h2 {
+      font-size: 0.9rem;
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+      margin-bottom: 0.6rem;
+    }
+
+    .admin-panel p {
+      font-size: 0.86rem;
+      color: var(--muted);
+      margin-bottom: 0.8rem;
+    }
+
+    code {
+      font-size: 0.78rem;
+      background: #181824;
+      padding: 0.25rem 0.4rem;
+      border-radius: 6px;
+      border: 1px solid #262635;
+    }
+
+    footer {
+      margin-top: 3rem;
+      padding: 1.4rem 2rem 0;
+      border-top: 1px solid rgba(255,255,255,0.05);
+      font-size: 0.8rem;
+      color: var(--muted);
+      display: flex;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+
+    /* PRODUCTS SECTION */
+    .admin-products {
+      margin-top: 1.4rem;
+    }
+
+    .admin-products-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 0.6rem;
+      gap: 0.6rem;
+      flex-wrap: wrap;
+    }
+
+    .admin-products-header h3 {
+      font-size: 0.9rem;
+      text-transform: uppercase;
+      letter-spacing: 0.18em;
+    }
+
+    .products-table-wrapper {
+      margin-top: 0.6rem;
+      border-radius: 18px;
+      border: 1px solid rgba(255,255,255,0.06);
+      overflow: hidden;
+      background: radial-gradient(circle at top left, #1b1b25, #090910);
+      width: 100%;
+    }
+
+    .products-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.82rem;
+    }
+
+    .products-table thead {
+      background: rgba(255,255,255,0.02);
+    }
+
+    .products-table th,
+    .products-table td {
+      padding: 0.65rem 0.75rem;
+      border-bottom: 1px solid rgba(255,255,255,0.04);
+      text-align: left;
+      vertical-align: top;
+    }
+
+    .products-table tr:nth-child(even) {
+      background: rgba(255,255,255,0.01);
+    }
+
+    .products-table tr:hover {
+      background: rgba(255,255,255,0.03);
+    }
+
+    .products-table th {
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      font-size: 0.75rem;
+      color: var(--muted);
+    }
+
+    .products-table td.collection {
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      font-size: 0.75rem;
+      color: var(--muted);
+      white-space: nowrap;
+    }
+
+    .products-table td.price {
+      white-space: nowrap;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .products-table td.description {
+      max-width: 260px;
+    }
+
+    .products-empty {
+      font-size: 0.84rem;
+      color: var(--muted);
+      margin-top: 0.6rem;
+    }
+
+    .add-product-form {
+      margin-top: 1.2rem;
+      padding-top: 1rem;
+      border-top: 1px solid rgba(255,255,255,0.06);
+    }
+
+    .image-cell {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      white-space: nowrap;
+    }
+
+    .image-pill {
+      padding: 0.25rem 0.8rem;
+      border-radius: var(--radius-pill);
+      font-size: 0.72rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      border: 1px solid rgba(255,255,255,0.07);
+      color: var(--muted);
+      background: rgba(8, 8, 13, 0.9);
+    }
+
+    .image-pill.has-image {
+      border-color: var(--accent);
+      color: var(--accent);
+      background: var(--accent-soft);
+    }
+
+    .image-thumb {
+      width: 32px;
+      height: 32px;
+      border-radius: 10px;
+      object-fit: cover;
+      border: 1px solid rgba(255,255,255,0.12);
+    }
+
+    .image-thumb.hidden {
+      display: none;
+    }
+
+    .hidden-file-input {
+      display: none;
+    }
+
+    /* Status pill + inline editing */
+    .status-cell {
+      white-space: nowrap;
+      display: flex;
+      align-items: center;
+      gap: 0.45rem;
+    }
+
+    .status-pill {
+      padding: 0.25rem 0.7rem;
+      border-radius: var(--radius-pill);
+      font-size: 0.7rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      border: 1px solid rgba(255,255,255,0.12);
+    }
+
+    .status-pill-active {
+      background: rgba(63, 179, 79, 0.2);
+      border-color: rgba(63, 179, 79, 0.8);
+      color: #8bd59a;
+    }
+
+    .status-pill-inactive {
+      background: rgba(179, 63, 63, 0.2);
+      border-color: rgba(179, 63, 63, 0.8);
+      color: #f28b82;
+    }
+
+    .inline-input,
+    .inline-textarea {
+      width: 100%;
+      padding: 0.35rem 0.5rem;
+      border-radius: 8px;
+      border: 1px solid rgba(255,255,255,0.18);
+      background: rgba(5,5,8,0.95);
+      color: var(--text);
+      font-size: 0.8rem;
+      outline: none;
+    }
+
+    .inline-textarea {
+      resize: vertical;
+      min-height: 48px;
+    }
+
+    .inline-input:focus,
+    .inline-textarea:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 1px rgba(211,180,106,0.4);
+    }
+
+    @media (max-width: 800px) {
+      .grid {
+        grid-template-columns: 1fr;
+      }
+
+      .nav-links {
+        display: none;
+      }
+
+      main {
+        padding-inline: 1.4rem;
+      }
+
+      footer {
+        padding-inline: 1.4rem;
+      }
+    }
+
+    @media (max-width: 650px) {
+      .products-table thead {
+        display: none;
+      }
+
+      .products-table,
+      .products-table tbody,
+      .products-table tr,
+      .products-table td {
+        display: block;
+        width: 100%;
+      }
+
+      .products-table-wrapper {
+        border-radius: 16px;
+      }
+
+      .products-table tr {
+        margin-bottom: 0.6rem;
+        padding-bottom: 0.4rem;
+        border-bottom: 1px solid rgba(255,255,255,0.06);
+      }
+
+      .products-table td {
+        padding: 0.2rem 0.75rem;
+      }
+
+      .products-table td.actions {
+        margin-top: 0.25rem;
+      }
+
+      .image-cell,
+      .status-cell {
+        margin-top: 0.3rem;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="nav">
+    <div class="nav-left">
+      <img src="logo.png" class="site-logo" alt="Faith &amp; Fragrance Co. Logo">
+      <div class="logo-text">FAITH &amp; FRAGRANCE CO.</div>
+    </div>
+
+    <nav class="nav-links">
+      <a href="index.html">Home</a>
+      <a href="shop.html">Shop</a>
+      <a href="about.html">About</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <div class="page-tag">Internal</div>
+  <h1>Admin dashboard</h1>
+  <p class="page-subtitle">
+    Private area for managing Faith &amp; Fragrance Co. products, discount codes,
+    and email lists. Keep this page between us.
+  </p>
+
+  <div class="grid">
+    <!-- LOGIN CARD -->
+    <section class="card">
+      <div class="card-title">Sign in</div>
+
+      <form id="adminLoginForm">
+        <label for="adminEmail">Email</label>
+        <input
+          type="email"
+          id="adminEmail"
+          autocomplete="username"
+          placeholder="admin@faith-and-fragrance-co.com"
+          required
+        >
+
+        <label for="adminPassword">Password</label>
+        <input
+          type="password"
+          id="adminPassword"
+          autocomplete="current-password"
+          placeholder="••••••••••"
+          required
+        >
+
+        <button type="submit" class="btn btn-primary" id="adminLoginButton">
+          Sign in
+        </button>
+      </form>
+
+      <div id="adminStatus" class="status"></div>
+
+      <div class="admin-panel" id="adminPanel">
+        <h2>You’re in.</h2>
+        <p>
+          Auth token is stored in your browser for this device. Right now this
+          dashboard can manage products; later we’ll bolt on discounts and email tools.
+        </p>
+
+        <div class="admin-products">
+          <div class="admin-products-header">
+            <h3>Products</h3>
+            <button class="btn btn-ghost btn-small" id="refreshProductsButton">
+              Refresh
+            </button>
+          </div>
+
+          <div id="adminProductsStatus" class="status"></div>
+          <div id="adminProductsList"></div>
+
+          <div class="add-product-form">
+            <div class="card-title" style="margin-bottom:0.6rem;">Add product</div>
+            <form id="adminAddProductForm">
+              <label for="productName">Name</label>
+              <input
+                type="text"
+                id="productName"
+                placeholder="Mercy Morning Jelly Melt"
+                required
+              >
+
+              <label for="productCollection">Collection (slug)</label>
+              <input
+                type="text"
+                id="productCollection"
+                placeholder="jelly-melts / wax-melts / candles"
+              >
+
+              <label for="productPrice">Price (USD)</label>
+              <input
+                type="number"
+                id="productPrice"
+                step="0.01"
+                min="0"
+                placeholder="12.99"
+                required
+              >
+
+              <label for="productDescription">Description</label>
+              <textarea
+                id="productDescription"
+                placeholder="Soft vanilla, clean linen, and a hint of cedar."
+              ></textarea>
+
+              <label for="productImage">Image</label>
+              <input
+                type="file"
+                id="productImage"
+                accept="image/*"
+                style="margin-bottom: 0.75rem;"
+              />
+
+              <button type="submit" class="btn btn-primary btn-small" id="addProductButton">
+                Add product
+              </button>
+            </form>
+          </div>
+        </div>
+
+        <p style="margin-top: 1.2rem;">
+          Token is saved as <code>ff_admin_token</code> in <code>localStorage</code>.
+        </p>
+        <button class="btn btn-ghost btn-small" id="logoutButton">
+          Log out
+        </button>
+      </div>
+    </section>
+
+    <!-- INFO CARD -->
+    <section class="card">
+      <div class="card-title">Notes</div>
+      <p class="muted">
+        This dashboard is running against your local backend at
+        <code>http://localhost:4000</code>. When we deploy a real backend, we’ll
+        update the API URL and lock this behind proper auth.
+      </p>
+      <p class="muted" style="margin-top:0.9rem;">
+        Current setup:
+      </p>
+      <ul class="muted" style="margin-top:0.5rem; padding-left:1.1rem; font-size:0.85rem;">
+        <li>Hard-coded admin account (email + password) in <code>server.js</code>.</li>
+        <li>JWT token with 2-hour expiry, stored in <code>localStorage</code>.</li>
+        <li>Protected product management routes under <code>/api/admin/products</code>.</li>
+      </ul>
+      <p class="muted" style="margin-top:0.9rem;">
+        Next steps once products feel good:
+      </p>
+      <ul class="muted" style="margin-top:0.4rem; padding-left:1.1rem; font-size:0.85rem;">
+        <li>Create discount codes (percentage / fixed) from here.</li>
+        <li>View subscribers &amp; send targeted email blasts.</li>
+        <li>Deploy backend to a proper host so you’re not tied to localhost.</li>
+      </ul>
+    </section>
+  </div>
+
+  <footer>
+    <div>© <span id="year"></span> Faith &amp; Fragrance Co. Internal</div>
+    <div>Keep this page private.</div>
+  </footer>
+</main>
+
+<script>
+  const API_BASE = "http://localhost:4000";
+  const TOKEN_KEY = "ff_admin_token";
+
+  const yearEl = document.getElementById("year");
+  yearEl.textContent = new Date().getFullYear();
+
+  const loginForm = document.getElementById("adminLoginForm");
+  const loginButton = document.getElementById("adminLoginButton");
+  const statusEl = document.getElementById("adminStatus");
+  const adminPanel = document.getElementById("adminPanel");
+  const logoutButton = document.getElementById("logoutButton");
+
+  const productsStatusEl = document.getElementById("adminProductsStatus");
+  const productsListEl = document.getElementById("adminProductsList");
+  const refreshProductsButton = document.getElementById("refreshProductsButton");
+
+  const addProductForm = document.getElementById("adminAddProductForm");
+  const addProductButton = document.getElementById("addProductButton");
+  const productImageInput = document.getElementById("productImage");
+
+  let adminProductsById = {};
+
+  function getToken() {
+    return localStorage.getItem(TOKEN_KEY) || "";
+  }
+
+  function saveToken(token) {
+    localStorage.setItem(TOKEN_KEY, token);
+  }
+
+  function clearToken() {
+    localStorage.removeItem(TOKEN_KEY);
+  }
+
+  function showAdminPanel() {
+    adminPanel.style.display = "block";
+  }
+
+  function hideAdminPanel() {
+    adminPanel.style.display = "none";
+  }
+
+  function setStatus(message, type = "") {
+    statusEl.textContent = message || "";
+    statusEl.className = "status" + (type ? " " + type : "");
+  }
+
+  function setProductsStatus(message, type = "") {
+    productsStatusEl.textContent = message || "";
+    productsStatusEl.className = "status" + (type ? " " + type : "");
+  }
+
+  function formatPrice(cents) {
+    if (typeof cents !== "number") return "";
+    return "$" + (cents / 100).toFixed(2);
+  }
+
+  function escapeAttr(str) {
+    return (str || "").replace(/"/g, "&quot;");
+  }
+
+  function escapeHtml(str) {
+    return (str || "")
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;");
+  }
+
+  // ===== LOAD PRODUCTS INTO TABLE =====
+  async function loadAdminProducts() {
+    const token = getToken();
+    if (!token) {
+      setProductsStatus("Not logged in.", "status-error");
+      productsListEl.innerHTML = "";
+      return;
+    }
+
+    setProductsStatus("Loading products…");
+
+    try {
+      const res = await fetch(API_BASE + "/api/admin/products", {
+        headers: {
+          "Authorization": "Bearer " + token
+        }
+      });
+
+      const data = await res.json();
+
+      if (!res.ok) {
+        setProductsStatus(data.error || "Failed to load products.", "status-error");
+        productsListEl.innerHTML = "";
+        return;
+      }
+
+      adminProductsById = {};
+      if (Array.isArray(data)) {
+        data.forEach((p) => {
+          if (p && p.id) {
+            adminProductsById[p.id] = p;
+          }
+        });
+      }
+
+      renderProductsTable(Object.values(adminProductsById));
+      setProductsStatus("");
+    } catch (err) {
+      console.error(err);
+      setProductsStatus("Error contacting backend.", "status-error");
+      productsListEl.innerHTML = "";
+    }
+  }
+
+  function renderProductsTable(products) {
+    if (!Array.isArray(products) || products.length === 0) {
+      productsListEl.innerHTML =
+        '<div class="products-empty">No products yet. Add your first product below.</div>';
+      return;
+    }
+
+    const rows = products
+      .map((p) => {
+        const hasImage = !!p.imageUrl;
+        const safeImageUrl = hasImage ? p.imageUrl : "";
+        const isActive = p.active !== false; // default true if undefined
+
+        return `
+      <tr data-id="${p.id}">
+        <td>${p.name || "(no name)"}</td>
+        <td class="collection">${(p.collection || "").toUpperCase()}</td>
+        <td class="price">${formatPrice(p.priceCents || 0)}</td>
+        <td class="description">${p.description || ""}</td>
+        <td class="status-cell">
+          <span class="status-pill ${isActive ? "status-pill-active" : "status-pill-inactive"}">
+            ${isActive ? "Active" : "Hidden"}
+          </span>
+          <button
+            class="btn btn-ghost btn-xs"
+            data-action="toggle-active"
+            data-id="${p.id}"
+          >
+            ${isActive ? "Hide" : "Show"}
+          </button>
+        </td>
+        <td class="image-cell">
+          <img
+            src="${safeImageUrl}"
+            alt=""
+            class="image-thumb ${hasImage ? "" : "hidden"}"
+          />
+          <span class="image-pill ${hasImage ? "has-image" : ""}">
+            ${hasImage ? "Image set" : "No image"}
+          </span>
+          <button
+            class="btn btn-ghost btn-xs"
+            data-action="change-image"
+            data-id="${p.id}"
+          >
+            Change
+          </button>
+          <input
+            type="file"
+            accept="image/*"
+            class="hidden-file-input"
+            data-id="${p.id}"
+          />
+        </td>
+        <td class="actions">
+          <button class="btn btn-primary btn-xs" data-action="edit" data-id="${p.id}">
+            Edit
+          </button>
+          <button class="btn btn-ghost btn-xs" data-action="delete" data-id="${p.id}">
+            Delete
+          </button>
+        </td>
+      </tr>
+    `;
+      })
+      .join("");
+
+    productsListEl.innerHTML = `
+      <div class="products-table-wrapper">
+        <table class="products-table">
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Collection</th>
+              <th>Price</th>
+              <th>Description</th>
+              <th>Status</th>
+              <th>Image</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            ${rows}
+          </tbody>
+        </table>
+      </div>
+    `;
+  }
+
+  // ===== IMAGE UPLOAD HELPER (ADD + CHANGE) =====
+  async function uploadProductImage(productId, file, token) {
+    if (!file) return;
+
+    const formData = new FormData();
+    formData.append("image", file);
+
+    const res = await fetch(
+      API_BASE + "/api/admin/products/" + encodeURIComponent(productId) + "/image",
+      {
+        method: "POST",
+        headers: {
+          "Authorization": "Bearer " + token
+        },
+        body: formData
+      }
+    );
+
+    if (!res.ok) {
+      const data = await res.json().catch(() => ({}));
+      throw new Error(data.error || "Failed to upload image.");
+    }
+
+    return res.json();
+  }
+
+  // ===== ADD PRODUCT =====
+  addProductForm.addEventListener("submit", async (e) => {
+    e.preventDefault();
+
+    const token = getToken();
+    if (!token) {
+      setProductsStatus("Not logged in.", "status-error");
+      return;
+    }
+
+    const name = document.getElementById("productName").value.trim();
+    const collection = document.getElementById("productCollection").value.trim();
+    const priceStr = document.getElementById("productPrice").value;
+    const description = document.getElementById("productDescription").value.trim();
+    const imageFile = productImageInput.files[0] || null;
+
+    if (!name || !priceStr) return;
+
+    const priceFloat = parseFloat(priceStr);
+    if (Number.isNaN(priceFloat) || priceFloat < 0) {
+      setProductsStatus("Price must be a non-negative number.", "status-error");
+      return;
+    }
+
+    const priceCents = Math.round(priceFloat * 100);
+
+    addProductButton.disabled = true;
+    addProductButton.textContent = imageFile ? "Adding + uploading…" : "Adding…";
+
+    try {
+      // 1) Create product
+      const res = await fetch(API_BASE + "/api/admin/products", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": "Bearer " + token
+        },
+        body: JSON.stringify({
+          name,
+          description,
+          priceCents,
+          collection
+        })
+      });
+
+      const data = await res.json();
+
+      if (!res.ok) {
+        setProductsStatus(data.error || "Failed to add product.", "status-error");
+      } else {
+        const created = data.product || data;
+
+        // 2) Optional image upload
+        if (created.id && imageFile) {
+          try {
+            await uploadProductImage(created.id, imageFile, token);
+          } catch (imgErr) {
+            console.error(imgErr);
+            setProductsStatus(
+              "Product added, but image upload failed: " + imgErr.message,
+              "status-error"
+            );
+            await loadAdminProducts();
+            return;
+          }
+        }
+
+        setProductsStatus(
+          "Product added" + (imageFile ? " with image." : "."),
+          "status-success"
+        );
+        addProductForm.reset();
+        await loadAdminProducts();
+      }
+    } catch (err) {
+      console.error(err);
+      setProductsStatus("Error talking to backend.", "status-error");
+    } finally {
+      addProductButton.disabled = false;
+      addProductButton.textContent = "Add product";
+    }
+  });
+
+  // ===== DELETE / CHANGE IMAGE / INLINE EDIT / TOGGLE =====
+  productsListEl.addEventListener("click", async (e) => {
+    const btn = e.target.closest("button");
+    if (!btn) return;
+
+    const action = btn.getAttribute("data-action");
+    const id = btn.getAttribute("data-id");
+    if (!action || !id) return;
+
+    const token = getToken();
+    if (!token) {
+      setProductsStatus("Not logged in.", "status-error");
+      return;
+    }
+
+    // EDIT → turn row into inline inputs
+    if (action === "edit") {
+      const row = btn.closest("tr");
+      if (!row) return;
+      const product = adminProductsById[id];
+      if (!product) return;
+
+      const tds = row.querySelectorAll("td");
+      const nameTd = tds[0];
+      const collTd = tds[1];
+      const priceTd = tds[2];
+      const descTd = tds[3];
+      const actionsTd = tds[6]; // last column
+
+      const priceFloat = (product.priceCents || 0) / 100;
+
+      nameTd.innerHTML = `<input type="text" class="inline-input" value="${escapeAttr(product.name || "")}">`;
+      collTd.innerHTML = `<input type="text" class="inline-input" value="${escapeAttr(product.collection || "")}">`;
+      priceTd.innerHTML = `<input type="number" class="inline-input" step="0.01" min="0" value="${priceFloat.toFixed(2)}">`;
+      descTd.innerHTML = `<textarea class="inline-textarea">${escapeHtml(product.description || "")}</textarea>`;
+
+      actionsTd.innerHTML = `
+        <button class="btn btn-primary btn-xs" data-action="save" data-id="${id}">
+          Save
+        </button>
+        <button class="btn btn-ghost btn-xs" data-action="cancel" data-id="${id}">
+          Cancel
+        </button>
+      `;
+      return;
+    }
+
+    // SAVE inline edits
+    if (action === "save") {
+      const row = btn.closest("tr");
+      if (!row) return;
+
+      const nameInput = row.querySelector("td:nth-child(1) .inline-input");
+      const collInput = row.querySelector("td:nth-child(2) .inline-input");
+      const priceInput = row.querySelector("td:nth-child(3) .inline-input");
+      const descInput = row.querySelector("td:nth-child(4) .inline-textarea");
+
+      if (!nameInput || !priceInput) {
+        setProductsStatus("Missing fields.", "status-error");
+        return;
+      }
+
+      const name = nameInput.value.trim();
+      const collection = collInput ? collInput.value.trim() : "";
+      const priceStr = priceInput.value;
+      const description = descInput ? descInput.value.trim() : "";
+
+      if (!name) {
+        setProductsStatus("Name is required.", "status-error");
+        return;
+      }
+
+      const priceFloat = parseFloat(priceStr);
+      if (Number.isNaN(priceFloat) || priceFloat < 0) {
+        setProductsStatus("Price must be a non-negative number.", "status-error");
+        return;
+      }
+
+      const priceCents = Math.round(priceFloat * 100);
+
+      btn.disabled = true;
+      btn.textContent = "Saving…";
+
+      try {
+        const res = await fetch(
+          API_BASE + "/api/admin/products/" + encodeURIComponent(id),
+          {
+            method: "PUT",
+            headers: {
+              "Content-Type": "application/json",
+              "Authorization": "Bearer " + token
+            },
+            body: JSON.stringify({
+              name,
+              collection,
+              priceCents,
+              description
+            })
+          }
+        );
+
+        const data = await res.json();
+
+        if (!res.ok) {
+          setProductsStatus(data.error || "Failed to save changes.", "status-error");
+        } else {
+          adminProductsById[id] = data;
+          setProductsStatus("Product updated.", "status-success");
+          renderProductsTable(Object.values(adminProductsById));
+        }
+      } catch (err) {
+        console.error(err);
+        setProductsStatus("Error talking to backend.", "status-error");
+      } finally {
+        btn.disabled = false;
+        btn.textContent = "Save";
+      }
+      return;
+    }
+
+    // CANCEL inline edit
+    if (action === "cancel") {
+      renderProductsTable(Object.values(adminProductsById));
+      setProductsStatus("");
+      return;
+    }
+
+    // DELETE
+    if (action === "delete") {
+      if (!confirm("Delete this product?")) return;
+
+      btn.disabled = true;
+      btn.textContent = "Deleting…";
+
+      try {
+        const res = await fetch(
+          API_BASE + "/api/admin/products/" + encodeURIComponent(id),
+          {
+            method: "DELETE",
+            headers: {
+              "Authorization": "Bearer " + token
+            }
+          }
+        );
+
+        const data = await res.json();
+
+        if (!res.ok) {
+          setProductsStatus(data.error || "Failed to delete.", "status-error");
+        } else {
+          setProductsStatus("Product deleted.", "status-success");
+          await loadAdminProducts();
+        }
+      } catch (err) {
+        console.error(err);
+        setProductsStatus("Error talking to backend.", "status-error");
+      }
+      return;
+    }
+
+    // CHANGE IMAGE
+    if (action === "change-image") {
+      const row = btn.closest("tr");
+      if (!row) return;
+      const fileInput = row.querySelector(".hidden-file-input");
+      if (fileInput) {
+        fileInput.click();
+      }
+      return;
+    }
+
+    // TOGGLE ACTIVE
+    if (action === "toggle-active") {
+      const product = adminProductsById[id];
+      if (!product) return;
+      const currentlyActive = product.active !== false;
+      const newActive = !currentlyActive;
+
+      btn.disabled = true;
+
+      try {
+        const res = await fetch(
+          API_BASE + "/api/admin/products/" + encodeURIComponent(id),
+          {
+            method: "PUT",
+            headers: {
+              "Content-Type": "application/json",
+              "Authorization": "Bearer " + token
+            },
+            body: JSON.stringify({
+              active: newActive
+            })
+          }
+        );
+
+        const data = await res.json();
+
+        if (!res.ok) {
+          setProductsStatus(data.error || "Failed to toggle status.", "status-error");
+        } else {
+          adminProductsById[id] = data;
+          setProductsStatus(
+            newActive ? "Product set to Active." : "Product hidden from shop.",
+            "status-success"
+          );
+          renderProductsTable(Object.values(adminProductsById));
+        }
+      } catch (err) {
+        console.error(err);
+        setProductsStatus("Error talking to backend.", "status-error");
+      } finally {
+        btn.disabled = false;
+      }
+      return;
+    }
+  });
+
+  // Handle file selection for CHANGE buttons
+  productsListEl.addEventListener("change", async (e) => {
+    const input = e.target;
+    if (!input.classList.contains("hidden-file-input")) return;
+
+    const file = input.files[0];
+    if (!file) return;
+
+    const productId = input.getAttribute("data-id");
+    const token = getToken();
+    if (!token) {
+      setProductsStatus("Not logged in.", "status-error");
+      return;
+    }
+
+    setProductsStatus("Uploading image…");
+
+    try {
+      await uploadProductImage(productId, file, token);
+      setProductsStatus("Image updated.", "status-success");
+      await loadAdminProducts();
+    } catch (err) {
+      console.error(err);
+      setProductsStatus("Image upload failed: " + err.message, "status-error");
+    } finally {
+      input.value = "";
+    }
+  });
+
+  refreshProductsButton.addEventListener("click", () => {
+    loadAdminProducts();
+  });
+
+  // ===== LOGIN / LOGOUT =====
+  loginForm.addEventListener("submit", async (e) => {
+    e.preventDefault();
+
+    const email = document.getElementById("adminEmail").value.trim();
+    const password = document.getElementById("adminPassword").value;
+
+    if (!email || !password) return;
+
+    setStatus("");
+    loginButton.disabled = true;
+    loginButton.textContent = "Signing in…";
+
+    try {
+      const res = await fetch(API_BASE + "/api/admin/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ email, password })
+      });
+
+      const data = await res.json();
+
+      if (!res.ok) {
+        setStatus(data.error || "Login failed.", "status-error");
+        hideAdminPanel();
+        clearToken();
+      } else {
+        if (data.token) {
+          saveToken(data.token);
+          showAdminPanel();
+          setStatus("Signed in successfully.", "status-success");
+          await loadAdminProducts();
+        } else {
+          setStatus("No token returned from server.", "status-error");
+        }
+      }
+    } catch (err) {
+      console.error(err);
+      setStatus("Unable to reach backend.", "status-error");
+    } finally {
+      loginButton.disabled = false;
+      loginButton.textContent = "Sign in";
+    }
+  });
+
+  logoutButton.addEventListener("click", () => {
+    clearToken();
+    hideAdminPanel();
+    setStatus("Logged out.", "status-success");
+    setProductsStatus("");
+    productsListEl.innerHTML = "";
+  });
+
+  // ===== AUTO CHECK TOKEN ON LOAD =====
+  (async function init() {
+    const token = getToken();
+    if (!token) return;
+
+    try {
+      const res = await fetch(API_BASE + "/api/admin/me", {
+        headers: {
+          "Authorization": "Bearer " + token
+        }
+      });
+
+      if (res.ok) {
+        showAdminPanel();
+        setStatus("Welcome back, admin.", "status-success");
+        await loadAdminProducts();
+      } else {
+        clearToken();
+      }
+    } catch (err) {
+      console.error("Init admin check failed:", err);
+      clearToken();
+    }
+  })();
+</script>
+
+</body>
+</html>
