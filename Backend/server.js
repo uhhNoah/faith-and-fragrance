@@ -84,7 +84,7 @@ const defaultSeedProducts = [
 function normalizeProducts(list) {
   return list.map((p) => ({
     ...p,
-    active: p.active !== false, // default true if missing
+    active: p.active !== false,
   }));
 }
 
@@ -121,10 +121,9 @@ function saveProducts(list) {
   }
 }
 
-// In-memory products
 let products = loadProducts();
 
-// ===== SUBSCRIBERS HELPERS =====
+// ===== SUBSCRIBERS =====
 function loadSubscribers() {
   try {
     if (!fs.existsSync(SUBSCRIBERS_FILE)) {
@@ -149,7 +148,7 @@ function saveSubscribers(list) {
   }
 }
 
-// ===== AUTH HELPERS =====
+// ===== AUTH =====
 function generateAdminToken() {
   return jwt.sign(
     {
@@ -180,33 +179,27 @@ function authAdmin(req, res, next) {
   }
 }
 
-// ===== MIDDLEWARE =====
-// ===== CORS FIX (Production Safe) =====
+// ===== FIXED CORS =====
 const allowedOrigins = [
   "http://localhost:3000",
   "http://127.0.0.1:3000",
   "http://localhost:5173",
   "http://127.0.0.1:5173",
-  "http://localhost:5500",
-  "http://127.0.0.1:5500",
 
   // Netlify preview deploys
   /\.netlify\.app$/,
 
-  // Production frontend
+  // 🔥 Correct production domains
+  "https://faith-and-fragrance-co.com",
+  "https://www.faith-and-fragrance-co.com",
   "https://faithandfragrance.netlify.app",
-  "https://www.faithandfragrance.netlify.app",
-  "https://faithandfragrance.co",
-  "https://www.faithandfragrance.co",
 ];
 
 app.use(
   cors({
     origin: function (origin, callback) {
-      // Allow mobile apps or curl (no origin)
       if (!origin) return callback(null, true);
 
-      // Allow Netlify wildcard deploys (*.netlify.app)
       if (/\.netlify\.app$/.test(origin)) return callback(null, true);
 
       if (allowedOrigins.includes(origin)) return callback(null, true);
@@ -237,7 +230,7 @@ app.post("/api/admin/login", (req, res) => {
   return res.json({ token });
 });
 
-// Simple check for existing token
+// Admin identity check
 app.get("/api/admin/me", authAdmin, (req, res) => {
   return res.json({
     email: ADMIN_EMAIL,
@@ -245,13 +238,13 @@ app.get("/api/admin/me", authAdmin, (req, res) => {
   });
 });
 
-// ===== PUBLIC PRODUCTS API =====
+// ===== PUBLIC PRODUCTS =====
 app.get("/api/products", (req, res) => {
   const visible = products.filter((p) => p.active !== false);
   res.json(visible);
 });
 
-// ===== SUBSCRIBE API =====
+// ===== SUBSCRIBE =====
 app.post("/api/subscribe", (req, res) => {
   const { email } = req.body || {};
 
@@ -284,14 +277,12 @@ app.post("/api/subscribe", (req, res) => {
   return res.status(201).json({ message: "Subscribed successfully." });
 });
 
-// ===== ADMIN – PRODUCTS CRUD =====
-
-// Get all products (admin view)
+// ===== ADMIN PRODUCTS =====
 app.get("/api/admin/products", authAdmin, (req, res) => {
   res.json(products);
 });
 
-// Create product
+// Create
 app.post("/api/admin/products", authAdmin, (req, res) => {
   const { name, description, priceCents, collection, active } = req.body || {};
 
@@ -332,7 +323,7 @@ app.post("/api/admin/products", authAdmin, (req, res) => {
   return res.status(201).json(newProduct);
 });
 
-// Update product
+// Update
 app.put("/api/admin/products/:id", authAdmin, (req, res) => {
   const { id } = req.params;
   const { name, description, priceCents, collection, active } = req.body || {};
@@ -379,7 +370,7 @@ app.put("/api/admin/products/:id", authAdmin, (req, res) => {
   return res.json(products[idx]);
 });
 
-// Delete product (and its image if it exists)
+// Delete with image cleanup
 app.delete("/api/admin/products/:id", authAdmin, (req, res) => {
   const { id } = req.params;
 
@@ -390,7 +381,6 @@ app.delete("/api/admin/products/:id", authAdmin, (req, res) => {
 
   const product = products[idx];
 
-  // Try to delete image from disk if it exists and is under /uploads
   if (product.imageUrl && typeof product.imageUrl === "string") {
     const relative = product.imageUrl.replace(/^\/+/, "");
     const imgPath = path.join(DATA_DIR, relative);
@@ -409,7 +399,7 @@ app.delete("/api/admin/products/:id", authAdmin, (req, res) => {
   return res.json({ ok: true });
 });
 
-// Add/update product image
+// Upload image
 app.post(
   "/api/admin/products/:id/image",
   authAdmin,
