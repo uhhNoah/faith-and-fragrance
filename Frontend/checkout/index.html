@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Checkout – Faith & Fragrance Co.</title>
+
+  <style>
+    :root {
+      --bg: #050506;
+      --bg-alt: #0d0d10;
+      --text: #f5f3ee;
+      --muted: #9a958a;
+      --accent: #d3b46a;
+      --danger: #f28b82;
+      --success: #8bd59a;
+      --max-width: 900px;
+    }
+
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: system-ui, sans-serif;
+      background: radial-gradient(circle at top, #14141b, var(--bg));
+      color: var(--text);
+      display: flex;
+      justify-content: center;
+    }
+
+    main {
+      width: 100%;
+      max-width: var(--max-width);
+      padding: 2rem 1rem 4rem;
+    }
+
+    h1 {
+      text-transform: uppercase;
+      letter-spacing: 0.15em;
+      text-align: center;
+      margin-bottom: 2rem;
+      font-size: 1.9rem;
+    }
+
+    /* FORM CARD */
+    .checkout-card {
+      background: var(--bg-alt);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 20px;
+      padding: 2rem;
+      box-shadow: 0 40px 90px rgba(0,0,0,0.75);
+    }
+
+    .section-title {
+      text-transform: uppercase;
+      font-size: 0.85rem;
+      letter-spacing: 0.16em;
+      margin-bottom: 0.5rem;
+      color: var(--muted);
+    }
+
+    .checkout-grid {
+      display: grid;
+      grid-template-columns: 1fr 350px;
+      gap: 2rem;
+    }
+
+    @media (max-width: 850px) {
+      .checkout-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    /* FORM FIELDS */
+    label {
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+      color: var(--muted);
+    }
+
+    input,
+    textarea {
+      width: 100%;
+      background: #050507;
+      border: 1px solid rgba(255,255,255,0.18);
+      border-radius: 10px;
+      padding: 0.7rem;
+      color: var(--text);
+      font-size: 0.9rem;
+    }
+
+    input:focus,
+    textarea:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 1px rgba(211,180,106,0.4);
+      outline: none;
+    }
+
+    textarea {
+      min-height: 70px;
+      resize: vertical;
+    }
+
+    /* ORDER SUMMARY */
+    .summary-box {
+      background: #0a0a12;
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 14px;
+      padding: 1.5rem;
+    }
+
+    .summary-item {
+      display: flex;
+      justify-content: space-between;
+      padding: 0.4rem 0;
+      color: var(--muted);
+      font-size: 0.9rem;
+    }
+
+    .summary-total {
+      font-size: 1rem;
+      font-weight: bold;
+      color: var(--accent);
+      margin-top: 0.5rem;
+      display: flex;
+      justify-content: space-between;
+    }
+
+    /* BUTTON */
+    .btn-submit {
+      width: 100%;
+      margin-top: 1.5rem;
+      padding: 0.9rem;
+      border: none;
+      background: var(--accent);
+      color: #050506;
+      border-radius: 999px;
+      cursor: pointer;
+      font-size: 0.9rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+    }
+
+    .btn-submit:hover {
+      background: #f1d188;
+    }
+
+    /* STATUS MESSAGE */
+    .status {
+      text-align: center;
+      margin-top: 1.2rem;
+      min-height: 1.2rem;
+      font-size: 0.9rem;
+    }
+    .error { color: var(--danger); }
+    .success { color: var(--success); }
+
+    /* BACK LINK */
+    .back {
+      display: inline-block;
+      margin-bottom: 1rem;
+      font-size: 0.9rem;
+      color: var(--accent);
+      cursor: pointer;
+    }
+  </style>
+</head>
+
+<body>
+
+<main>
+
+  <div class="back" onclick="window.location.href='/shop.html'">← Continue Shopping</div>
+
+  <h1>Checkout</h1>
+
+  <div class="checkout-card">
+
+    <div class="checkout-grid">
+
+      <!-- LEFT: FORM -->
+      <div>
+        <div class="section-title">Your Details</div>
+
+        <form id="checkoutForm">
+          <div style="margin-bottom:1rem;">
+            <label for="name">Name</label>
+            <input id="name" required placeholder="Full name">
+          </div>
+
+          <div style="margin-bottom:1rem;">
+            <label for="email">Email</label>
+            <input id="email" type="email" required placeholder="you@example.com">
+          </div>
+
+          <div style="margin-bottom:1rem;">
+            <label for="phone">Phone (optional)</label>
+            <input id="phone" placeholder="">
+          </div>
+
+          <div style="margin-bottom:1rem;">
+            <label for="address">Shipping Address (optional)</label>
+            <textarea id="address"></textarea>
+          </div>
+
+          <div style="margin-bottom:1rem;">
+            <label for="notes">Notes (optional)</label>
+            <textarea id="notes" placeholder="Anything we should know?"></textarea>
+          </div>
+
+          <button class="btn-submit" type="submit">Place Order</button>
+
+          <div class="status" id="status"></div>
+        </form>
+      </div>
+
+      <!-- RIGHT: ORDER SUMMARY -->
+      <div>
+        <div class="section-title">Order Summary</div>
+        <div class="summary-box" id="orderSummary"></div>
+      </div>
+
+    </div>
+
+  </div>
+
+</main>
+
+<script>
+  const API_BASE = location.hostname.includes("localhost")
+    ? "http://localhost:4000"
+    : "https://faith-fragrance-backend.onrender.com";
+
+  let cart = JSON.parse(localStorage.getItem("ff_cart_v1") || "[]");
+
+  const summaryEl = document.getElementById("orderSummary");
+  const statusEl = document.getElementById("status");
+
+  // Render order summary
+  function renderSummary() {
+    if (!cart.length) {
+      summaryEl.innerHTML = `<div style="color:var(--muted);">Your cart is empty.</div>`;
+      return;
+    }
+
+    let html = "";
+    let subtotal = 0;
+
+    cart.forEach(item => {
+      const line = item.priceCents * item.quantity;
+      subtotal += line;
+      html += `
+        <div class="summary-item">
+          <span>${item.name} × ${item.quantity}</span>
+          <span>$${(line / 100).toFixed(2)}</span>
+        </div>
+      `;
+    });
+
+    html += `<div class="summary-total">
+      <span>Subtotal</span>
+      <span>$${(subtotal / 100).toFixed(2)}</span>
+    </div>`;
+
+    html += `<div class="summary-item" style="margin-top:0.5rem;">
+      <span>Tax & Shipping</span>
+      <span>Calculated later</span>
+    </div>`;
+
+    summaryEl.innerHTML = html;
+  }
+
+  renderSummary();
+
+  // Submit checkout form
+  document.getElementById("checkoutForm").addEventListener("submit", async (e) => {
+    e.preventDefault();
+
+    if (!cart.length) {
+      statusEl.textContent = "Your cart is empty.";
+      statusEl.className = "status error";
+      return;
+    }
+
+    statusEl.textContent = "";
+    statusEl.className = "status";
+
+    const name = document.getElementById("name").value.trim();
+    const email = document.getElementById("email").value.trim();
+    const phone = document.getElementById("phone").value.trim();
+    const address = document.getElementById("address").value.trim();
+    const notes = document.getElementById("notes").value.trim();
+
+    const payload = {
+      items: cart.map(i => ({ productId: i.productId, quantity: i.quantity })),
+      customer: { name, email, phone, address, notes }
+    };
+
+    try {
+      statusEl.textContent = "Placing order…";
+
+      const res = await fetch(API_BASE + "/api/orders", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload)
+      });
+
+      const data = await res.json();
+
+      if (!res.ok) {
+        statusEl.textContent = data.error || "Something went wrong.";
+        statusEl.className = "status error";
+        return;
+      }
+
+      // SUCCESS
+      localStorage.removeItem("ff_cart_v1");
+      cart = [];
+
+      statusEl.textContent = "Order placed successfully!";
+      statusEl.className = "status success";
+
+      setTimeout(() => {
+        window.location.href = "/shop.html";
+      }, 1500);
+
+    } catch (err) {
+      statusEl.textContent = "Unable to reach server.";
+      statusEl.className = "status error";
+    }
+  });
+</script>
+
+</body>
+</html>
