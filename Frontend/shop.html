@@ -360,7 +360,10 @@
 </footer>
 
 <script>
-  const API_BASE = "http://localhost:4000";
+  const API_BASE =
+    window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1"
+      ? "http://localhost:4000"
+      : "https://faith-fragrance-backend.onrender.com";
 
   document.getElementById("year").textContent = new Date().getFullYear();
 
