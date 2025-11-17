@@ -694,10 +694,16 @@
 </main>
 
 <script>
+  // Dynamic API selection
+  const API_BASE =
+    window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1"
+      ? "http://localhost:4000"
+      : "https://faith-fragrance-backend.onrender.com";
+
   // Set year dynamically
   document.getElementById("year").textContent = new Date().getFullYear();
 
-  // Email subscribe logic (backend: http://localhost:4000/api/subscribe)
+  // Email subscribe logic
   const subscribeForm = document.getElementById("subscribeForm");
   const subscribeEmail = document.getElementById("subscribeEmail");
   const subscribeButton = document.getElementById("subscribeButton");
@@ -715,7 +721,7 @@
     subscribeStatus.className = "status-message";
 
     try {
-      const res = await fetch("http://localhost:4000/api/subscribe", {
+      const res = await fetch(API_BASE + "/api/subscribe", {
         method: "POST",
         headers: {
           "Content-Type": "application/json"
@@ -731,12 +737,10 @@
       } else {
         subscribeStatus.textContent = data.message || "Subscribed successfully.";
         subscribeStatus.className = "status-message status-success";
-        if (data.message === "Subscribed successfully." || res.status === 201) {
-          subscribeEmail.value = "";
-        }
+        subscribeEmail.value = "";
       }
     } catch (err) {
-      subscribeStatus.textContent = "Unable to reach server. Is the backend running?";
+      subscribeStatus.textContent = "Unable to reach server.";
       subscribeStatus.className = "status-message status-error";
     } finally {
       subscribeButton.disabled = false;
