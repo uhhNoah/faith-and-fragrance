@@ -5,6 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Checkout – Faith & Fragrance Co.</title>
 
+  <script src="https://js.stripe.com/v3/"></script>
+
   <style>
     :root {
       --bg: #050506;
@@ -41,21 +43,12 @@
       font-size: 1.9rem;
     }
 
-    /* FORM CARD */
     .checkout-card {
       background: var(--bg-alt);
       border: 1px solid rgba(255,255,255,0.08);
       border-radius: 20px;
       padding: 2rem;
       box-shadow: 0 40px 90px rgba(0,0,0,0.75);
-    }
-
-    .section-title {
-      text-transform: uppercase;
-      font-size: 0.85rem;
-      letter-spacing: 0.16em;
-      margin-bottom: 0.5rem;
-      color: var(--muted);
     }
 
     .checkout-grid {
@@ -70,7 +63,6 @@
       }
     }
 
-    /* FORM FIELDS */
     label {
       font-size: 0.75rem;
       text-transform: uppercase;
@@ -89,19 +81,6 @@
       font-size: 0.9rem;
     }
 
-    input:focus,
-    textarea:focus {
-      border-color: var(--accent);
-      box-shadow: 0 0 0 1px rgba(211,180,106,0.4);
-      outline: none;
-    }
-
-    textarea {
-      min-height: 70px;
-      resize: vertical;
-    }
-
-    /* ORDER SUMMARY */
     .summary-box {
       background: #0a0a12;
       border: 1px solid rgba(255,255,255,0.1);
@@ -109,60 +88,20 @@
       padding: 1.5rem;
     }
 
-    .summary-item {
-      display: flex;
-      justify-content: space-between;
-      padding: 0.4rem 0;
-      color: var(--muted);
-      font-size: 0.9rem;
-    }
-
-    .summary-total {
-      font-size: 1rem;
-      font-weight: bold;
-      color: var(--accent);
-      margin-top: 0.5rem;
-      display: flex;
-      justify-content: space-between;
-    }
-
-    /* BUTTON */
     .btn-submit {
       width: 100%;
       margin-top: 1.5rem;
       padding: 0.9rem;
-      border: none;
       background: var(--accent);
-      color: #050506;
+      border: none;
       border-radius: 999px;
       cursor: pointer;
       font-size: 0.9rem;
-      letter-spacing: 0.14em;
       text-transform: uppercase;
+      letter-spacing: 0.14em;
+      color: #050506;
     }
 
-    .btn-submit:hover {
-      background: #f1d188;
-    }
-
-    /* STATUS MESSAGE */
-    .status {
-      text-align: center;
-      margin-top: 1.2rem;
-      min-height: 1.2rem;
-      font-size: 0.9rem;
-    }
-    .error { color: var(--danger); }
-    .success { color: var(--success); }
-
-    /* BACK LINK */
-    .back {
-      display: inline-block;
-      margin-bottom: 1rem;
-      font-size: 0.9rem;
-      color: var(--accent);
-      cursor: pointer;
-    }
   </style>
 </head>
 
@@ -182,36 +121,17 @@
       <div>
         <div class="section-title">Your Details</div>
 
-        <form id="checkoutForm">
-          <div style="margin-bottom:1rem;">
-            <label for="name">Name</label>
-            <input id="name" required placeholder="Full name">
-          </div>
+        <div style="margin-bottom:1rem;">
+          <label>Name</label>
+          <input id="checkout-name" required placeholder="Full name">
+        </div>
 
-          <div style="margin-bottom:1rem;">
-            <label for="email">Email</label>
-            <input id="email" type="email" required placeholder="you@example.com">
-          </div>
+        <div style="margin-bottom:1rem;">
+          <label>Email</label>
+          <input id="checkout-email" type="email" required placeholder="you@example.com">
+        </div>
 
-          <div style="margin-bottom:1rem;">
-            <label for="phone">Phone (optional)</label>
-            <input id="phone" placeholder="">
-          </div>
-
-          <div style="margin-bottom:1rem;">
-            <label for="address">Shipping Address (optional)</label>
-            <textarea id="address"></textarea>
-          </div>
-
-          <div style="margin-bottom:1rem;">
-            <label for="notes">Notes (optional)</label>
-            <textarea id="notes" placeholder="Anything we should know?"></textarea>
-          </div>
-
-          <button class="btn-submit" type="submit">Place Order</button>
-
-          <div class="status" id="status"></div>
-        </form>
+        <button class="btn-submit" onclick="startCheckout()">Place Order</button>
       </div>
 
       <!-- RIGHT: ORDER SUMMARY -->
@@ -232,11 +152,8 @@
     : "https://faith-fragrance-backend.onrender.com";
 
   let cart = JSON.parse(localStorage.getItem("ff_cart_v1") || "[]");
-
   const summaryEl = document.getElementById("orderSummary");
-  const statusEl = document.getElementById("status");
 
-  // Render order summary
   function renderSummary() {
     if (!cart.length) {
       summaryEl.innerHTML = `<div style="color:var(--muted);">Your cart is empty.</div>`;
@@ -264,7 +181,7 @@
 
     html += `<div class="summary-item" style="margin-top:0.5rem;">
       <span>Tax & Shipping</span>
-      <span>Calculated later</span>
+      <span>Calculated at checkout</span>
     </div>`;
 
     summaryEl.innerHTML = html;
@@ -272,63 +189,34 @@
 
   renderSummary();
 
-  // Submit checkout form
-  document.getElementById("checkoutForm").addEventListener("submit", async (e) => {
-    e.preventDefault();
+  const stripe = Stripe("YOUR_PUBLISHABLE_KEY_HERE"); // <<< REPLACE
 
-    if (!cart.length) {
-      statusEl.textContent = "Your cart is empty.";
-      statusEl.className = "status error";
-      return;
-    }
-
-    statusEl.textContent = "";
-    statusEl.className = "status";
-
-    const name = document.getElementById("name").value.trim();
-    const email = document.getElementById("email").value.trim();
-    const phone = document.getElementById("phone").value.trim();
-    const address = document.getElementById("address").value.trim();
-    const notes = document.getElementById("notes").value.trim();
+  async function startCheckout() {
+    const name = document.getElementById("checkout-name").value.trim();
+    const email = document.getElementById("checkout-email").value.trim();
 
     const payload = {
-      items: cart.map(i => ({ productId: i.productId, quantity: i.quantity })),
-      customer: { name, email, phone, address, notes }
+      items: cart.map(i => ({
+        productId: i.productId,
+        quantity: i.quantity
+      })),
+      customer: { name, email }
     };
 
-    try {
-      statusEl.textContent = "Placing order…";
+    const res = await fetch(API_BASE + "/api/checkout/session", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(payload)
+    });
 
-      const res = await fetch(API_BASE + "/api/orders", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(payload)
-      });
+    const data = await res.json();
 
-      const data = await res.json();
-
-      if (!res.ok) {
-        statusEl.textContent = data.error || "Something went wrong.";
-        statusEl.className = "status error";
-        return;
-      }
-
-      // SUCCESS
-      localStorage.removeItem("ff_cart_v1");
-      cart = [];
-
-      statusEl.textContent = "Order placed successfully!";
-      statusEl.className = "status success";
-
-      setTimeout(() => {
-        window.location.href = "/shop.html";
-      }, 1500);
-
-    } catch (err) {
-      statusEl.textContent = "Unable to reach server.";
-      statusEl.className = "status error";
+    if (data.sessionId) {
+      stripe.redirectToCheckout({ sessionId: data.sessionId });
+    } else {
+      alert("Checkout failed.");
     }
-  });
+  }
 </script>
 
 </body>
