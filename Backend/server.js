@@ -423,6 +423,32 @@ app.post(
 );
 
 // ============================================================================
+// PUBLIC ORDER LOOKUP (for success page)
+// ============================================================================
+
+app.get("/api/order/:id", (req, res) => {
+    const order = orders.find(o => o.id === req.params.id);
+    if (!order) return res.status(404).json({ error: "Order not found" });
+
+    // Return only SAFE customer-facing fields
+    const safeOrder = {
+        id: order.id,
+        status: order.status,
+        paymentStatus: order.paymentStatus,
+        createdAt: order.createdAt,
+        items: order.items,
+        totals: order.totals || null,
+        shipping: order.shipping || null,
+        customer: {
+            name: order.customer?.name || "",
+            email: order.customer?.email || ""
+        }
+    };
+
+    res.json(safeOrder);
+});
+
+// ============================================================================
 // ADMIN ORDERS
 // ============================================================================
 app.get("/api/admin/orders", authAdmin, (_, res) => res.json(orders));
