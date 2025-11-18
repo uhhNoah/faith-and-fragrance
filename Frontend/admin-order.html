@@ -1,42 +1,207 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<title>Order – Admin</title>
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<style>
-  body { background:#050506; color:white; font-family:sans-serif; padding:30px; }
-  .box { background:#0d0d10; padding:30px; border-radius:20px; max-width:900px; margin:auto; }
-  h1 { margin-bottom:20px; letter-spacing:0.15em; }
-  h2 { margin-top:30px; margin-bottom:10px; color:#d3b46a; }
-  .item-row { display:flex; justify-content:space-between; border-bottom:1px solid #222; padding:10px 0; }
-  .label { color:#d3b46a; font-size:0.8rem; text-transform:uppercase; margin-top:15px; }
-  input, select {
-    width:100%; padding:12px; border-radius:10px;
-    background:#111; border:1px solid #333; color:white; margin-bottom:12px;
-  }
-  button {
-    background:#d3b46a; color:black; padding:12px 20px; border:none;
-    border-radius:10px; font-weight:bold; cursor:pointer; margin-top:20px;
-  }
-</style>
+  <meta charset="UTF-8">
+  <title>Order – Admin</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <style>
+    :root {
+      --bg: #050506;
+      --bg-alt: #0d0d10;
+      --text: #f5f3ee;
+      --muted: #9a958a;
+      --accent: #d3b46a;
+      --border: #26252f;
+    }
+
+    * { box-sizing:border-box; margin:0; padding:0; }
+
+    body {
+      background: radial-gradient(circle at top, #14141b, var(--bg));
+      color: var(--text);
+      font-family: system-ui, sans-serif;
+      padding: 2rem 1rem 3rem;
+      display:flex;
+      justify-content:center;
+    }
+
+    .shell {
+      width: 100%;
+      max-width: 960px;
+      background: var(--bg-alt);
+      border-radius: 20px;
+      border: 1px solid var(--border);
+      padding: 2rem;
+    }
+
+    h1 {
+      font-size: 1.6rem;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      margin-bottom: 1.5rem;
+    }
+
+    h2 {
+      margin-top: 2rem;
+      margin-bottom: 0.6rem;
+      font-size: 1.1rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--accent);
+    }
+
+    .label {
+      font-size: 0.78rem;
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+      color: var(--muted);
+      margin-top: 1rem;
+      margin-bottom: 0.25rem;
+    }
+
+    .value {
+      font-size: 0.95rem;
+    }
+
+    .grid-two {
+      display:grid;
+      grid-template-columns: 1.4fr 1fr;
+      gap: 2rem;
+    }
+
+    .box {
+      background:#050507;
+      border-radius: 14px;
+      padding: 1.2rem 1.4rem;
+      border:1px solid rgba(255,255,255,0.05);
+    }
+
+    .item-row {
+      display:flex;
+      justify-content:space-between;
+      padding:0.4rem 0;
+      border-bottom:1px solid rgba(255,255,255,0.04);
+      font-size:0.9rem;
+    }
+
+    .tot-row {
+      display:flex;
+      justify-content:space-between;
+      padding:0.35rem 0;
+      font-size:0.9rem;
+    }
+
+    .tot-row.total {
+      font-weight:bold;
+      color:var(--accent);
+      border-top:1px solid rgba(255,255,255,0.08);
+      margin-top:0.3rem;
+      padding-top:0.6rem;
+    }
+
+    select, input {
+      width:100%;
+      padding:0.7rem 0.9rem;
+      border-radius: 10px;
+      border:1px solid rgba(255,255,255,0.1);
+      background:#050507;
+      color:var(--text);
+      margin-bottom:0.7rem;
+      font-size:0.9rem;
+    }
+
+    button {
+      border:none;
+      border-radius:999px;
+      padding:0.75rem 1.6rem;
+      font-size:0.85rem;
+      text-transform:uppercase;
+      letter-spacing:0.14em;
+      cursor:pointer;
+    }
+
+    .btn-main {
+      background:var(--accent);
+      color:#050506;
+    }
+
+    .btn-ghost {
+      background:#101018;
+      color:var(--muted);
+      border:1px solid var(--border);
+    }
+
+    .actions {
+      margin-top:1.5rem;
+      display:flex;
+      gap:0.75rem;
+      flex-wrap:wrap;
+    }
+
+    .status-pill {
+      display:inline-block;
+      padding:0.25rem 0.8rem;
+      border-radius:999px;
+      border:1px solid rgba(255,255,255,0.18);
+      font-size:0.75rem;
+      text-transform:uppercase;
+      letter-spacing:0.14em;
+      margin-top:0.3rem;
+    }
+
+    .timeline {
+      margin-top:0.5rem;
+      font-size:0.85rem;
+    }
+
+    .timeline-item {
+      padding:0.3rem 0;
+      border-bottom:1px solid rgba(255,255,255,0.06);
+      color:var(--muted);
+    }
+
+    .timeline-item span {
+      color:var(--accent);
+    }
+
+    @media (max-width: 800px) {
+      .grid-two { grid-template-columns: 1fr; }
+    }
+
+    /* Print: hide buttons, keep core info as packing slip */
+    @media print {
+      body { padding:0; }
+      .shell { border:none; border-radius:0; }
+      .actions { display:none !important; }
+      select, input { border:none; background:none; }
+    }
+  </style>
 </head>
 <body>
 
-<div class="box">
+<div class="shell">
   <h1>ORDER DETAILS</h1>
 
-  <div id="orderInfo"></div>
+  <div id="topInfo" class="grid-two">
+    <div class="box" id="customerBox"></div>
+    <div class="box" id="metaBox"></div>
+  </div>
 
-  <h2>ITEMS</h2>
-  <div id="itemsList"></div>
+  <h2>Items</h2>
+  <div class="box" id="itemsBox"></div>
 
-  <h2>ORDER TOTALS</h2>
-  <div id="totals"></div>
+  <h2>Order Totals</h2>
+  <div class="box" id="totalsBox"></div>
 
-  <h2>UPDATE ORDER</h2>
-  <div id="updateSection"></div>
+  <h2>Update Order</h2>
+  <div class="box" id="updateBox"></div>
 
+  <div class="actions">
+    <button class="btn-main" id="saveBtn">Save Changes</button>
+    <button class="btn-ghost" id="printBtn">Print Packing Slip</button>
+    <!-- refund will be wired later when backend is ready -->
+  </div>
 </div>
 
 <script>
@@ -45,128 +210,182 @@ const API_BASE =
     ? "http://localhost:4000"
     : "https://faith-fragrance-backend.onrender.com";
 
-const TOKEN = localStorage.getItem("ff_admin_token");
+const TOKEN = localStorage.getItem("ff_admin_token") || "";
 
-// Get order ID from URL
 const params = new URLSearchParams(location.search);
 const orderId = params.get("id");
 
-// Load order
-fetch(`${API_BASE}/api/admin/orders`, {
-  headers: { Authorization: "Bearer " + TOKEN }
-})
-  .then(res => res.json())
-  .then(all => {
-    const order = all.find(o => o.id === orderId);
-    renderOrder(order);
-  });
+if (!orderId) {
+  alert("No order ID in URL");
+}
 
-function formatPrice(cents) {
+function fmtPrice(cents) {
   return "$" + (cents / 100).toFixed(2);
 }
 
+function fmtDate(d) {
+  return new Date(d).toLocaleString();
+}
+
+async function loadOrder() {
+  const res = await fetch(API_BASE + "/api/admin/orders", {
+    headers: { Authorization: "Bearer " + TOKEN }
+  });
+  const list = await res.json();
+  const order = list.find(o => o.id === orderId);
+
+  if (!order) {
+    alert("Order not found");
+    return;
+  }
+
+  renderOrder(order);
+}
+
 function renderOrder(order) {
-  // CUSTOMER / SHIPPING INFO
-  const infoBox = document.getElementById("orderInfo");
+  const customerBox = document.getElementById("customerBox");
+  const metaBox = document.getElementById("metaBox");
+  const itemsBox = document.getElementById("itemsBox");
+  const totalsBox = document.getElementById("totalsBox");
+  const updateBox = document.getElementById("updateBox");
 
   const shipping = order.shipping?.address || {};
 
-  infoBox.innerHTML = `
-    <div class="label">Order ID</div>
-    <div>${order.id}</div>
-
+  customerBox.innerHTML = `
     <div class="label">Customer</div>
-    <div>${order.customer?.name || ""}</div>
+    <div class="value">${order.customer?.name || ""}</div>
 
     <div class="label">Email</div>
-    <div>${order.customer?.email || ""}</div>
+    <div class="value">${order.customer?.email || ""}</div>
 
     <div class="label">Shipping Address</div>
-    <div>
-      ${shipping.line1 || ""}<br>
-      ${shipping.line2 || ""}<br>
-      ${shipping.city || ""}, ${shipping.state || ""} ${shipping.postal_code || ""}<br>
-      ${shipping.country || ""}
+    <div class="value">
+      ${(shipping.line1 || "")}<br>
+      ${(shipping.line2 || "") ? shipping.line2 + "<br>" : ""}
+      ${(shipping.city || "")}, ${(shipping.state || "")} ${(shipping.postal_code || "")}<br>
+      ${(shipping.country || "")}
     </div>
   `;
 
+  metaBox.innerHTML = `
+    <div class="label">Order ID</div>
+    <div class="value">${order.id}</div>
+
+    <div class="label">Created</div>
+    <div class="value">${order.createdAt ? fmtDate(order.createdAt) : ""}</div>
+
+    <div class="label">Status</div>
+    <div class="status-pill">${order.status || "pending"}</div>
+  `;
+
   // ITEMS
-  const itemsList = document.getElementById("itemsList");
-  itemsList.innerHTML = order.items
+  itemsBox.innerHTML = (order.items || [])
     .map(i => `
       <div class="item-row">
         <div>${i.name} × ${i.quantity}</div>
-        <div>${formatPrice(i.priceCents * i.quantity)}</div>
+        <div>${fmtPrice(i.priceCents * i.quantity)}</div>
       </div>
     `)
-    .join("");
+    .join("") || "<div>No items.</div>";
 
-  // TOTALS
-  document.getElementById("totals").innerHTML = `
-    <div class="item-row"><div>Subtotal</div><div>${formatPrice(order.totals?.subtotalCents || 0)}</div></div>
-    <div class="item-row"><div>Tax</div><div>${formatPrice(order.totals?.taxCents || 0)}</div></div>
-    <div class="item-row"><div>Shipping</div><div>${formatPrice(order.totals?.shippingCents || 0)}</div></div>
-    <div class="item-row"><strong>Total</strong><strong>${formatPrice(order.totals?.totalCents || 0)}</strong></div>
+  // TOTALS – FALLBACK IF Stripe totals MISSING
+  const hasStripeTotals = !!order.totals && typeof order.totals.totalCents === "number";
+
+  let subtotalCents;
+  if (order.totals?.subtotalCents != null) {
+    subtotalCents = order.totals.subtotalCents;
+  } else {
+    subtotalCents = (order.items || []).reduce(
+      (sum, i) => sum + (i.priceCents || 0) * (i.quantity || 0),
+      0
+    );
+  }
+
+  const taxCents = order.totals?.taxCents || 0;
+  const shippingCents = order.totals?.shippingCents || 0;
+  const totalCents = hasStripeTotals
+    ? order.totals.totalCents
+    : subtotalCents + taxCents + shippingCents;
+
+  totalsBox.innerHTML = `
+    <div class="tot-row"><div>Subtotal</div><div>${fmtPrice(subtotalCents)}</div></div>
+    <div class="tot-row"><div>Tax</div><div>${fmtPrice(taxCents)}</div></div>
+    <div class="tot-row"><div>Shipping</div><div>${fmtPrice(shippingCents)}</div></div>
+    <div class="tot-row total"><div>Total</div><div>${fmtPrice(totalCents)}</div></div>
   `;
 
-  // UPDATE SECTION
-  const update = document.getElementById("updateSection");
+  const isStripeOrder = order.id.startsWith("ord-");
 
-  const isStripe = order.id.startsWith("ord-");
-
-  update.innerHTML = `
+  updateBox.innerHTML = `
     <div class="label">Order Status</div>
     <select id="statusSelect">
       <option value="pending">Pending</option>
+      <option value="new">New</option>
       <option value="processing">Processing</option>
       <option value="shipped">Shipped</option>
       <option value="delivered">Delivered</option>
       <option value="cancelled">Cancelled</option>
     </select>
 
-    ${isStripe ? `
-      <div class="label">Payment Status</div>
-      <div style="padding:12px 0; color:#888;">Paid via Stripe</div>
-    ` : `
-      <div class="label">Payment Status</div>
-      <select id="paySelect">
-        <option value="paid">Paid</option>
-        <option value="unpaid">Unpaid</option>
-      </select>
-    `}
+    <div class="label">Payment Status</div>
+    ${
+      isStripeOrder
+        ? `<div class="value">Paid via Stripe</div>`
+        : `<select id="paymentSelect">
+             <option value="paid">Paid</option>
+             <option value="unpaid">Unpaid</option>
+             <option value="refunded">Refunded</option>
+           </select>`
+    }
 
     <div class="label">Tracking Number</div>
-    <input id="trackingInput" placeholder="USPS / UPS / FedEx...">
-
-    <button onclick="saveOrder('${order.id}')">Save Changes</button>
+    <input id="trackingInput" placeholder="USPS / UPS / FedEx…" value="${order.trackingNumber || ""}">
   `;
 
   document.getElementById("statusSelect").value = order.status || "pending";
-  if (!isStripe)
-    document.getElementById("paySelect").value = order.paymentStatus || "unpaid";
-}
-
-function saveOrder(id) {
-  const body = {
-    status: document.getElementById("statusSelect").value,
-    trackingNumber: document.getElementById("trackingInput").value
-  };
-
-  // Only send paymentStatus for POS orders
-  if (id.startsWith("pos-")) {
-    body.paymentStatus = document.getElementById("paySelect").value;
+  if (!isStripeOrder && order.paymentStatus) {
+    const paySel = document.getElementById("paymentSelect");
+    if (paySel) paySel.value = order.paymentStatus;
   }
 
-  fetch(`${API_BASE}/api/admin/orders/${id}`, {
+  // Save handler
+  document.getElementById("saveBtn").onclick = () => saveOrder(order.id, isStripeOrder);
+}
+
+// SAVE
+async function saveOrder(id, isStripeOrder) {
+  const status = document.getElementById("statusSelect").value;
+  const trackingNumber = document.getElementById("trackingInput").value.trim();
+
+  const body = { status, trackingNumber };
+  if (!isStripeOrder) {
+    const pay = document.getElementById("paymentSelect")?.value;
+    if (pay) body.paymentStatus = pay;
+  }
+
+  const res = await fetch(API_BASE + "/api/admin/orders/" + id, {
     method: "PUT",
     headers: {
       "Content-Type": "application/json",
       Authorization: "Bearer " + TOKEN
     },
     body: JSON.stringify(body)
-  })
-    .then(() => alert("Order updated!"));
+  });
+
+  if (!res.ok) {
+    alert("Failed to save order.");
+    return;
+  }
+  alert("Order updated.");
+  loadOrder();
 }
+
+// PRINT PACKING SLIP
+document.getElementById("printBtn").addEventListener("click", () => {
+  window.print();
+});
+
+loadOrder();
 </script>
 
 </body>
