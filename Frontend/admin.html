@@ -1,546 +1,2292 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
-<title>Admin Dashboard — Faith & Fragrance Co.</title>
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta charset="UTF-8">
+  <title>Admin – Faith & Fragrance Co.</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex, nofollow" />
+  <style>
+    /* Styles will be added in next chunk */
+  </style>
+</head>
+<body>
+<header>
+  <div class="nav">
+    <div class="nav-left">
+      <img src="Assets/logo.png" class="site-logo">
+      <div class="logo-text">FAITH & FRAGRANCE CO.</div>
+    </div>
+  </div>
+</header>
 
-<style>
+<main>
+  <h1>Admin Dashboard</h1>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Admin – Faith & Fragrance Co.</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex, nofollow" />
+  <style>
+    /* Styles will be added in next chunk */
+  </style>
+</head>
+<body>
+<header>
+  <div class="nav">
+    <div class="nav-left">
+      <img src="Assets/logo.png" class="site-logo">
+      <div class="logo-text">FAITH & FRAGRANCE CO.</div>
+    </div>
+  </div>
+</header>
+
+<main>
+  <h1>Admin Dashboard</h1>
+
+  <style>
     :root {
-        --bg: #050506;
-        --sidebar: #0c0c0f;
-        --panel: #111118;
-        --text: #f4f4f7;
-        --muted: #a5a5b5;
-        --accent: #d3b46a;
-        --danger: #c05050;
-        --green: #5fcf7a;
-        --border: #1c1c23;
+      --bg: #050506;
+      --bg-alt: #0d0d10;
+      --bg-soft: #121218;
+      --text: #f5f3ee;
+      --muted: #9a958a;
+      --accent: #d3b46a;
+      --accent-soft: rgba(211,180,106,0.16);
+      --border: #26252f;
+      --radius: 16px;
+      --radius-lg: 26px;
+      --radius-pill: 999px;
+      --shadow-soft: 0 26px 60px rgba(0,0,0,0.7);
     }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
 
     body {
-        margin: 0;
-        font-family: system-ui, sans-serif;
-        background: var(--bg);
-        color: var(--text);
-        display: flex;
-        height: 100vh;
-        overflow: hidden;
+      font-family: system-ui, sans-serif;
+      background: radial-gradient(circle at top, #14141b, var(--bg));
+      color: var(--text);
     }
 
-    /* Sidebar */
-    #sidebar {
-        width: 240px;
-        background: var(--sidebar);
-        padding: 20px 0;
-        display: flex;
-        flex-direction: column;
-        border-right: 1px solid var(--border);
+    header {
+      position: sticky;
+      top: 0;
+      background: rgba(5,5,8,0.95);
+      padding: 1rem 2rem;
+      border-bottom: 1px solid rgba(255,255,255,0.06);
     }
 
-    .side-item {
-        padding: 15px 25px;
-        cursor: pointer;
-        font-size: 15px;
-        border-left: 3px solid transparent;
-        color: var(--muted);
-        transition: 0.15s;
-    }
-    .side-item:hover {
-        background: rgba(255,255,255,0.05);
-        color: var(--text);
-    }
-    .side-item.active {
-        color: var(--accent);
-        border-color: var(--accent);
+    .nav { display: flex; align-items: center; justify-content: space-between; }
+    .nav-left { display: flex; align-items: center; gap: 0.7rem; }
+
+    .site-logo { height: 40px; }
+
+    .logo-text {
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 0.2em;
     }
 
-    /* Main Panel */
-    #main {
-        flex: 1;
-        padding: 25px;
-        overflow-y: auto;
+    main { padding: 2rem; max-width: 1400px; margin: auto; }
+
+    h1 {
+      font-size: 1.8rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      margin-bottom: 1rem;
     }
 
-    h2 {
-        margin-top: 0;
-        font-weight: 600;
-        letter-spacing: 0.5px;
+    /* Card containers */
+    .card-section {
+      background: var(--bg-soft);
+      padding: 1.6rem;
+      border-radius: var(--radius-lg);
+      border: 1px solid var(--border);
+      margin-bottom: 2rem;
+      box-shadow: var(--shadow-soft);
     }
 
-    .panel {
-        background: var(--panel);
-        padding: 20px;
-        border-radius: 8px;
-        border: 1px solid var(--border);
-        margin-bottom: 25px;
+    .card-title {
+      font-size: 1rem;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      margin-bottom: 1rem;
     }
 
-    input, select, textarea {
-        width: 100%;
-        padding: 10px;
-        margin-top: 8px;
-        margin-bottom: 12px;
-        border-radius: 6px;
-        border: 1px solid var(--border);
-        background: #0f0f16;
-        color: var(--text);
+    label {
+      display: block;
+      margin-bottom: 0.4rem;
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+      color: var(--muted);
     }
 
-    button {
-        background: var(--accent);
-        border: none;
-        padding: 10px 18px;
-        border-radius: 6px;
-        cursor: pointer;
-        font-weight: 600;
-        color: #000;
-        margin-top: 10px;
+    input, textarea, select {
+      width: 100%;
+      padding: 0.8rem;
+      border-radius: var(--radius-pill);
+      background: rgba(10,10,14,0.9);
+      border: 1px solid rgba(255,255,255,0.1);
+      color: var(--text);
+      margin-bottom: 1rem;
     }
-    button.red { background: var(--danger); color: #fff; }
-    button.green { background: var(--green); color: #000; }
 
+    textarea {
+      border-radius: 12px;
+      min-height: 90px;
+      resize: vertical;
+    }
+
+    .btn {
+      padding: 0.7rem 1.4rem;
+      border-radius: var(--radius-pill);
+      cursor: pointer;
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+      border: none;
+    }
+
+    .btn-primary { background: var(--accent); color: #060606; }
+    .btn-ghost {
+      background: #101018;
+      color: var(--muted);
+      border: 1px solid var(--border);
+    }
+
+    .admin-tabs {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.7rem;
+      margin-bottom: 1.2rem;
+    }
+
+    .admin-tab {
+      padding: 0.5rem 1.4rem;
+      border-radius: var(--radius-pill);
+      background: #0b0b11;
+      border: 1px solid rgba(255,255,255,0.12);
+      color: var(--muted);
+      cursor: pointer;
+      text-transform: uppercase;
+      font-size: 0.78rem;
+      letter-spacing: 0.14em;
+    }
+
+    .admin-tab.active {
+      background: var(--accent-soft);
+      color: var(--accent);
+      border-color: var(--accent);
+    }
+
+    .admin-tab-panel { display: none; }
+    .admin-tab-panel.active { display: block; animation: fadeIn 0.2s ease-out; }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(4px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Table styling */
     table {
-        width: 100%;
-        border-collapse: collapse;
-        margin-top: 12px;
+      width: 100%;
+      border-collapse: collapse;
+      background: rgba(255,255,255,0.02);
+      border-radius: 16px;
+      overflow: hidden;
     }
 
     th, td {
-        padding: 10px;
-        border-bottom: 1px solid var(--border);
+      padding: 0.8rem;
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+      font-size: 0.85rem;
     }
 
     th {
-        background: rgba(255,255,255,0.05);
-        text-align: left;
-        font-size: 14px;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--muted);
     }
 
-    .hidden { display: none; }
-</style>
+    tr:nth-child(even) { background: rgba(255,255,255,0.03); }
+    tr:hover { background: rgba(255,255,255,0.08); }
+
+    .status { margin: 0.6rem 0; min-height: 1rem; }
+    .status-error { color: #ff8c8c; }
+    .status-success { color: #8cffb1; }
+  </style>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Admin – Faith & Fragrance Co.</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex, nofollow" />
+  <style>
+    /* Styles will be added in next chunk */
+  </style>
 </head>
 <body>
+<header>
+  <div class="nav">
+    <div class="nav-left">
+      <img src="Assets/logo.png" class="site-logo">
+      <div class="logo-text">FAITH & FRAGRANCE CO.</div>
+    </div>
+  </div>
+</header>
 
-<!-- SIDEBAR -->
-<div id="sidebar">
-    <div class="side-item active" data-tab="products">Products</div>
-    <div class="side-item" data-tab="orders">Orders</div>
-    <div class="side-item" data-tab="discounts">Discounts</div>
-    <div class="side-item" data-tab="pos">POS Sales</div>
-    <div class="side-item" data-tab="subscribers">Subscribers</div>
-    <div class="side-item" data-tab="abandoned">Abandoned Carts</div>
+<main>
+  <h1>Admin Dashboard</h1>
+
+  <style>
+    :root {
+      --bg: #050506;
+      --bg-alt: #0d0d10;
+      --bg-soft: #121218;
+      --text: #f5f3ee;
+      --muted: #9a958a;
+      --accent: #d3b46a;
+      --accent-soft: rgba(211,180,106,0.16);
+      --border: #26252f;
+      --radius: 16px;
+      --radius-lg: 26px;
+      --radius-pill: 999px;
+      --shadow-soft: 0 26px 60px rgba(0,0,0,0.7);
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: system-ui, sans-serif;
+      background: radial-gradient(circle at top, #14141b, var(--bg));
+      color: var(--text);
+    }
+
+    header {
+      position: sticky;
+      top: 0;
+      background: rgba(5,5,8,0.95);
+      padding: 1rem 2rem;
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+    }
+
+    .nav { display: flex; align-items: center; justify-content: space-between; }
+    .nav-left { display: flex; align-items: center; gap: 0.7rem; }
+
+    .site-logo { height: 40px; }
+
+    .logo-text {
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 0.2em;
+    }
+
+    main { padding: 2rem; max-width: 1400px; margin: auto; }
+
+    h1 {
+      font-size: 1.8rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      margin-bottom: 1rem;
+    }
+
+    /* Card containers */
+    .card-section {
+      background: var(--bg-soft);
+      padding: 1.6rem;
+      border-radius: var(--radius-lg);
+      border: 1px solid var(--border);
+      margin-bottom: 2rem;
+      box-shadow: var(--shadow-soft);
+    }
+
+    .card-title {
+      font-size: 1rem;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      margin-bottom: 1rem;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 0.4rem;
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+      color: var(--muted);
+    }
+
+    input, textarea, select {
+      width: 100%;
+      padding: 0.8rem;
+      border-radius: var(--radius-pill);
+      background: rgba(10,10,14,0.9);
+      border: 1px solid rgba(255,255,255,0.1);
+      color: var(--text);
+      margin-bottom: 1rem;
+    }
+
+    textarea {
+      border-radius: 12px;
+      min-height: 90px;
+      resize: vertical;
+    }
+
+    .btn {
+      padding: 0.7rem 1.4rem;
+      border-radius: var(--radius-pill);
+      cursor: pointer;
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+      border: none;
+    }
+
+    .btn-primary { background: var(--accent); color: #060606; }
+    .btn-ghost {
+      background: #101018;
+      color: var(--muted);
+      border: 1px solid var(--border);
+    }
+
+    .admin-tabs {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.7rem;
+      margin-bottom: 1.2rem;
+    }
+
+    .admin-tab {
+      padding: 0.5rem 1.4rem;
+      border-radius: var(--radius-pill);
+      background: #0b0b11;
+      border: 1px solid rgba(255,255,255,0.12);
+      color: var(--muted);
+      cursor: pointer;
+      text-transform: uppercase;
+      font-size: 0.78rem;
+      letter-spacing: 0.14em;
+    }
+
+    .admin-tab.active {
+      background: var(--accent-soft);
+      color: var(--accent);
+      border-color: var(--accent);
+    }
+
+    .admin-tab-panel { display: none; }
+    .admin-tab-panel.active { display: block; animation: fadeIn 0.2s ease-out; }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(4px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Table styling */
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      background: rgba(255,255,255,0.02);
+      border-radius: 16px;
+      overflow: hidden;
+    }
+
+    th, td {
+      padding: 0.8rem;
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+      font-size: 0.85rem;
+    }
+
+    th {
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--muted);
+    }
+
+    tr:nth-child(even) { background: rgba(255,255,255,0.03); }
+    tr:hover { background: rgba(255,255,255,0.08); }
+
+    .status { margin: 0.6rem 0; min-height: 1rem; }
+    .status-error { color: #ff8c8c; }
+    .status-success { color: #8cffb1; }
+  </style>
+
+<div class="card-section" id="loginSection">
+  <div class="card-title">Sign In</div>
+  <label>Email</label>
+  <input type="email" id="adminEmail">
+  <label>Password</label>
+  <input type="password" id="adminPassword">
+  <button class="btn btn-primary" id="adminLoginButton">Sign In</button>
+  <div id="adminStatus" class="status"></div>
 </div>
 
-<!-- MAIN PANEL -->
-<div id="main">
+<div class="card-section" id="adminPanel" style="display:none;">
+  <div class="admin-tabs">
+    <button class="admin-tab active" data-tab="productsTab">Products</button>
+    <button class="admin-tab" data-tab="ordersTab">Orders</button>
+    <button class="admin-tab" data-tab="subscribersTab">Subscribers</button>
+    <button class="admin-tab" data-tab="discountsTab">Discounts</button>
+    <button class="admin-tab" data-tab="posTab">POS</button>
+    <button class="admin-tab" data-tab="abandonedTab">Abandoned</button>
+    <button class="admin-tab" data-tab="blastTab">Email Blast</button>
+  </div>
 
-    <!-- PRODUCTS TAB -->
-    <div id="tab-products" class="tab panel">
-        <h2>Products</h2>
-
-        <h3>Add Product</h3>
-        <input id="p-name" placeholder="Name" />
-        <input id="p-price" placeholder="Price (cents)" type="number" />
-        <input id="p-collection" placeholder="Collection (e.g., candles)" />
-        <textarea id="p-desc" placeholder="Description"></textarea>
-        <input id="p-stock" placeholder="Stock (leave empty if N/A)" type="number" />
-        <label><input id="p-track" type="checkbox" /> Track Inventory</label>
-        <button onclick="addProduct()">Add Product</button>
-
-        <h3 style="margin-top:40px;">All Products</h3>
-        <table id="products-table"></table>
+  <!-- PRODUCTS TAB -->
+  <div id="productsTab" class="admin-tab-panel active">
+    <div class="card-section">
+      <div class="card-title">Add Product</div>
+      <label>Name</label>
+      <input id="productName">
+      <label>Collection</label>
+      <input id="productCollection">
+      <label>Price (USD)</label>
+      <input id="productPrice" type="number">
+      <label>Description</label>
+      <textarea id="productDescription"></textarea>
+      <label>Image</label>
+      <input id="productImage" type="file" accept="image/*">
+      <button class="btn btn-primary btn-small" id="addProductButton">Add Product</button>
+      <div id="adminProductsStatus" class="status"></div>
     </div>
 
-    <!-- ORDERS TAB -->
-    <div id="tab-orders" class="tab panel hidden">
-        <h2>Orders</h2>
-        <table id="orders-table"></table>
-        <div id="order-detail"></div>
+    <div class="card-section">
+      <div class="card-title">Products</div>
+      <button class="btn btn-ghost btn-small" id="refreshProductsButton">Refresh</button>
+      <div id="adminProductsList"></div>
+    </div>
+  </div>
+
+  <!-- ORDERS TAB -->
+  <div id="ordersTab" class="admin-tab-panel">
+    <div class="card-section">
+      <div class="card-title">Orders</div>
+      <input id="ordersSearchInput" placeholder="Search orders...">
+      <button class="btn btn-ghost btn-small" id="refreshOrdersButton">Refresh</button>
+      <div id="adminOrdersStatus" class="status"></div>
+      <div id="adminOrdersList"></div>
+      <button class="btn btn-ghost btn-small" id="ordersPrevPage">Previous</button>
+      <button class="btn btn-ghost btn-small" id="ordersNextPage">Next</button>
+    </div>
+  </div>
+
+  <!-- SUBSCRIBERS TAB -->
+  <div id="subscribersTab" class="admin-tab-panel">
+    <div class="card-section">
+      <div class="card-title">Email Subscribers</div>
+      <button class="btn btn-ghost btn-small" id="refreshSubscribersButton">Refresh</button>
+      <div id="adminSubscribersStatus" class="status"></div>
+      <div id="adminSubscribersList"></div>
+    </div>
+  </div>
+
+  <!-- DISCOUNTS TAB -->
+  <div id="discountsTab" class="admin-tab-panel">
+    <div class="card-section">
+      <div class="card-title">Create Discount</div>
+      <label>Code</label>
+      <input id="d-code">
+      <label>Type</label>
+      <select id="d-type">
+        <option value="percent">Percent</option>
+        <option value="fixed">Fixed (cents)</option>
+      </select>
+      <label>Amount</label>
+      <input id="d-amount" type="number">
+      <button class="btn btn-primary btn-small" id="createDiscountBtn">Create Discount</button>
+      <div id="discountsStatus" class="status"></div>
     </div>
 
-    <!-- DISCOUNTS TAB -->
-    <div id="tab-discounts" class="tab panel hidden">
-        <h2>Discount Codes</h2>
+    <div class="card-section">
+      <div class="card-title">Discount Codes</div>
+      <div id="discountsList"></div>
+    </div>
+  </div>
 
-        <h3>Create Discount</h3>
-        <input id="d-code" placeholder="CODE" />
-        <select id="d-type">
-            <option value="percent">Percent (%)</option>
-            <option value="fixed">Fixed Amount (cents)</option>
-        </select>
-        <input id="d-amount" type="number" placeholder="Amount" />
-        <button onclick="createDiscount()">Create Discount</button>
-
-        <h3 style="margin-top:40px;">Existing Discounts</h3>
-        <table id="discounts-table"></table>
+  <!-- POS TAB -->
+  <div id="posTab" class="admin-tab-panel">
+    <div class="card-section">
+      <div class="card-title">Create POS Sale</div>
+      <div id="posProductList"></div>
+      <button class="btn btn-primary btn-small" id="submitPosSale">Submit POS Sale</button>
+      <div id="posStatus" class="status"></div>
     </div>
 
-    <!-- POS TAB -->
-    <div id="tab-pos" class="tab panel hidden">
-        <h2>POS Sale</h2>
-
-        <div id="pos-products"></div>
-
-        <button onclick="submitPOS()">Submit POS Sale</button>
-
-        <h3 style="margin-top:40px;">POS Sales</h3>
-        <table id="pos-sales-table"></table>
+    <div class="card-section">
+      <div class="card-title">POS Sales History</div>
+      <div id="posSalesTable"></div>
     </div>
+  </div>
 
-    <!-- SUBSCRIBERS TAB -->
-    <div id="tab-subscribers" class="tab panel hidden">
-        <h2>Subscribers</h2>
-        <table id="subscribers-table"></table>
-
-        <h3 style="margin-top:30px;">Send Email Blast</h3>
-        <input id="blast-subject" placeholder="Subject" />
-        <textarea id="blast-body" placeholder="Email body..."></textarea>
-        <button onclick="sendBlast()">Send</button>
+  <!-- ABANDONED CARTS -->
+  <div id="abandonedTab" class="admin-tab-panel">
+    <div class="card-section">
+      <div class="card-title">Abandoned Carts</div>
+      <button class="btn btn-ghost btn-small" id="refreshAbandonedButton">Refresh</button>
+      <div id="abandonedStatus" class="status"></div>
+      <div id="abandonedList"></div>
     </div>
+  </div>
 
-    <!-- ABANDONED CARTS TAB -->
-    <div id="tab-abandoned" class="tab panel hidden">
-        <h2>Abandoned Carts</h2>
-        <table id="abandoned-table"></table>
+  <!-- EMAIL BLAST -->
+  <div id="blastTab" class="admin-tab-panel">
+    <div class="card-section">
+      <div class="card-title">Send Email Blast</div>
+      <label>Subject</label>
+      <input id="blastSubject">
+      <label>Message</label>
+      <textarea id="blastBody"></textarea>
+      <button class="btn btn-primary btn-small" id="sendBlastBtn">Send Blast</button>
+      <div id="blastStatus" class="status"></div>
     </div>
+  </div>
 
+  <button class="btn btn-ghost btn-small" id="logoutButton">Log Out</button>
 </div>
+
+</main>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Admin – Faith & Fragrance Co.</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex, nofollow" />
+  <style>
+    /* Styles will be added in next chunk */
+  </style>
+</head>
+<body>
+<header>
+  <div class="nav">
+    <div class="nav-left">
+      <img src="Assets/logo.png" class="site-logo">
+      <div class="logo-text">FAITH & FRAGRANCE CO.</div>
+    </div>
+  </div>
+</header>
+
+<main>
+  <h1>Admin Dashboard</h1>
+
+  <style>
+    :root {
+      --bg: #050506;
+      --bg-alt: #0d0d10;
+      --bg-soft: #121218;
+      --text: #f5f3ee;
+      --muted: #9a958a;
+      --accent: #d3b46a;
+      --accent-soft: rgba(211,180,106,0.16);
+      --border: #26252f;
+      --radius: 16px;
+      --radius-lg: 26px;
+      --radius-pill: 999px;
+      --shadow-soft: 0 26px 60px rgba(0,0,0,0.7);
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: system-ui, sans-serif;
+      background: radial-gradient(circle at top, #14141b, var(--bg));
+      color: var(--text);
+    }
+
+    header {
+      position: sticky;
+      top: 0;
+      background: rgba(5,5,8,0.95);
+      padding: 1rem 2rem;
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+    }
+
+    .nav { display: flex; align-items: center; justify-content: space-between; }
+    .nav-left { display: flex; align-items: center; gap: 0.7rem; }
+
+    .site-logo { height: 40px; }
+
+    .logo-text {
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 0.2em;
+    }
+
+    main { padding: 2rem; max-width: 1400px; margin: auto; }
+
+    h1 {
+      font-size: 1.8rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      margin-bottom: 1rem;
+    }
+
+    /* Card containers */
+    .card-section {
+      background: var(--bg-soft);
+      padding: 1.6rem;
+      border-radius: var(--radius-lg);
+      border: 1px solid var(--border);
+      margin-bottom: 2rem;
+      box-shadow: var(--shadow-soft);
+    }
+
+    .card-title {
+      font-size: 1rem;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      margin-bottom: 1rem;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 0.4rem;
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+      color: var(--muted);
+    }
+
+    input, textarea, select {
+      width: 100%;
+      padding: 0.8rem;
+      border-radius: var(--radius-pill);
+      background: rgba(10,10,14,0.9);
+      border: 1px solid rgba(255,255,255,0.1);
+      color: var(--text);
+      margin-bottom: 1rem;
+    }
+
+    textarea {
+      border-radius: 12px;
+      min-height: 90px;
+      resize: vertical;
+    }
+
+    .btn {
+      padding: 0.7rem 1.4rem;
+      border-radius: var(--radius-pill);
+      cursor: pointer;
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+      border: none;
+    }
+
+    .btn-primary { background: var(--accent); color: #060606; }
+    .btn-ghost {
+      background: #101018;
+      color: var(--muted);
+      border: 1px solid var(--border);
+    }
+
+    .admin-tabs {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.7rem;
+      margin-bottom: 1.2rem;
+    }
+
+    .admin-tab {
+      padding: 0.5rem 1.4rem;
+      border-radius: var(--radius-pill);
+      background: #0b0b11;
+      border: 1px solid rgba(255,255,255,0.12);
+      color: var(--muted);
+      cursor: pointer;
+      text-transform: uppercase;
+      font-size: 0.78rem;
+      letter-spacing: 0.14em;
+    }
+
+    .admin-tab.active {
+      background: var(--accent-soft);
+      color: var(--accent);
+      border-color: var(--accent);
+    }
+
+    .admin-tab-panel { display: none; }
+    .admin-tab-panel.active { display: block; animation: fadeIn 0.2s ease-out; }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(4px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Table styling */
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      background: rgba(255,255,255,0.02);
+      border-radius: 16px;
+      overflow: hidden;
+    }
+
+    th, td {
+      padding: 0.8rem;
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+      font-size: 0.85rem;
+    }
+
+    th {
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--muted);
+    }
+
+    tr:nth-child(even) { background: rgba(255,255,255,0.03); }
+    tr:hover { background: rgba(255,255,255,0.08); }
+
+    .status { margin: 0.6rem 0; min-height: 1rem; }
+    .status-error { color: #ff8c8c; }
+    .status-success { color: #8cffb1; }
+  </style>
+
+<div class="card-section" id="loginSection">
+  <div class="card-title">Sign In</div>
+  <label>Email</label>
+  <input type="email" id="adminEmail">
+  <label>Password</label>
+  <input type="password" id="adminPassword">
+  <button class="btn btn-primary" id="adminLoginButton">Sign In</button>
+  <div id="adminStatus" class="status"></div>
+</div>
+
+<div class="card-section" id="adminPanel" style="display:none;">
+  <div class="admin-tabs">
+    <button class="admin-tab active" data-tab="productsTab">Products</button>
+    <button class="admin-tab" data-tab="ordersTab">Orders</button>
+    <button class="admin-tab" data-tab="subscribersTab">Subscribers</button>
+    <button class="admin-tab" data-tab="discountsTab">Discounts</button>
+    <button class="admin-tab" data-tab="posTab">POS</button>
+    <button class="admin-tab" data-tab="abandonedTab">Abandoned</button>
+    <button class="admin-tab" data-tab="blastTab">Email Blast</button>
+  </div>
+
+  <!-- PRODUCTS TAB -->
+  <div id="productsTab" class="admin-tab-panel active">
+    <div class="card-section">
+      <div class="card-title">Add Product</div>
+      <label>Name</label>
+      <input id="productName">
+      <label>Collection</label>
+      <input id="productCollection">
+      <label>Price (USD)</label>
+      <input id="productPrice" type="number">
+      <label>Description</label>
+      <textarea id="productDescription"></textarea>
+      <label>Image</label>
+      <input id="productImage" type="file" accept="image/*">
+      <button class="btn btn-primary btn-small" id="addProductButton">Add Product</button>
+      <div id="adminProductsStatus" class="status"></div>
+    </div>
+
+    <div class="card-section">
+      <div class="card-title">Products</div>
+      <button class="btn btn-ghost btn-small" id="refreshProductsButton">Refresh</button>
+      <div id="adminProductsList"></div>
+    </div>
+  </div>
+
+  <!-- ORDERS TAB -->
+  <div id="ordersTab" class="admin-tab-panel">
+    <div class="card-section">
+      <div class="card-title">Orders</div>
+      <input id="ordersSearchInput" placeholder="Search orders...">
+      <button class="btn btn-ghost btn-small" id="refreshOrdersButton">Refresh</button>
+      <div id="adminOrdersStatus" class="status"></div>
+      <div id="adminOrdersList"></div>
+      <button class="btn btn-ghost btn-small" id="ordersPrevPage">Previous</button>
+      <button class="btn btn-ghost btn-small" id="ordersNextPage">Next</button>
+    </div>
+  </div>
+
+  <!-- SUBSCRIBERS TAB -->
+  <div id="subscribersTab" class="admin-tab-panel">
+    <div class="card-section">
+      <div class="card-title">Email Subscribers</div>
+      <button class="btn btn-ghost btn-small" id="refreshSubscribersButton">Refresh</button>
+      <div id="adminSubscribersStatus" class="status"></div>
+      <div id="adminSubscribersList"></div>
+    </div>
+  </div>
+
+  <!-- DISCOUNTS TAB -->
+  <div id="discountsTab" class="admin-tab-panel">
+    <div class="card-section">
+      <div class="card-title">Create Discount</div>
+      <label>Code</label>
+      <input id="d-code">
+      <label>Type</label>
+      <select id="d-type">
+        <option value="percent">Percent</option>
+        <option value="fixed">Fixed (cents)</option>
+      </select>
+      <label>Amount</label>
+      <input id="d-amount" type="number">
+      <button class="btn btn-primary btn-small" id="createDiscountBtn">Create Discount</button>
+      <div id="discountsStatus" class="status"></div>
+    </div>
+
+    <div class="card-section">
+      <div class="card-title">Discount Codes</div>
+      <div id="discountsList"></div>
+    </div>
+  </div>
+
+  <!-- POS TAB -->
+  <div id="posTab" class="admin-tab-panel">
+    <div class="card-section">
+      <div class="card-title">Create POS Sale</div>
+      <div id="posProductList"></div>
+      <button class="btn btn-primary btn-small" id="submitPosSale">Submit POS Sale</button>
+      <div id="posStatus" class="status"></div>
+    </div>
+
+    <div class="card-section">
+      <div class="card-title">POS Sales History</div>
+      <div id="posSalesTable"></div>
+    </div>
+  </div>
+
+  <!-- ABANDONED CARTS -->
+  <div id="abandonedTab" class="admin-tab-panel">
+    <div class="card-section">
+      <div class="card-title">Abandoned Carts</div>
+      <button class="btn btn-ghost btn-small" id="refreshAbandonedButton">Refresh</button>
+      <div id="abandonedStatus" class="status"></div>
+      <div id="abandonedList"></div>
+    </div>
+  </div>
+
+  <!-- EMAIL BLAST -->
+  <div id="blastTab" class="admin-tab-panel">
+    <div class="card-section">
+      <div class="card-title">Send Email Blast</div>
+      <label>Subject</label>
+      <input id="blastSubject">
+      <label>Message</label>
+      <textarea id="blastBody"></textarea>
+      <button class="btn btn-primary btn-small" id="sendBlastBtn">Send Blast</button>
+      <div id="blastStatus" class="status"></div>
+    </div>
+  </div>
+
+  <button class="btn btn-ghost btn-small" id="logoutButton">Log Out</button>
+</div>
+
+</main>
 
 <script>
-const API = ""; // same origin
+/* ====== UTILITIES ====== */
+const API_BASE =
+  window.location.hostname === "localhost" ||
+  window.location.hostname === "127.0.0.1"
+    ? "http://localhost:4000"
+    : "https://faith-fragrance-backend.onrender.com";
 
-let adminToken = localStorage.getItem("adminToken");
-if (!adminToken) {
-    const pass = prompt("Admin Password:");
-    fetch(API + "/api/admin/login", {
-        method: "POST",
-        headers:{"Content-Type":"application/json"},
-        body: JSON.stringify({ email: "<?php echo '';?>", password: pass })
-    })
-    .then(r=>r.json())
-    .then(d=>{
-        if(d.token){
-            localStorage.setItem("adminToken", d.token);
-            adminToken = d.token;
-            loadAll();
-        } else {
-            alert("Wrong password.");
-        }
+const TOKEN_KEY = "ff_admin_token";
+
+function getToken() { return localStorage.getItem(TOKEN_KEY) || ""; }
+function saveToken(t) { localStorage.setItem(TOKEN_KEY, t); }
+function clearToken() { localStorage.removeItem(TOKEN_KEY); }
+
+function formatPrice(cents) {
+  if (typeof cents !== "number") return "";
+  return "$" + (cents / 100).toFixed(2);
+}
+
+function escapeHtml(str) {
+  return (str || "").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+}
+
+function formatDate(v) {
+  if (!v) return "";
+  const d = new Date(v);
+  return isNaN(d.getTime()) ? v : d.toLocaleString();
+}
+
+/* ====== ELEMENTS ====== */
+const loginSection = document.getElementById("loginSection");
+const adminPanel = document.getElementById("adminPanel");
+const adminStatus = document.getElementById("adminStatus");
+const adminEmail = document.getElementById("adminEmail");
+const adminPassword = document.getElementById("adminPassword");
+const adminLoginButton = document.getElementById("adminLoginButton");
+const logoutButton = document.getElementById("logoutButton");
+
+const tabButtons = document.querySelectorAll(".admin-tab");
+const tabPanels = document.querySelectorAll(".admin-tab-panel");
+
+/* ====== LOGIN ====== */
+adminLoginButton.addEventListener("click", async () => {
+  const email = adminEmail.value.trim();
+  const password = adminPassword.value;
+
+  adminStatus.textContent = "Signing in...";
+  adminStatus.className = "status";
+  adminLoginButton.disabled = true;
+
+  try {
+    const res = await fetch(API_BASE + "/api/admin/login", {
+      method: "POST",
+      headers: {"Content-Type": "application/json"},
+      body: JSON.stringify({email, password})
     });
-} else {
-    loadAll();
-}
 
-function authHeaders(){
-    return { "Authorization": "Bearer " + adminToken };
-}
+    const data = await res.json();
+    if (!res.ok) {
+      adminStatus.textContent = data.error || "Login failed.";
+      adminStatus.className = "status status-error";
+    } else {
+      saveToken(data.token);
+      adminStatus.textContent = "Signed in.";
+      adminStatus.className = "status status-success";
+      loginSection.style.display = "none";
+      adminPanel.style.display = "block";
+    }
+  } catch {
+    adminStatus.textContent = "Server error.";
+    adminStatus.className = "status status-error";
+  }
 
-/* TAB SWITCHING */
-document.querySelectorAll(".side-item").forEach(item=>{
-    item.onclick = ()=>{
-        document.querySelectorAll(".side-item").forEach(i=>i.classList.remove("active"));
-        item.classList.add("active");
-        const tab = item.dataset.tab;
-        document.querySelectorAll(".tab").forEach(t=>t.classList.add("hidden"));
-        document.getElementById("tab-"+tab).classList.remove("hidden");
-    };
+  adminLoginButton.disabled = false;
 });
 
-/* LOAD EVERYTHING */
-function loadAll(){
-    loadProducts();
-    loadOrders();
-    loadDiscounts();
-    loadPOS();
-    loadSubscribers();
-    loadAbandoned();
-}
+/* ====== LOGOUT ====== */
+logoutButton.addEventListener("click", () => {
+  clearToken();
+  adminPanel.style.display = "none";
+  loginSection.style.display = "block";
+  adminStatus.textContent = "Logged out.";
+  adminStatus.className = "status status-success";
+});
 
-/* PRODUCTS */
-function loadProducts(){
-    fetch(API + "/api/admin/products", { headers: authHeaders() })
-    .then(r=>r.json())
-    .then(list=>{
-        let html = `
-        <tr><th>Name</th><th>Price</th><th>Stock</th><th>Active</th><th>Actions</th></tr>
-        `;
-        list.forEach(p=>{
-            html += `
-            <tr>
-                <td>${p.name}</td>
-                <td>$${(p.priceCents/100).toFixed(2)}</td>
-                <td>${p.stock ?? "-"}</td>
-                <td>${p.active ? "Yes" : "No"}</td>
-                <td>
-                    <button onclick="deleteProduct('${p.id}')" class="red">Delete</button>
-                </td>
-            </tr>`;
-        });
-        document.getElementById("products-table").innerHTML = html;
+/* ====== TABS ====== */
+tabButtons.forEach(btn => {
+  btn.addEventListener("click", () => {
+    const id = btn.getAttribute("data-tab");
+    tabButtons.forEach(b => b.classList.remove("active"));
+    tabPanels.forEach(p => p.classList.remove("active"));
+    btn.classList.add("active");
+    document.getElementById(id).classList.add("active");
+  });
+});
 
-        // POS product buttons
-        let posHtml = "";
-        list.forEach(p=>{
-            posHtml += `
-            <div style="margin-bottom:10px;">
-                <strong>${p.name}</strong> — $${(p.priceCents/100).toFixed(2)}
-                <input type="number" id="pos-${p.id}" placeholder="Qty" style="width:80px;margin-left:10px;">
-            </div>`;
-        });
-        document.getElementById("pos-products").innerHTML = posHtml;
-    });
-}
-function addProduct(){
-    const data = {
-        name: document.getElementById("p-name").value,
-        priceCents: Number(document.getElementById("p-price").value),
-        collection: document.getElementById("p-collection").value,
-        description: document.getElementById("p-desc").value,
-        stock: Number(document.getElementById("p-stock").value),
-        trackInventory: document.getElementById("p-track").checked
-    };
-    fetch(API+"/api/admin/products", {
-        method: "POST",
-        headers: { ...authHeaders(), "Content-Type":"application/json" },
-        body: JSON.stringify(data)
-    })
-    .then(()=>loadProducts());
-}
+/* ================================
+   PRODUCTS — LOAD + RENDER
+   ================================ */
 
-function deleteProduct(id){
-    if(!confirm("Delete product?")) return;
-    fetch(API+"/api/admin/products/"+id, {
-        method:"DELETE",
-        headers: authHeaders()
-    }).then(()=>loadProducts());
-}
+let adminProductsById = {};
 
-/* ORDERS */
-function loadOrders(){
-    fetch(API + "/api/admin/orders", { headers: authHeaders() })
-    .then(r=>r.json())
-    .then(list=>{
-        let html = `
-        <tr><th>ID</th><th>Email</th><th>Total</th><th>Status</th><th>View</th></tr>
-        `;
-        list.forEach(o=>{
-            html += `
-            <tr>
-                <td>${o.id}</td>
-                <td>${o.customer?.email}</td>
-                <td>${o.totals?.totalCents ? "$"+(o.totals.totalCents/100).toFixed(2) : "-"}</td>
-                <td>${o.status}</td>
-                <td><button onclick="viewOrder('${o.id}')">Open</button></td>
-            </tr>`;
-        });
-        document.getElementById("orders-table").innerHTML = html;
-    });
-}
+async function loadAdminProducts() {
+  const token = getToken();
+  if (!token) {
+    setProductsStatus("Not logged in.", "status-error");
+    productsListEl.innerHTML = "";
+    return;
+  }
 
-function viewOrder(id){
-    const container = document.getElementById("order-detail");
-    fetch(API + "/api/admin/orders", { headers: authHeaders() })
-    .then(r=>r.json())
-    .then(list=>{
-        const o = list.find(x=>x.id===id);
-        if(!o) return;
+  setProductsStatus("Loading products…");
 
-        let itemsHtml = "";
-        o.items.forEach(i=>{
-            itemsHtml += `<li>${i.name} x ${i.quantity} — $${((i.priceCents*i.quantity)/100).toFixed(2)}</li>`;
-        });
-
-        container.innerHTML = `
-            <div class="panel" style="margin-top:20px;">
-                <h3>Order ${o.id}</h3>
-
-                <strong>Customer</strong><br>
-                ${o.customer?.name}<br>
-                ${o.customer?.email}<br><br>
-
-                <strong>Items</strong>
-                <ul>${itemsHtml}</ul>
-
-                <strong>Totals</strong><br>
-                Subtotal: $${(o.totals?.subtotalCents/100).toFixed(2)}<br>
-                Tax: $${(o.totals?.taxCents/100).toFixed(2)}<br>
-                Shipping: $${(o.totals?.shippingCents/100).toFixed(2)}<br>
-                Total: <strong>$${(o.totals?.totalCents/100).toFixed(2)}</strong><br><br>
-
-                <strong>Shipping Info</strong><br>
-                ${(o.shipping?.name || "")}<br>
-                ${(o.shipping?.address?.line1 || "")}<br>
-                ${(o.shipping?.address?.line2 || "")}<br>
-                ${(o.shipping?.address?.city || "")},
-                ${(o.shipping?.address?.state || "")}
-                ${(o.shipping?.address?.postal_code || "")}<br>
-                ${(o.shipping?.address?.country || "")}<br><br>
-
-                <strong>Order Status</strong><br>
-                <select id="ord-status">
-                    <option value="new">New</option>
-                    <option value="processing">Processing</option>
-                    <option value="shipped">Shipped</option>
-                </select>
-
-                <br><br>
-                <strong>Tracking Number</strong>
-                <input id="ord-track" placeholder="Tracking #" value="${o.trackingNumber || ""}" />
-
-                <button onclick="saveOrder('${o.id}')">Save</button>
-            </div>
-        `;
-
-        document.getElementById("ord-status").value = o.status;
-    });
-}
-
-function saveOrder(id){
-    const data = {
-        status: document.getElementById("ord-status").value,
-        trackingNumber: document.getElementById("ord-track").value
-    };
-    fetch(API+"/api/admin/orders/"+id, {
-        method:"PUT",
-        headers:{ ...authHeaders(), "Content-Type":"application/json" },
-        body: JSON.stringify(data)
-    }).then(()=>{
-        alert("Saved");
-        loadOrders();
-    });
-}
-
-/* DISCOUNTS */
-function loadDiscounts(){
-    fetch(API + "/api/admin/discounts", { headers: authHeaders() })
-    .then(r=>r.json())
-    .then(list=>{
-        let html = `<tr><th>Code</th><th>Type</th><th>Amount</th></tr>`;
-        list.forEach(d=>{
-            html += `
-            <tr>
-                <td>${d.code}</td>
-                <td>${d.type}</td>
-                <td>${d.amount}</td>
-            </tr>`;
-        });
-        document.getElementById("discounts-table").innerHTML = html;
-    });
-}
-
-function createDiscount(){
-    const data = {
-        code: document.getElementById("d-code").value,
-        type: document.getElementById("d-type").value,
-        amount: Number(document.getElementById("d-amount").value)
-    };
-    fetch(API+"/api/admin/discounts", {
-        method:"POST",
-        headers:{ ...authHeaders(), "Content-Type":"application/json" },
-        body: JSON.stringify(data)
-    }).then(()=>loadDiscounts());
-}
-
-/* POS */
-function submitPOS(){
-    const items = [];
-    document.querySelectorAll("[id^='pos-']").forEach(inp=>{
-        const qty = Number(inp.value);
-        if(qty > 0){
-            const id = inp.id.replace("pos-","");
-            items.push({ productId:id, quantity:qty });
-        }
+  try {
+    const res = await fetch(API_BASE + "/api/admin/products", {
+      headers: { Authorization: "Bearer " + token }
     });
 
-    if(items.length === 0) return alert("No items");
+    const data = await res.json();
 
-    fetch(API+"/api/pos/sale",{
-        method:"POST",
-        headers:{ ...authHeaders(), "Content-Type":"application/json" },
-        body: JSON.stringify({ items })
-    }).then(()=>{
-        alert("POS sale recorded");
-        loadPOS();
-    });
+    if (!res.ok) {
+      setProductsStatus(data.error || "Failed to load products.", "status-error");
+      productsListEl.innerHTML = "";
+      return;
+    }
+
+    adminProductsById = {};
+    if (Array.isArray(data)) {
+      data.forEach(p => {
+        if (p && p.id) adminProductsById[p.id] = p;
+      });
+    }
+
+    renderProductsTable(Object.values(adminProductsById));
+    setProductsStatus("");
+  } catch (err) {
+    console.error(err);
+    setProductsStatus("Error contacting backend.", "status-error");
+    productsListEl.innerHTML = "";
+  }
 }
 
-function loadPOS(){
-    fetch(API + "/api/admin/pos-sales", { headers: authHeaders() })
-    .then(r=>r.json())
-    .then(list=>{
-        let html = `<tr><th>ID</th><th>Total</th><th>Date</th></tr>`;
-        list.forEach(s=>{
-            html += `
-            <tr>
-                <td>${s.id}</td>
-                <td>$${(s.totals.totalCents/100).toFixed(2)}</td>
-                <td>${s.createdAt}</td>
-            </tr>`;
-        });
-        document.getElementById("pos-sales-table").innerHTML = html;
-    });
+function renderProductsTable(products) {
+  if (!Array.isArray(products) || products.length === 0) {
+    productsListEl.innerHTML =
+      '<div class="products-empty">No products yet. Add your first product below.</div>';
+    return;
+  }
+
+  const rows = products.map(p => {
+    const hasImage = !!p.imageUrl;
+    const isActive = p.active !== false;
+
+    return `
+      <tr data-id="${p.id}">
+        <td>${p.name || "(no name)"}</td>
+        <td class="collection">${(p.collection || "").toUpperCase()}</td>
+        <td class="price">${formatPrice(p.priceCents || 0)}</td>
+        <td class="description">${p.description || ""}</td>
+
+        <td class="status-cell">
+          <span class="status-pill ${isActive ? "status-pill-active" : "status-pill-inactive"}">
+            ${isActive ? "Active" : "Hidden"}
+          </span>
+          <button class="btn btn-ghost btn-xs" data-action="toggle-active" data-id="${p.id}">
+            ${isActive ? "Hide" : "Show"}
+          </button>
+        </td>
+
+        <td class="image-cell">
+          <img src="${p.imageUrl || ""}" class="image-thumb ${hasImage ? "" : "hidden"}">
+          <span class="image-pill ${hasImage ? "has-image" : ""}">
+            ${hasImage ? "Image set" : "No image"}
+          </span>
+          <button class="btn btn-ghost btn-xs" data-action="change-image" data-id="${p.id}">
+            Change
+          </button>
+          <input type="file" accept="image/*" class="hidden-file-input" data-id="${p.id}">
+        </td>
+
+        <td class="actions">
+          <button class="btn btn-primary btn-xs" data-action="edit" data-id="${p.id}">
+            Edit
+          </button>
+          <button class="btn btn-ghost btn-xs" data-action="delete" data-id="${p.id}">
+            Delete
+          </button>
+        </td>
+      </tr>
+    `;
+  }).join("");
+
+  productsListEl.innerHTML = `
+    <div class="products-table-wrapper">
+      <table class="products-table">
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Collection</th>
+            <th>Price</th>
+            <th>Description</th>
+            <th>Status</th>
+            <th>Image</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>${rows}</tbody>
+      </table>
+    </div>
+  `;
 }
 
-/* SUBSCRIBERS */
-function loadSubscribers(){
-    fetch(API + "/api/admin/subscribers", { headers: authHeaders() })
-    .then(r=>r.json())
-    .then(list=>{
-        let html = `<tr><th>Email</th><th>Joined</th></tr>`;
-        list.forEach(s=>{
-            html += `
-            <tr>
-                <td>${s.email}</td>
-                <td>${s.joinedAt}</td>
-            </tr>`;
-        });
-        document.getElementById("subscribers-table").innerHTML = html;
-    });
+refreshProductsButton?.addEventListener("click", loadAdminProducts);
+
+/* ================================
+   PRODUCTS — ADD PRODUCT
+   ================================ */
+
+async function uploadProductImage(productId, file, token) {
+  if (!file) return;
+
+  const formData = new FormData();
+  formData.append("image", file);
+
+  const res = await fetch(
+    API_BASE + "/api/admin/products/" + encodeURIComponent(productId) + "/image",
+    {
+      method: "POST",
+      headers: {
+        Authorization: "Bearer " + token
+      },
+      body: formData
+    }
+  );
+
+  const data = await res.json();
+  if (!res.ok) {
+    throw new Error(data.error || "Failed to upload image.");
+  }
+  return data;
 }
 
-function sendBlast(){
-    fetch(API+"/api/admin/email-blast",{
-        method:"POST",
-        headers:{ ...authHeaders(), "Content-Type":"application/json" },
+addProductForm?.addEventListener("submit", async (e) => {
+  e.preventDefault();
+
+  const token = getToken();
+  if (!token) {
+    setProductsStatus("Not logged in.", "status-error");
+    return;
+  }
+
+  const name = document.getElementById("productName").value.trim();
+  const collection = document.getElementById("productCollection").value.trim();
+  const priceStr = document.getElementById("productPrice").value.trim();
+  const description = document.getElementById("productDescription").value.trim();
+  const imageFile = productImageInput.files[0] || null;
+
+  if (!name || !priceStr) {
+    return setProductsStatus("Name + price required.", "status-error");
+  }
+
+  const priceFloat = parseFloat(priceStr);
+  if (isNaN(priceFloat) || priceFloat < 0) {
+    return setProductsStatus("Price must be a non-negative number.", "status-error");
+  }
+
+  const priceCents = Math.round(priceFloat * 100);
+
+  addProductButton.disabled = true;
+  addProductButton.textContent = imageFile ? "Adding & uploading…" : "Adding…";
+
+  try {
+    // 1) CREATE PRODUCT (server returns new ID)
+    const res = await fetch(API_BASE + "/api/admin/products", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + token
+      },
+      body: JSON.stringify({
+        name,
+        description,
+        priceCents,
+        collection
+      })
+    });
+
+    const data = await res.json();
+    if (!res.ok) {
+      return setProductsStatus(data.error || "Failed to add product.", "status-error");
+    }
+
+    const created = data.product || data;
+
+    // 2) OPTIONAL IMAGE UPLOAD
+    if (created.id && imageFile) {
+      try {
+        await uploadProductImage(created.id, imageFile, token);
+      } catch (err) {
+        console.error(err);
+        setProductsStatus("Product added but image upload failed.", "status-error");
+        loadAdminProducts();
+        return;
+      }
+    }
+
+    setProductsStatus("Product added.", "status-success");
+    addProductForm.reset();
+    loadAdminProducts();
+
+  } catch (err) {
+    console.error(err);
+    setProductsStatus("Backend error.", "status-error");
+  } finally {
+    addProductButton.disabled = false;
+    addProductButton.textContent = "Add product";
+  }
+});
+
+/* =======================================
+   PRODUCTS — EDIT / SAVE / CANCEL / DELETE / TOGGLE ACTIVE
+   ======================================= */
+
+productsListEl.addEventListener("click", async (e) => {
+  const btn = e.target.closest("button");
+  if (!btn) return;
+
+  const action = btn.getAttribute("data-action");
+  const id = btn.getAttribute("data-id");
+  if (!action || !id) return;
+
+  const token = getToken();
+  if (!token) {
+    setProductsStatus("Not logged in.", "status-error");
+    return;
+  }
+
+  /* ----------------------------
+     EDIT (turn row into inputs)
+     ---------------------------- */
+  if (action === "edit") {
+    const row = btn.closest("tr");
+    const p = adminProductsById[id];
+    if (!p || !row) return;
+
+    const tds = row.querySelectorAll("td");
+    const nameTd = tds[0];
+    const collTd = tds[1];
+    const priceTd = tds[2];
+    const descTd = tds[3];
+    const actionsTd = tds[6];
+
+    nameTd.innerHTML = `<input class="inline-input" value="${escapeAttr(p.name || "")}">`;
+    collTd.innerHTML = `<input class="inline-input" value="${escapeAttr(p.collection || "")}">`;
+    priceTd.innerHTML = `<input type="number" class="inline-input" min="0" step="0.01" value="${(p.priceCents / 100).toFixed(2)}">`;
+    descTd.innerHTML = `<textarea class="inline-textarea">${escapeHtml(p.description || "")}</textarea>`;
+
+    actionsTd.innerHTML = `
+      <button class="btn btn-primary btn-xs" data-action="save" data-id="${p.id}">Save</button>
+      <button class="btn btn-ghost btn-xs" data-action="cancel" data-id="${p.id}">Cancel</button>
+    `;
+    return;
+  }
+
+  /* ----------------------------
+     SAVE EDIT
+     ---------------------------- */
+  if (action === "save") {
+    const row = btn.closest("tr");
+    if (!row) return;
+
+    const inputs = row.querySelectorAll(".inline-input, .inline-textarea");
+    const [nameInput, collInput, priceInput, descInput] = inputs;
+
+    const name = nameInput.value.trim();
+    const collection = collInput.value.trim();
+    const priceFloat = parseFloat(priceInput.value);
+    const description = descInput.value.trim();
+
+    if (!name) return setProductsStatus("Name required.", "status-error");
+    if (isNaN(priceFloat) || priceFloat < 0)
+      return setProductsStatus("Invalid price.", "status-error");
+
+    const priceCents = Math.round(priceFloat * 100);
+    btn.disabled = true;
+    btn.textContent = "Saving…";
+
+    try {
+      const res = await fetch(API_BASE + "/api/admin/products/" + id, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + token
+        },
         body: JSON.stringify({
-            subject: document.getElementById("blast-subject").value,
-            text: document.getElementById("blast-body").value
+          name,
+          collection,
+          priceCents,
+          description
         })
-    }).then(()=>alert("Sent"));
+      });
+
+      const data = await res.json();
+      if (!res.ok) {
+        return setProductsStatus(data.error || "Failed to save.", "status-error");
+      }
+
+      adminProductsById[id] = data;
+      setProductsStatus("Saved.", "status-success");
+      renderProductsTable(Object.values(adminProductsById));
+
+    } catch (err) {
+      console.error(err);
+      setProductsStatus("Backend error.", "status-error");
+    }
+    return;
+  }
+
+  /* ----------------------------
+     CANCEL EDIT
+     ---------------------------- */
+  if (action === "cancel") {
+    renderProductsTable(Object.values(adminProductsById));
+    setProductsStatus("");
+    return;
+  }
+
+  /* ----------------------------
+     DELETE PRODUCT
+     ---------------------------- */
+  if (action === "delete") {
+    if (!confirm("Delete this product?")) return;
+
+    btn.disabled = true;
+    btn.textContent = "Deleting…";
+
+    try {
+      const res = await fetch(API_BASE + "/api/admin/products/" + id, {
+        method: "DELETE",
+        headers: { Authorization: "Bearer " + token }
+      });
+      const data = await res.json();
+
+      if (!res.ok) {
+        return setProductsStatus(data.error || "Delete failed.", "status-error");
+      }
+
+      delete adminProductsById[id];
+      setProductsStatus("Product deleted.", "status-success");
+      renderProductsTable(Object.values(adminProductsById));
+
+    } catch (err) {
+      console.error(err);
+      setProductsStatus("Backend error.", "status-error");
+    }
+    return;
+  }
+
+  /* ----------------------------
+     TOGGLE ACTIVE (Hide / Show)
+     ---------------------------- */
+  if (action === "toggle-active") {
+    const p = adminProductsById[id];
+    const newActive = !(p.active !== false);
+
+    btn.disabled = true;
+
+    try {
+      const res = await fetch(API_BASE + "/api/admin/products/" + id, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + token
+        },
+        body: JSON.stringify({ active: newActive })
+      });
+
+      const data = await res.json();
+      if (!res.ok) {
+        return setProductsStatus(data.error || "Failed.", "status-error");
+      }
+
+      adminProductsById[id] = data;
+      setProductsStatus("Updated.", "status-success");
+      renderProductsTable(Object.values(adminProductsById));
+
+    } catch (err) {
+      console.error(err);
+      setProductsStatus("Backend error.", "status-error");
+    } finally {
+      btn.disabled = false;
+    }
+    return;
+  }
+
+  /* ----------------------------
+     CHANGE IMAGE → trigger <input type="file">
+     ---------------------------- */
+  if (action === "change-image") {
+    const row = btn.closest("tr");
+    const input = row.querySelector(".hidden-file-input");
+    if (input) input.click();
+    return;
+  }
+});
+
+/* =======================================
+   PRODUCTS — IMAGE UPLOAD HANDLER
+   ======================================= */
+
+productsListEl.addEventListener("change", async (e) => {
+  const input = e.target;
+  if (!input.classList.contains("hidden-file-input")) return;
+
+  const file = input.files[0];
+  if (!file) return;
+
+  const productId = input.getAttribute("data-id");
+  const token = getToken();
+
+  setProductsStatus("Uploading image…", "status");
+
+  const formData = new FormData();
+  formData.append("image", file);
+
+  try {
+    const res = await fetch(
+      API_BASE + "/api/admin/products/" + encodeURIComponent(productId) + "/image",
+      {
+        method: "POST",
+        headers: { Authorization: "Bearer " + token },
+        body: formData
+      }
+    );
+
+    const data = await res.json();
+    if (!res.ok) {
+      return setProductsStatus(data.error || "Upload failed.", "status-error");
+    }
+
+    setProductsStatus("Image updated.", "status-success");
+    loadAdminProducts();
+
+  } catch (err) {
+    console.error(err);
+    setProductsStatus("Backend error.", "status-error");
+  } finally {
+    input.value = "";
+  }
+});
+
+/* =======================================
+   ORDERS — LOAD + SEARCH + PAGINATION
+   ======================================= */
+
+let adminOrders = [];
+let filteredAdminOrders = [];
+let ordersPage = 0;
+const ORDERS_PER_PAGE = 10;
+
+/* STATUS SETTER */
+function setOrdersStatus(message, type = "") {
+  if (!ordersStatusEl) return;
+  ordersStatusEl.textContent = message || "";
+  ordersStatusEl.className = "status" + (type ? " " + type : "");
 }
 
-/* ABANDONED CARTS */
-function loadAbandoned(){
-    fetch(API + "/api/admin/abandoned-carts", { headers: authHeaders() })
-    .then(r=>r.json())
-    .then(list=>{
-        let html = `<tr><th>Email</th><th>Items</th><th>Last Nudged</th><th></th></tr>`;
-        list.forEach(c=>{
-            const items = c.items.map(i=>`${i.name} x${i.quantity}`).join("<br>");
-            html += `
-            <tr>
-                <td>${c.email}</td>
-                <td>${items}</td>
-                <td>${c.lastNudgedAt||"-"}</td>
-                <td><button onclick="nudge('${c.id}')">Nudge</button></td>
-            </tr>`;
-        });
-        document.getElementById("abandoned-table").innerHTML = html;
+/* LOAD ORDERS */
+async function loadAdminOrders() {
+  const token = getToken();
+  if (!token) {
+    setOrdersStatus("Not logged in.", "status-error");
+    ordersListEl.innerHTML = "";
+    return;
+  }
+
+  setOrdersStatus("Loading orders…");
+
+  try {
+    const res = await fetch(API_BASE + "/api/admin/orders", {
+      headers: { Authorization: "Bearer " + token }
     });
+
+    const data = await res.json();
+    if (!res.ok) {
+      setOrdersStatus(data.error || "Failed to load orders.", "status-error");
+      ordersListEl.innerHTML = "";
+      return;
+    }
+
+    adminOrders = Array.isArray(data) ? data : [];
+    filteredAdminOrders = adminOrders.slice();
+    ordersPage = 0;
+
+    renderOrdersTablePage();
+
+    if (!adminOrders.length) {
+      setOrdersStatus("No orders yet.", "status-success");
+    } else {
+      setOrdersStatus("");
+    }
+
+  } catch (err) {
+    console.error(err);
+    setOrdersStatus("Error contacting backend.", "status-error");
+    ordersListEl.innerHTML = "";
+  }
 }
 
-function nudge(id){
-    fetch(API+"/api/admin/abandoned-carts/"+id+"/nudge",{
-        method:"POST",
-        headers: authHeaders()
-    }).then(()=>{
-        alert("Nudged");
-        loadAbandoned();
+/* RENDER ORDERS PAGE */
+function renderOrdersTablePage() {
+  if (!filteredAdminOrders.length) {
+    ordersListEl.innerHTML = `
+      <div class="products-empty">No orders match this search.</div>
+    `;
+    return;
+  }
+
+  const totalPages = Math.ceil(filteredAdminOrders.length / ORDERS_PER_PAGE);
+  if (ordersPage < 0) ordersPage = 0;
+  if (ordersPage >= totalPages) ordersPage = totalPages - 1;
+
+  const start = ordersPage * ORDERS_PER_PAGE;
+  const pageOrders = filteredAdminOrders.slice(start, start + ORDERS_PER_PAGE);
+
+  const rows = pageOrders.map(order => {
+    const id = order.id || "";
+    const shortId = id ? id.slice(0, 10) : "(no id)";
+    const customer = order.customer || {};
+    const name = customer.name || "(no name)";
+    const email = customer.email || "";
+    const total = formatPrice(order.totals?.totalCents || 0);
+    const date = formatDate(order.createdAt || order.created_at);
+    const status = (order.status || "new").replace(/-/g, " ");
+
+    const first = order.items?.[0];
+    let itemSummary = "No items";
+    if (first) {
+      const qty = first.quantity ?? first.qty ?? 1;
+      const rest = order.items.length - 1;
+      itemSummary = `${escapeHtml(first.name)} × ${qty}`;
+      if (rest > 0) itemSummary += ` (+${rest})`;
+    }
+
+    return `
+      <tr>
+        <td class="order-id-cell">${escapeHtml(shortId)}</td>
+        <td>
+          <div>${escapeHtml(name)}</div>
+          <div class="muted" style="font-size:0.78rem;">
+            ${escapeHtml(email)}
+          </div>
+        </td>
+        <td>${total}</td>
+        <td><span class="status-pill">${escapeHtml(status)}</span></td>
+        <td>${escapeHtml(date)}</td>
+        <td class="order-items-cell">${itemSummary}</td>
+      </tr>
+    `;
+  }).join("");
+
+  ordersListEl.innerHTML = `
+    <div class="orders-table-wrapper">
+      <table class="orders-table">
+        <thead>
+          <tr>
+            <th>Order</th>
+            <th>Customer</th>
+            <th>Total</th>
+            <th>Status</th>
+            <th>Placed</th>
+            <th>Items</th>
+          </tr>
+        </thead>
+        <tbody>${rows}</tbody>
+      </table>
+    </div>
+  `;
+}
+
+/* ORDER SEARCH */
+ordersSearchInput?.addEventListener("input", () => {
+  const term = ordersSearchInput.value.trim().toLowerCase();
+
+  if (!term) {
+    filteredAdminOrders = adminOrders.slice();
+  } else {
+    filteredAdminOrders = adminOrders.filter(o => {
+      const id = o.id?.toLowerCase() || "";
+      const name = o.customer?.name?.toLowerCase() || "";
+      const email = o.customer?.email?.toLowerCase() || "";
+      return id.includes(term) || name.includes(term) || email.includes(term);
     });
+  }
+
+  ordersPage = 0;
+  renderOrdersTablePage();
+});
+
+/* PAGINATION BUTTONS */
+ordersPrevPageBtn.addEventListener("click", () => {
+  ordersPage--;
+  renderOrdersTablePage();
+});
+
+ordersNextPageBtn.addEventListener("click", () => {
+  ordersPage++;
+  renderOrdersTablePage();
+});
+
+/* REFRESH BUTTON */
+refreshOrdersButton.addEventListener("click", loadAdminOrders);
+
+/* =======================================
+   SUBSCRIBERS — LOAD + RENDER
+   ======================================= */
+
+let adminSubscribers = [];
+
+/* STATUS */
+function setSubscribersStatus(message, type = "") {
+  if (!subscribersStatusEl) return;
+  subscribersStatusEl.textContent = message || "";
+  subscribersStatusEl.className = "status" + (type ? " " + type : "");
 }
 
-</script>
+/* LOAD SUBSCRIBERS */
+async function loadAdminSubscribers() {
+  const token = getToken();
 
-</body>
-</html>
+  if (!token) {
+    setSubscribersStatus("Not logged in.", "status-error");
+    subscribersListEl.innerHTML = "";
+    return;
+  }
+
+  setSubscribersStatus("Loading subscribers…");
+
+  try {
+    const res = await fetch(API_BASE + "/api/admin/subscribers", {
+      headers: { Authorization: "Bearer " + token }
+    });
+
+    const data = await res.json();
+    if (!res.ok) {
+      setSubscribersStatus(
+        data.error || "Failed to load subscribers.",
+        "status-error"
+      );
+      subscribersListEl.innerHTML = "";
+      return;
+    }
+
+    adminSubscribers = Array.isArray(data) ? data : [];
+
+    renderSubscribersTable(adminSubscribers);
+
+    if (!adminSubscribers.length) {
+      setSubscribersStatus("No subscribers yet.", "status-success");
+    } else {
+      setSubscribersStatus("");
+    }
+
+  } catch (err) {
+    console.error(err);
+    setSubscribersStatus("Error contacting backend.", "status-error");
+    subscribersListEl.innerHTML = "";
+  }
+}
+
+/* RENDER SUBSCRIBERS TABLE */
+function renderSubscribersTable(list) {
+  if (!Array.isArray(list) || !list.length) {
+    subscribersListEl.innerHTML = `
+      <div class="products-empty">No subscribers yet.</div>
+    `;
+    return;
+  }
+
+  const rows = list.map(sub => {
+    const email = sub.email || sub.address || "(no email)";
+    const joined = formatDate(sub.joinedAt || sub.createdAt || sub.date);
+    const source = sub.source || sub.tag || "";
+
+    return `
+      <tr>
+        <td class="subscriber-email">${escapeHtml(email)}</td>
+        <td class="subscriber-date">${escapeHtml(joined)}</td>
+        <td>${escapeHtml(source)}</td>
+      </tr>
+    `;
+  }).join("");
+
+  subscribersListEl.innerHTML = `
+    <div class="subscribers-table-wrapper">
+      <table class="subscribers-table">
+        <thead>
+          <tr>
+            <th>Email</th>
+            <th>Joined</th>
+            <th>Source</th>
+          </tr>
+        </thead>
+        <tbody>${rows}</tbody>
+      </table>
+    </div>
+  `;
+}
+
+/* REFRESH BUTTON */
+refreshSubscribersButton.addEventListener("click", loadAdminSubscribers);
+
+/* =======================================
+   DISCOUNTS — CREATE + LIST + DELETE
+   ======================================= */
+
+const discountCodeInput = document.getElementById("d-code");
+const discountTypeInput = document.getElementById("d-type");
+const discountAmountInput = document.getElementById("d-amount");
+const createDiscountBtn = document.getElementById("createDiscountBtn");
+const discountsListEl = document.getElementById("discountsList");
+
+/* LOAD DISCOUNTS */
+async function loadDiscounts() {
+  const token = getToken();
+  if (!token) return;
+
+  discountsListEl.innerHTML = "Loading…";
+
+  try {
+    const res = await fetch(API_BASE + "/api/admin/discounts", {
+      headers: { Authorization: "Bearer " + token }
+    });
+
+    const data = await res.json();
+    if (!res.ok) {
+      discountsListEl.innerHTML = `<div class="status-error">${data.error || "Failed."}</div>`;
+      return;
+    }
+
+    renderDiscountsTable(data);
+
+  } catch (err) {
+    console.error(err);
+    discountsListEl.innerHTML = `<div class="status-error">Backend error.</div>`;
+  }
+}
+
+/* RENDER TABLE */
+function renderDiscountsTable(list) {
+  if (!Array.isArray(list) || !list.length) {
+    discountsListEl.innerHTML = `<div class="products-empty">No discount codes yet.</div>`;
+    return;
+  }
+
+  const rows = list
+    .map((d) => {
+      const amountFormatted =
+        d.type === "percent"
+          ? d.amount + "%"
+          : formatPrice(d.amount); // fixed is cents
+
+      return `
+        <tr data-id="${d.id}">
+          <td>${escapeHtml(d.code)}</td>
+          <td>${escapeHtml(d.type)}</td>
+          <td>${escapeHtml(amountFormatted)}</td>
+          <td>
+            <button class="btn btn-ghost btn-xs" data-action="delete-discount" data-id="${d.id}">
+              Delete
+            </button>
+          </td>
+        </tr>
+      `;
+    })
+    .join("");
+
+  discountsListEl.innerHTML = `
+    <div class="subscribers-table-wrapper">
+      <table class="subscribers-table">
+        <thead>
+          <tr>
+            <th>Code</th>
+            <th>Type</th>
+            <th>Amount</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>${rows}</tbody>
+      </table>
+    </div>
+  `;
+}
+
+/* CREATE DISCOUNT */
+createDiscountBtn.addEventListener("click", async () => {
+  const code = discountCodeInput.value.trim().toUpperCase();
+  const type = discountTypeInput.value;
+  const amountValue = discountAmountInput.value.trim();
+  const token = getToken();
+
+  if (!code) return alert("Enter a discount code.");
+  if (!amountValue) return alert("Enter an amount.");
+
+  let amount = 0;
+  if (type === "percent") {
+    amount = parseInt(amountValue);
+    if (isNaN(amount) || amount <= 0 || amount > 100)
+      return alert("Percent must be 1–100.");
+  } else {
+    // FIXED AMOUNT IN CENTS
+    const float = parseFloat(amountValue);
+    if (isNaN(float) || float <= 0) return alert("Invalid fixed amount.");
+    amount = Math.round(float * 100);
+  }
+
+  createDiscountBtn.disabled = true;
+  createDiscountBtn.textContent = "Creating…";
+
+  try {
+    const res = await fetch(API_BASE + "/api/admin/discounts", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + token
+      },
+      body: JSON.stringify({ code, type, amount })
+    });
+
+    const data = await res.json();
+    if (!res.ok) {
+      alert(data.error || "Failed to create discount.");
+    } else {
+      alert("Discount created.");
+      discountCodeInput.value = "";
+      discountAmountInput.value = "";
+      loadDiscounts();
+    }
+  } catch (err) {
+    console.error(err);
+    alert("Backend error.");
+  } finally {
+    createDiscountBtn.disabled = false;
+    createDiscountBtn.textContent = "Create Discount";
+  }
+});
+
+/* DELETE DISCOUNT */
+discountsListEl.addEventListener("click", async (e) => {
+  const btn = e.target.closest("button");
+  if (!btn) return;
+
+  const action = btn.getAttribute("data-action");
+  const id = btn.getAttribute("data-id");
+  if (action !== "delete-discount") return;
+
+  if (!confirm("Delete this discount code?")) return;
+
+  const token = getToken();
+  btn.disabled = true;
+  btn.textContent = "Deleting…";
+
+  try {
+    const res = await fetch(API_BASE + "/api/admin/discounts/" + id, {
+      method: "DELETE",
+      headers: {
+        Authorization: "Bearer " + token
+      }
+    });
+
+    const data = await res.json();
+    if (!res.ok) {
+      alert(data.error || "Failed to delete.");
+    } else {
+      loadDiscounts();
+    }
+
+  } catch (err) {
+    console.error(err);
+    alert("Backend error.");
+  }
+});
+
+/* =======================================
+   POS — IN-PERSON SALES SYSTEM
+   ======================================= */
+
+const posProductListEl = document.getElementById("posProductList");
+const posSubmitBtn = document.getElementById("submitPosSale");
+const posSalesTableEl = document.getElementById("posSalesTable");
+
+let posProducts = [];
+let posCart = [];
+
+/* LOAD PRODUCTS FOR POS */
+async function loadPOSProducts() {
+  const token = getToken();
+  if (!token) return;
+
+  posProductListEl.innerHTML = "Loading…";
+
+  try {
+    const res = await fetch(API_BASE + "/api/admin/products", {
+      headers: { Authorization: "Bearer " + token }
+    });
+
+    const data = await res.json();
+    if (!res.ok) {
+      posProductListEl.innerHTML = `<div class="status-error">${data.error || "Failed to load"}</div>`;
+      return;
+    }
+
+    posProducts = data;
+    renderPOSProductList();
+
+  } catch (err) {
+    console.error(err);
+    posProductListEl.innerHTML = `<div class="status-error">Backend error.</div>`;
+  }
+}
+
+/* RENDER PRODUCT LIST IN POS */
+function renderPOSProductList() {
+  if (!posProducts.length) {
+    posProductListEl.innerHTML = `<div class="products-empty">No products available.</div>`;
+    return;
+  }
+
+  const items = posProducts
+    .map((p) => `
+      <div style="padding:0.5rem 0; border-bottom:1px solid rgba(255,255,255,0.06);">
+        <strong>${escapeHtml(p.name)}</strong>
+        <br>
+        <span class="muted">${formatPrice(p.priceCents)}</span>
+        <br>
+        <button class="btn btn-primary btn-xs" data-action="pos-add" data-id="${p.id}">
+          Add to Cart
+        </button>
+      </div>
+    `)
+    .join("");
+
+  posProductListEl.innerHTML = items;
+}
+
+/* POS PRODUCT LIST CLICK HANDLER */
+posProductListEl.addEventListener("click", (e) => {
+  const btn = e.target.closest("button");
+  if (!btn) return;
+
+  const action = btn.getAttribute("data-action");
+  if (action !== "pos-add") return;
+
+  const id = btn.getAttribute("data-id");
+
+  const product = posProducts.find((p) => p.id === id);
+  if (!product) return;
+
+  const existing = posCart.find((c) => c.id === id);
+
+  if (existing) {
+    existing.qty++;
+  } else {
+    posCart.push({
+      id,
+      name: product.name,
+      priceCents: product.priceCents,
+      qty: 1
+    });
+  }
+
+  renderPOSCart();
+});
+
+/* RENDER POS CART */
+function renderPOSCart() {
+  if (!posCart.length) {
+    posSalesTableEl.innerHTML = `<div class="products-empty">Cart is empty.</div>`;
+    return;
+  }
+
+  const rows = posCart
+    .map((i) => `
+      <tr>
+        <td>${escapeHtml(i.name)}</td>
+        <td>${i.qty}</td>
+        <td>${formatPrice(i.priceCents * i.qty)}</td>
+        <td>
+          <button class="btn btn-ghost btn-xs" data-action="pos-inc" data-id="${i.id}">+</button>
+          <button class="btn btn-ghost btn-xs" data-action="pos-dec" data-id="${i.id}">-</button>
+          <button class="btn btn-ghost btn-xs" data-action="pos-remove" data-id="${i.id}">Remove</button>
+        </td>
+      </tr>
+    `)
+    .join("");
+
+  const total = posCart.reduce((sum, i) => sum + i.priceCents * i.qty, 0);
+
+  posSalesTableEl.innerHTML = `
+    <div class="orders-table-wrapper">
+      <table class="orders-table">
+        <thead>
+          <tr>
+            <th>Item</th>
+            <th>Qty</th>
+            <th>Total</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>${rows}</tbody>
+      </table>
+      <div style="margin-top:0.8rem; font-size:1rem;">
+        <strong>Cart Total: ${formatPrice(total)}</strong>
+      </div>
+    </div>
+  `;
+}
+
+/* CART BUTTON HANDLERS */
+posSalesTableEl.addEventListener("click", (e) => {
+  const btn = e.target.closest("button");
+  if (!btn) return;
+
+  const action = btn.getAttribute("data-action");
+  const id = btn.getAttribute("data-id");
+
+  const item = posCart.find((c) => c.id === id);
+  if (!item) return;
+
+  if (action === "pos-inc") item.qty++;
+  if (action === "pos-dec") item.qty = Math.max(1, item.qty - 1);
+  if (action === "pos-remove") {
+    posCart = posCart.filter((c) => c.id !== id);
+  }
+
+  renderPOSCart();
+});
+
+/* SUBMIT POS SALE */
+posSubmitBtn.addEventListener("click", async () => {
+  if (!posCart.length) return alert("Cart is empty.");
+
+  const token = getToken();
+
+  posSubmitBtn.disabled = true;
+  posSubmitBtn.textContent = "Submitting…";
+
+  try {
+    const res = await fetch(API_BASE + "/api/admin/pos-sale", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + token
+      },
+      body: JSON.stringify({ items: posCart })
+    });
+
+    const data = await res.json();
+    if (!res.ok) {
+      alert(data.error || "Sale failed.");
+    } else {
+      alert("Sale recorded.");
+      posCart = [];
+      renderPOSCart();
+      loadPOSHistory();
+    }
+
+  } catch (err) {
+    console.error(err);
+    alert("Backend error.");
+  } finally {
+    posSubmitBtn.disabled = false;
+    posSubmitBtn.textContent = "Submit Sale";
+  }
+});
+
+/* LOAD POS HISTORY */
+async function loadPOSHistory() {
+  const token = getToken();
+  if (!token) return;
+
+  try {
+    const res = await fetch(API_BASE + "/api/admin/pos-history", {
+      headers: { Authorization: "Bearer " + token }
+    });
+
+    const data = await res.json();
+    if (!res.ok) {
+      posSalesTableEl.innerHTML += `<div class="status-error">${data.error || "Failed loading POS history"}</div>`;
+      return;
+    }
+
+    renderPOSHistory(data);
+
+  } catch (err) {
+    console.error(err);
+  }
+}
+
+/* RENDER POS HISTORY */
+function renderPOSHistory(list) {
+  if (!Array.isArray(list) || !list.length) return;
+
+  const rows = list
+    .map((s) => `
+      <tr>
+        <td>${escapeHtml(s.id)}</td>
+        <td>${formatPrice(s.totalCents)}</td>
+        <td>${formatDate(s.createdAt)}</td>
+      </tr>
+    `)
+    .join("");
+
+  posSalesTableEl.innerHTML += `
+    <h3 style="margin-top:2rem;">Past Sales</h3>
+    <div class="subscribers-table-wrapper">
+      <table class="subscribers-table">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Total</th>
+            <th>Date</th>
+          </tr>
+        </thead>
+        <tbody>${rows}</tbody>
+      </table>
+    </div>
+  `;
+}
+
+/* =======================================
+   ABANDONED CARTS — LOAD + RECOVERY
+   ======================================= */
+
+const abandonedListEl = document.getElementById("abandonedList");
+
+let abandonedCarts = [];
+
+/* LOAD ABANDONED CARTS */
+async function loadAbandonedCarts() {
+  const token = getToken();
+  if (!token) return;
+
+  abandonedListEl.innerHTML = "Loading…";
+
+  try {
+    const res = await fetch(API_BASE + "/api/admin/abandoned", {
+      headers: { Authorization: "Bearer " + token }
+    });
+
+    const data = await res.json();
+    if (!res.ok) {
+      abandonedListEl.innerHTML = `<div class="status-error">${data.error || "Failed to load"}</div>`;
+      return;
+    }
+
+    abandonedCarts = Array.isArray(data) ? data : [];
+    renderAbandonedCarts();
+
+  } catch (err) {
+    console.error(err);
+    abandonedListEl.innerHTML = `<div class="status-error">Backend error.</div>`;
+  }
+}
+
+/* FORMAT "time since" */
+function timeSince(dateStr) {
+  const d = new Date(dateStr);
+  const now = new Date();
+  const diff = (now - d) / 1000; // seconds
+
+  if (diff < 60) return `${Math.floor(diff)}s ago`;
+  if (diff < 3600) return `${Math.floor(diff / 60)}m ago`;
+  if (diff < 86400) return `${Math.floor(diff / 3600)}h ago`;
+  return `${Math.floor(diff / 86400)}d ago`;
+}
+
+/* RENDER LIST */
+function renderAbandonedCarts() {
+  if (!abandonedCarts.length) {
+    abandonedListEl.innerHTML = `<div class="products-empty">No abandoned carts.</div>`;
+    return;
+  }
+
+  const rows = abandonedCarts
+    .map((c) => {
+      const email = c.email || "(no email)";
+      const itemsCount = c.items?.length || 0;
+      const totalCents = c.totalCents || 0;
+      const lastUpdate = timeSince(c.updatedAt || c.createdAt);
+
+      return `
+        <tr data-id="${c.id}">
+          <td>${escapeHtml(email)}</td>
+          <td>${itemsCount}</td>
+          <td>${formatPrice(totalCents)}</td>
+          <td>${lastUpdate}</td>
+          <td>
+            <button class="btn btn-primary btn-xs" data-action="recover" data-id="${c.id}">
+              Send Recovery Email
+            </button>
+          </td>
+        </tr>
+      `;
+    })
+    .join("");
+
+  abandonedListEl.innerHTML = `
+    <div class="orders-table-wrapper">
+      <table class="orders-table">
+        <thead>
+          <tr>
+            <th>Email</th>
+            <th>Items</th>
+            <th>Total</th>
+            <th>Last Active</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>${rows}</tbody>
+      </table>
+    </div>
+  `;
+}
+
+/* RECOVERY EMAIL BUTTON */
+abandonedListEl.addEventListener("click", async (e) => {
+  const btn = e.target.closest("button");
+  if (!btn) return;
+
+  const action = btn.getAttribute("data-action");
+  if (action !== "recover") return;
+
+  const id = btn.getAttribute("data-id");
+  const token = getToken();
+
+  btn.disabled = true;
+  btn.textContent = "Sending…";
+
+  try {
+    const res = await fetch(API_BASE + "/api/admin/abandoned/" + id + "/recover", {
+      method: "POST",
+      headers: { Authorization: "Bearer " + token }
+    });
+
+    const data = await res.json();
+    if (!res.ok) {
+      alert(data.error || "Failed to send recovery email.");
+    } else {
+      alert("Recovery email sent.");
+    }
+
+  } catch (err) {
+    console.error(err);
+    alert("Backend error.");
+  } finally {
+    btn.disabled = false;
+    btn.textContent = "Send Recovery Email";
+  }
+});
+
+/* =======================================
+   EMAIL BLAST — MASS NEWSLETTER
+   ======================================= */
+
+const blastSubjectEl = document.getElementById("blastSubject");
+const blastBodyEl = document.getElementById("blastBody");
+const sendBlastBtn = document.getElementById("sendBlastBtn");
+
+/* SEND EMAIL BLAST */
+sendBlastBtn.addEventListener("click", async () => {
+  const token = getToken();
+
+  const subject = blastSubjectEl.value.trim();
+  const body = blastBodyEl.value.trim();
+
+  if (!subject) return alert("Enter a subject.");
+  if (!body) return alert("Enter an email body.");
+
+  sendBlastBtn.disabled = true;
+  sendBlastBtn.textContent = "Sending…";
+
+  try {
+    const res = await fetch(API_BASE + "/api/admin/email-blast", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + token
+      },
+      body: JSON.stringify({ subject, body })
+    });
+
+    const data = await res.json();
+    if (!res.ok) {
+      alert(data.error || "Failed to send emails.");
+    } else {
+      alert("Email blast sent to all subscribers.");
+      blastSubjectEl.value = "";
+      blastBodyEl.value = "";
+    }
+
+  } catch (err) {
+    console.error(err);
+    alert("Backend error while sending blast.");
+
+  } finally {
+    sendBlastBtn.disabled = false;
+    sendBlastBtn.textContent = "Send Email";
+  }
+});
