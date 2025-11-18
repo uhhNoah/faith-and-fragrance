@@ -1,570 +1,561 @@
-// server.js
-const express = require("express");
-const cors = require("cors");
-const fs = require("fs");
-const path = require("path");
-const jwt = require("jsonwebtoken");
-const multer = require("multer");
+// Backend/server.js
+// Faith & Fragrance Co. – lightweight JSON + file based backend
+
 require("dotenv").config();
 
-const app = express();
-const PORT = process.env.PORT || 4000;
+const express = require("express");
+const cors = require("cors");
+const path = require("path");
+const fs = require("fs");
+const jwt = require("jsonwebtoken");
+const multer = require("multer");
 
-// ===== SIMPLE ADMIN CONFIG =====
+const app = express();
+
+// ----- ENV + CONSTANTS -----
+const PORT = process.env.PORT || 4000;
+const JWT_SECRET = process.env.JWT_SECRET || "dev-admin-jwt-secret";
+
+// Hard-coded admin for now (can move to env later)
 const ADMIN_EMAIL =
   process.env.ADMIN_EMAIL || "admin@faith-and-fragrance-co.com";
-const ADMIN_PASSWORD =
-  process.env.ADMIN_PASSWORD || "ChangeThisPassword123!"; // CHANGE THIS
-const JWT_SECRET = process.env.JWT_SECRET || "CHANGE_ME_SECRET";
+const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || "changeme";
 
-// ===== FILE PATHS =====
 const DATA_DIR = __dirname;
 const PRODUCTS_FILE = path.join(DATA_DIR, "products.json");
 const SUBSCRIBERS_FILE = path.join(DATA_DIR, "subscribers.json");
 const ORDERS_FILE = path.join(DATA_DIR, "orders.json");
-const UPLOADS_DIR = path.join(DATA_DIR, "uploads");
 
-// Ensure uploads dir exists
-if (!fs.existsSync(UPLOADS_DIR)) {
-  fs.mkdirSync(UPLOADS_DIR, { recursive: true });
-}
-
-// ===== MULTER (IMAGE UPLOAD) =====
-const storage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    cb(null, UPLOADS_DIR);
-  },
-  filename: (req, file, cb) => {
-    const ext = path.extname(file.originalname) || "";
-    cb(null, req.params.id + ext.toLowerCase());
-  },
-});
-const upload = multer({ storage });
-
-// ===== DEFAULT PRODUCTS (SEED) =====
+// Seed products if products.json is empty or missing
 const defaultSeedProducts = [
   {
     id: "jelly-01",
     name: "Mercy Morning Jelly Melt",
     description:
-      "Soft vanilla, clean linen, and a hint of cedar in a jelly texture.",
+      "Soft vanilla, clean linen, and a quiet hint of cedar. Made to feel like new mercies and fresh sheets.",
     priceCents: 1299,
     collection: "jelly-melts",
+    imageUrl: "",
     active: true,
   },
   {
     id: "jelly-02",
-    name: "Quiet Room Jelly Melt",
+    name: "Grace After Dark Jelly Melt",
     description:
-      "Subtle musk and warm amber for a calm, grounded space — not overpowering.",
+      "Smoked amber, sandalwood, and a trace of tonka. For late nights, answered prayers, and deep exhale moments.",
     priceCents: 1299,
     collection: "jelly-melts",
+    imageUrl: "",
     active: true,
   },
   {
-    id: "wax-01",
-    name: "Lobby Calm Wax Melt",
+    id: "classic-01",
+    name: "Still Waters Wax Melt",
     description:
-      "That “hotel lobby” vibe — fresh, upscale, and not too loud.",
-    priceCents: 999,
-    collection: "wax-melts",
+      "Lavender, bergamot, and driftwood. A gentle, steadying fragrance for restless rooms.",
+    priceCents: 1099,
+    collection: "classic-wax-melts",
+    imageUrl: "",
     active: true,
   },
   {
     id: "candle-01",
-    name: "Evening Mercy Candle",
+    name: "Altar Light Candle",
     description:
-      "Slow-burning vanilla + sandalwood for late-night wind-downs.",
-    priceCents: 1899,
+      "Warm fig, honey, and smoke from an old church candle. Poured for quiet evenings and gratitude lists.",
+    priceCents: 2499,
     collection: "candles",
+    imageUrl: "",
     active: true,
   },
 ];
 
-// ===== PRODUCT HELPERS =====
-function normalizeProducts(list) {
-  return list.map((p) => ({
-    ...p,
-    active: p.active !== false,
-  }));
+// ----- HELPERS: JSON I/O -----
+function safeReadJSON(filePath, fallback) {
+  try {
+    if (!fs.existsSync(filePath)) return fallback;
+    const raw = fs.readFileSync(filePath, "utf8");
+    if (!raw.trim()) return fallback;
+    const parsed = JSON.parse(raw);
+    return parsed;
+  } catch (err) {
+    console.error(`Failed to read JSON from ${filePath}:`, err);
+    return fallback;
+  }
+}
+
+function safeWriteJSON(filePath, data) {
+  try {
+    fs.writeFileSync(filePath, JSON.stringify(data, null, 2), "utf8");
+  } catch (err) {
+    console.error(`Failed to write JSON to ${filePath}:`, err);
+  }
+}
+
+// ----- PRODUCTS HELPERS -----
+function normalizeProducts(rawProducts) {
+  if (!Array.isArray(rawProducts) || rawProducts.length === 0) {
+    return defaultSeedProducts.map((p) => ({ ...p }));
+  }
+
+  return rawProducts.map((p) => {
+    const idBase =
+      p.id ||
+      p.sku ||
+      `prod-${Date.now()}-${Math.random().toString(36).slice(2)}`;
+
+    let priceCents = 0;
+    if (typeof p.priceCents === "number") {
+      priceCents = Math.max(0, Math.round(p.priceCents));
+    } else if (typeof p.price === "number") {
+      priceCents = Math.max(0, Math.round(p.price * 100));
+    } else if (typeof p.price === "string") {
+      const parsed = parseFloat(p.price);
+      if (!isNaN(parsed)) priceCents = Math.max(0, Math.round(parsed * 100));
+    }
+
+    const collection = (p.collection || "").toString().trim().toLowerCase();
+
+    return {
+      id: String(idBase),
+      name: String(p.name || "").trim(),
+      description: String(p.description || "").trim(),
+      priceCents,
+      collection,
+      imageUrl: p.imageUrl || "",
+      active: p.active !== false,
+    };
+  });
 }
 
 function loadProducts() {
-  try {
-    if (!fs.existsSync(PRODUCTS_FILE)) {
-      fs.writeFileSync(
-        PRODUCTS_FILE,
-        JSON.stringify(defaultSeedProducts, null, 2),
-        "utf8"
-      );
-      return normalizeProducts([...defaultSeedProducts]);
-    }
+  const raw = safeReadJSON(PRODUCTS_FILE, null);
 
-    const raw = fs.readFileSync(PRODUCTS_FILE, "utf8");
-    if (!raw.trim()) return normalizeProducts([...defaultSeedProducts]);
-
-    const parsed = JSON.parse(raw);
-    if (!Array.isArray(parsed))
-      return normalizeProducts([...defaultSeedProducts]);
-
-    return normalizeProducts(parsed);
-  } catch (err) {
-    console.error("Error reading products file:", err);
-    return normalizeProducts([...defaultSeedProducts]);
+  if (!raw) {
+    const seeded = normalizeProducts(defaultSeedProducts);
+    safeWriteJSON(PRODUCTS_FILE, seeded);
+    return seeded;
   }
+
+  const normalized = normalizeProducts(raw);
+  // ensure file is normalized too
+  safeWriteJSON(PRODUCTS_FILE, normalized);
+  return normalized;
 }
 
-function saveProducts(list) {
-  try {
-    const normalized = normalizeProducts(list);
-    fs.writeFileSync(
-      PRODUCTS_FILE,
-      JSON.stringify(normalized, null, 2),
-      "utf8"
-    );
-  } catch (err) {
-    console.error("Error writing products file:", err);
-  }
+function saveProducts(products) {
+  safeWriteJSON(PRODUCTS_FILE, products);
 }
 
-let products = loadProducts();
-
-// ===== SUBSCRIBERS =====
 function loadSubscribers() {
-  try {
-    if (!fs.existsSync(SUBSCRIBERS_FILE)) {
-      fs.writeFileSync(SUBSCRIBERS_FILE, "[]", "utf8");
-      return [];
-    }
-    const raw = fs.readFileSync(SUBSCRIBERS_FILE, "utf8");
-    if (!raw.trim()) return [];
-    const parsed = JSON.parse(raw);
-    return Array.isArray(parsed) ? parsed : [];
-  } catch (err) {
-    console.error("Error reading subscribers file:", err);
-    return [];
-  }
+  const raw = safeReadJSON(SUBSCRIBERS_FILE, []);
+  if (!Array.isArray(raw)) return [];
+  return raw.map((s) => ({
+    id:
+      s.id ||
+      `sub-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`,
+    email: String(s.email || "").toLowerCase().trim(),
+    createdAt: s.createdAt || s.joinedAt || new Date().toISOString(),
+    source: s.source || "unknown",
+  }));
 }
 
-function saveSubscribers(list) {
-  try {
-    fs.writeFileSync(
-      SUBSCRIBERS_FILE,
-      JSON.stringify(list, null, 2),
-      "utf8"
-    );
-  } catch (err) {
-    console.error("Error writing subscribers file:", err);
-  }
+function saveSubscribers(subscribers) {
+  safeWriteJSON(SUBSCRIBERS_FILE, subscribers);
 }
 
-// ===== ORDERS =====
 function loadOrders() {
-  try {
-    if (!fs.existsSync(ORDERS_FILE)) {
-      fs.writeFileSync(ORDERS_FILE, "[]", "utf8");
-      return [];
-    }
-    const raw = fs.readFileSync(ORDERS_FILE, "utf8");
-    if (!raw.trim()) return [];
-    const parsed = JSON.parse(raw);
-    return Array.isArray(parsed) ? parsed : [];
-  } catch (err) {
-    console.error("Error reading orders file:", err);
-    return [];
-  }
+  const raw = safeReadJSON(ORDERS_FILE, []);
+  if (!Array.isArray(raw)) return [];
+  return raw.map((o) => ({
+    id: o.id || `ord-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`,
+    items: Array.isArray(o.items) ? o.items : [],
+    customer: o.customer || {},
+    totals: o.totals || {},
+    status: o.status || "pending",
+    createdAt: o.createdAt || new Date().toISOString(),
+  }));
 }
 
-function saveOrders(list) {
-  try {
-    fs.writeFileSync(ORDERS_FILE, JSON.stringify(list, null, 2), "utf8");
-  } catch (err) {
-    console.error("Error writing orders file:", err);
-  }
+function saveOrders(orders) {
+  safeWriteJSON(ORDERS_FILE, orders);
 }
 
-let orders = loadOrders();
+// ----- FILE UPLOAD (PRODUCT IMAGES) -----
+const uploadsDir = path.join(DATA_DIR, "uploads");
+if (!fs.existsSync(uploadsDir)) {
+  fs.mkdirSync(uploadsDir, { recursive: true });
+}
 
-// ===== AUTH =====
-function generateAdminToken() {
-  return jwt.sign(
-    {
-      role: "admin",
-      email: ADMIN_EMAIL,
-    },
-    JWT_SECRET,
-    { expiresIn: "2h" }
-  );
+const storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, uploadsDir);
+  },
+  filename: function (req, file, cb) {
+    const ext = path.extname(file.originalname || "");
+    const base =
+      path.basename(file.originalname || "image", ext).replace(/[^a-z0-9]+/gi, "-") ||
+      "image";
+    cb(null, `${base}-${Date.now()}${ext}`);
+  },
+});
+
+const upload = multer({ storage });
+
+// ----- MIDDLEWARE -----
+app.use(cors());
+app.use(express.json());
+app.use("/uploads", express.static(uploadsDir));
+
+// Simple health check
+app.get("/api/health", (req, res) => {
+  res.json({ ok: true, time: new Date().toISOString() });
+});
+
+// ----- AUTH HELPERS -----
+function generateToken(payload) {
+  return jwt.sign(payload, JWT_SECRET, { expiresIn: "2h" });
 }
 
 function authAdmin(req, res, next) {
-  const authHeader = req.headers.authorization || "";
-  if (!authHeader.startsWith("Bearer ")) {
-    return res
-      .status(401)
-      .json({ error: "Missing or invalid Authorization header." });
+  const header = req.headers.authorization || "";
+  const [scheme, token] = header.split(" ");
+
+  if (scheme !== "Bearer" || !token) {
+    return res.status(401).json({ error: "Missing or invalid Authorization header." });
   }
 
-  const token = authHeader.slice(7);
   try {
-    const payload = jwt.verify(token, JWT_SECRET);
-    if (payload.role !== "admin") {
-      return res.status(403).json({ error: "Forbidden." });
-    }
-    req.admin = payload;
-    next();
+    const decoded = jwt.verify(token, JWT_SECRET);
+    req.admin = decoded;
+    return next();
   } catch (err) {
+    console.error("JWT error:", err.message);
     return res.status(401).json({ error: "Invalid or expired token." });
   }
 }
 
-// ===== FIXED CORS =====
-const allowedOrigins = [
-  "http://localhost:3000",
-  "http://127.0.0.1:3000",
-  "http://localhost:5173",
-  "http://127.0.0.1:5173",
-
-  // Netlify preview deploys
-  /\.netlify\.app$/,
-
-  // 🔥 Correct production domains
-  "https://faith-and-fragrance-co.com",
-  "https://www.faith-and-fragrance-co.com",
-  "https://faithandfragrance.netlify.app",
-];
-
-app.use(
-  cors({
-    origin: function (origin, callback) {
-      if (!origin) return callback(null, true);
-
-      if (/\.netlify\.app$/.test(origin)) return callback(null, true);
-
-      if (allowedOrigins.includes(origin)) return callback(null, true);
-
-      console.warn("Blocked CORS:", origin);
-      return callback(new Error("Not allowed by CORS"));
-    },
-    credentials: true,
-  })
-);
-
-app.use(express.json());
-app.use("/uploads", express.static(UPLOADS_DIR));
-
-// ===== ADMIN LOGIN =====
+// ----- ADMIN AUTH ROUTES -----
 app.post("/api/admin/login", (req, res) => {
   const { email, password } = req.body || {};
+  const normalizedEmail = (email || "").toLowerCase().trim();
 
-  if (!email || !password) {
-    return res.status(400).json({ error: "Email and password required." });
+  if (!normalizedEmail || !password) {
+    return res.status(400).json({ error: "Email and password are required." });
   }
 
-  if (email !== ADMIN_EMAIL || password !== ADMIN_PASSWORD) {
+  if (normalizedEmail !== ADMIN_EMAIL.toLowerCase() || password !== ADMIN_PASSWORD) {
     return res.status(401).json({ error: "Invalid credentials." });
   }
 
-  const token = generateAdminToken();
+  const token = generateToken({
+    sub: "admin",
+    email: ADMIN_EMAIL,
+  });
+
   return res.json({ token });
 });
 
-// Admin identity check
 app.get("/api/admin/me", authAdmin, (req, res) => {
-  return res.json({
+  res.json({
     email: ADMIN_EMAIL,
     role: "admin",
   });
 });
 
-// ===== PUBLIC PRODUCTS =====
+// ----- PRODUCTS (PUBLIC) -----
 app.get("/api/products", (req, res) => {
-  const visible = products.filter((p) => p.active !== false);
-  res.json(visible);
+  const products = loadProducts();
+  const activeOnly = products.filter((p) => p.active !== false);
+  res.json(activeOnly);
 });
 
-// ===== SUBSCRIBE =====
-app.post("/api/subscribe", (req, res) => {
-  const { email } = req.body || {};
-
-  if (!email || typeof email !== "string") {
-    return res.status(400).json({ error: "Valid email is required." });
+app.get("/api/products/:id", (req, res) => {
+  const products = loadProducts();
+  const product = products.find((p) => p.id === req.params.id);
+  if (!product || product.active === false) {
+    return res.status(404).json({ error: "Product not found." });
   }
-
-  const trimmed = email.trim().toLowerCase();
-  if (!trimmed) {
-    return res.status(400).json({ error: "Email is required." });
-  }
-
-  const subscribers = loadSubscribers();
-  const exists = subscribers.some((s) => s.email === trimmed);
-  if (exists) {
-    return res.status(200).json({ message: "Already subscribed." });
-  }
-
-  const newSubscriber = {
-    id: `sub-${Date.now()}`,
-    email: trimmed,
-    createdAt: new Date().toISOString(),
-  };
-
-  subscribers.push(newSubscriber);
-  saveSubscribers(subscribers);
-
-  console.log("New subscriber:", newSubscriber);
-
-  return res.status(201).json({ message: "Subscribed successfully." });
+  res.json(product);
 });
 
-// ===== PUBLIC ORDERS (CHECKOUT) =====
-app.post("/api/orders", (req, res) => {
-  const { items, customer, totals } = req.body || {};
-
-  if (!Array.isArray(items) || items.length === 0) {
-    return res.status(400).json({ error: "Order must include at least one item." });
-  }
-
-  const safeItems = items
-    .map((item) => {
-      const qty = parseInt(item.quantity, 10);
-      const price = parseInt(item.priceCents, 10);
-
-      if (!item.productId || Number.isNaN(qty) || qty <= 0 || Number.isNaN(price) || price < 0) {
-        return null;
-      }
-
-      return {
-        productId: String(item.productId),
-        name: String(item.name || ""),
-        quantity: qty,
-        priceCents: price,
-      };
-    })
-    .filter(Boolean);
-
-  if (!safeItems.length) {
-    return res.status(400).json({ error: "Invalid order items." });
-  }
-
-  const name = customer?.name?.trim();
-  const email = customer?.email?.trim();
-  const addressLine1 = customer?.addressLine1?.trim() || "";
-  const addressLine2 = customer?.addressLine2?.trim() || "";
-  const city = customer?.city?.trim() || "";
-  const state = customer?.state?.trim() || "";
-  const zip = customer?.zip?.trim() || "";
-  const notes = customer?.notes?.trim() || "";
-
-  if (!name || !email) {
-    return res.status(400).json({ error: "Name and email are required." });
-  }
-
-  const subtotalCents = parseInt(totals?.subtotalCents ?? 0, 10) || 0;
-  const shippingCents = parseInt(totals?.shippingCents ?? 0, 10) || 0;
-  const taxCents = parseInt(totals?.taxCents ?? 0, 10) || 0;
-  const totalCents = parseInt(totals?.totalCents ?? 0, 10) || 0;
-
-  const orderId = `ord-${Date.now()}-${Math.floor(Math.random() * 9999)}`;
-
-  const newOrder = {
-    id: orderId,
-    createdAt: new Date().toISOString(),
-    items: safeItems,
-    customer: {
-      name,
-      email,
-      addressLine1,
-      addressLine2,
-      city,
-      state,
-      zip,
-      notes,
-    },
-    totals: {
-      subtotalCents,
-      shippingCents,
-      taxCents,
-      totalCents,
-    },
-    status: "new",
-  };
-
-  orders.push(newOrder);
-  saveOrders(orders);
-
-  console.log("New order received:", {
-    id: newOrder.id,
-    itemCount: newOrder.items.length,
-    totalCents: newOrder.totals.totalCents,
-  });
-
-  return res.status(201).json({
-    ok: true,
-    orderId: newOrder.id,
-  });
-});
-
-// ===== ADMIN PRODUCTS =====
+// ----- ADMIN PRODUCTS -----
 app.get("/api/admin/products", authAdmin, (req, res) => {
+  const products = loadProducts();
   res.json(products);
 });
 
-// Create
 app.post("/api/admin/products", authAdmin, (req, res) => {
-  const { name, description, priceCents, collection, active } = req.body || {};
+  const { name, description, priceCents, collection } = req.body || {};
 
-  if (!name || typeof name !== "string") {
-    return res.status(400).json({ error: "Product name is required." });
+  if (!name || typeof priceCents !== "number") {
+    return res.status(400).json({ error: "Name and priceCents are required." });
   }
 
-  const priceNumber = parseInt(priceCents, 10);
-  if (Number.isNaN(priceNumber) || priceNumber < 0) {
-    return res
-      .status(400)
-      .json({ error: "priceCents must be a non-negative number." });
-  }
+  const products = loadProducts();
 
-  const coll =
-    typeof collection === "string" && collection.trim()
-      ? collection.trim()
-      : "uncategorized";
-
-  const slugBase =
-    coll.replace(/[^a-z0-9]+/gi, "-").toLowerCase().replace(/^-|-$/g, "") ||
-    "prod";
-
-  const uniqueId = `${slugBase}-${Date.now()}`;
+  const id = `prod-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`;
 
   const newProduct = {
-    id: uniqueId,
-    name: name.trim(),
-    description: (description || "").trim(),
-    priceCents: priceNumber,
-    collection: coll.toLowerCase(),
-    active: active === undefined ? true : !!active,
+    id,
+    name: String(name).trim(),
+    description: String(description || "").trim(),
+    priceCents: Math.max(0, Math.round(priceCents)),
+    collection: (collection || "").toString().trim().toLowerCase(),
+    imageUrl: "",
+    active: true,
   };
 
   products.push(newProduct);
   saveProducts(products);
 
-  return res.status(201).json(newProduct);
+  res.status(201).json(newProduct);
 });
 
-// Update
 app.put("/api/admin/products/:id", authAdmin, (req, res) => {
   const { id } = req.params;
-  const { name, description, priceCents, collection, active } = req.body || {};
+  const updates = req.body || {};
 
-  const idx = products.findIndex((p) => p.id === id);
-  if (idx === -1) {
+  const products = loadProducts();
+  const index = products.findIndex((p) => p.id === id);
+  if (index === -1) {
     return res.status(404).json({ error: "Product not found." });
   }
 
-  if (name !== undefined) {
-    if (!name || typeof name !== "string") {
-      return res.status(400).json({ error: "Invalid name." });
-    }
-    products[idx].name = name.trim();
+  const current = products[index];
+
+  let priceCents = current.priceCents;
+  if (typeof updates.priceCents === "number") {
+    priceCents = Math.max(0, Math.round(updates.priceCents));
   }
 
-  if (description !== undefined) {
-    products[idx].description = (description || "").trim();
-  }
-
-  if (priceCents !== undefined) {
-    const priceNumber = parseInt(priceCents, 10);
-    if (Number.isNaN(priceNumber) || priceNumber < 0) {
-      return res
-        .status(400)
-        .json({ error: "priceCents must be a non-negative number." });
-    }
-    products[idx].priceCents = priceNumber;
-  }
-
-  if (collection !== undefined) {
-    const coll =
-      typeof collection === "string" && collection.trim()
-        ? collection.trim()
-        : "uncategorized";
-    products[idx].collection = coll.toLowerCase();
-  }
-
-  if (active !== undefined) {
-    products[idx].active = !!active;
-  }
+  products[index] = {
+    ...current,
+    name: updates.name !== undefined ? String(updates.name).trim() : current.name,
+    description:
+      updates.description !== undefined
+        ? String(updates.description).trim()
+        : current.description,
+    priceCents,
+    collection:
+      updates.collection !== undefined
+        ? String(updates.collection).trim().toLowerCase()
+        : current.collection,
+    active:
+      typeof updates.active === "boolean" ? updates.active : current.active,
+  };
 
   saveProducts(products);
-  return res.json(products[idx]);
+  res.json(products[index]);
 });
 
-// Delete with image cleanup
 app.delete("/api/admin/products/:id", authAdmin, (req, res) => {
   const { id } = req.params;
+  const products = loadProducts();
+  const index = products.findIndex((p) => p.id === id);
 
-  const idx = products.findIndex((p) => p.id === id);
-  if (idx === -1) {
+  if (index === -1) {
     return res.status(404).json({ error: "Product not found." });
   }
 
-  const product = products[idx];
-
-  if (product.imageUrl && typeof product.imageUrl === "string") {
-    const relative = product.imageUrl.replace(/^\/+/, "");
-    const imgPath = path.join(DATA_DIR, relative);
-    if (imgPath.startsWith(UPLOADS_DIR) && fs.existsSync(imgPath)) {
-      try {
-        fs.unlinkSync(imgPath);
-      } catch (err) {
-        console.warn("Failed to delete image file:", err.message);
-      }
-    }
-  }
-
-  products.splice(idx, 1);
+  const removed = products.splice(index, 1)[0];
   saveProducts(products);
 
-  return res.json({ ok: true });
+  res.json({ ok: true, removed });
 });
 
-// ===== ADMIN ORDERS =====
-app.get("/api/admin/orders", authAdmin, (req, res) => {
-  const fresh = loadOrders(); // in case file was changed externally
-  orders = fresh;
-  res.json(orders);
-});
-
-// Upload image
 app.post(
   "/api/admin/products/:id/image",
   authAdmin,
   upload.single("image"),
   (req, res) => {
     const { id } = req.params;
-
-    const idx = products.findIndex((p) => p.id === id);
-    if (idx === -1) {
-      return res.status(404).json({ error: "Product not found." });
-    }
-
     if (!req.file) {
       return res.status(400).json({ error: "No image file uploaded." });
     }
 
-    const relativePath = "/uploads/" + req.file.filename;
-    products[idx].imageUrl = relativePath;
+    const products = loadProducts();
+    const index = products.findIndex((p) => p.id === id);
+    if (index === -1) {
+      return res.status(404).json({ error: "Product not found." });
+    }
+
+    const publicUrl = `/uploads/${req.file.filename}`;
+    products[index].imageUrl = publicUrl;
     saveProducts(products);
 
-    const product = products[idx];
-
-    return res.json({
-      ok: true,
-      imageUrl: relativePath,
-      product,
-    });
+    res.json({ ok: true, imageUrl: publicUrl, product: products[index] });
   }
 );
 
-// ===== START SERVER =====
+// ----- SUBSCRIBERS (PUBLIC SIGNUP) -----
+app.post("/api/subscribe", (req, res) => {
+  const { email, source } = req.body || {};
+  const normalizedEmail = (email || "").toLowerCase().trim();
+
+  if (!normalizedEmail || !normalizedEmail.includes("@")) {
+    return res.status(400).json({ error: "Valid email is required." });
+  }
+
+  let subscribers = loadSubscribers();
+
+  if (subscribers.some((s) => s.email === normalizedEmail)) {
+    return res.json({ ok: true, message: "Already subscribed." });
+  }
+
+  const newSubscriber = {
+    id: `sub-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`,
+    email: normalizedEmail,
+    createdAt: new Date().toISOString(),
+    source: source || "site",
+  };
+
+  subscribers.push(newSubscriber);
+  saveSubscribers(subscribers);
+
+  res.status(201).json({ ok: true, subscriber: newSubscriber });
+});
+
+// ----- ADMIN SUBSCRIBERS -----
+app.get("/api/admin/subscribers", authAdmin, (req, res) => {
+  const subscribers = loadSubscribers();
+
+  const sorted = subscribers.slice().sort((a, b) => {
+    const aDate = new Date(a.createdAt || a.joinedAt || 0).getTime();
+    const bDate = new Date(b.createdAt || b.joinedAt || 0).getTime();
+    return bDate - aDate;
+  });
+
+  res.json(sorted);
+});
+
+// ----- ORDERS (PUBLIC – FROM CHECKOUT) -----
+function getSafeCartItem(products, item) {
+  const product = products.find((p) => p.id === item.productId);
+  if (!product || product.active === false) return null;
+
+  const qty = Number.isFinite(item.quantity) ? Math.max(1, item.quantity) : 1;
+
+  return {
+    productId: product.id,
+    name: product.name,
+    priceCents: product.priceCents,
+    quantity: qty,
+    lineTotalCents: product.priceCents * qty,
+  };
+}
+
+app.post("/api/orders", (req, res) => {
+  const { items, customer, totals } = req.body || {};
+
+  if (!Array.isArray(items) || items.length === 0) {
+    return res.status(400).json({ error: "Order items are required." });
+  }
+
+  const products = loadProducts();
+
+  const safeItems = items
+    .map((item) => getSafeCartItem(products, item))
+    .filter(Boolean);
+
+  if (safeItems.length === 0) {
+    return res.status(400).json({ error: "Invalid order items." });
+  }
+
+  const computedSubtotal = safeItems.reduce(
+    (sum, i) => sum + i.lineTotalCents,
+    0
+  );
+
+  let shippingCents = 0;
+  let taxCents = 0;
+
+  if (totals && typeof totals.shippingCents === "number") {
+    shippingCents = Math.max(0, Math.round(totals.shippingCents));
+  }
+  if (totals && typeof totals.taxCents === "number") {
+    taxCents = Math.max(0, Math.round(totals.taxCents));
+  }
+
+  const totalCents = computedSubtotal + shippingCents + taxCents;
+
+  const safeCustomer = {
+    name: (customer && customer.name ? String(customer.name) : "").trim(),
+    email:
+      (customer && customer.email
+        ? String(customer.email).toLowerCase().trim()
+        : ""),
+    address: customer && customer.address ? customer.address : {},
+    notes: customer && customer.notes ? String(customer.notes).trim() : "",
+  };
+
+  const orders = loadOrders();
+
+  const newOrder = {
+    id: `ord-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`,
+    items: safeItems,
+    customer: safeCustomer,
+    totals: {
+      subtotalCents: computedSubtotal,
+      shippingCents,
+      taxCents,
+      totalCents,
+    },
+    status: "pending", // admin view can later change this
+    createdAt: new Date().toISOString(),
+  };
+
+  orders.push(newOrder);
+  saveOrders(orders);
+
+  res.status(201).json({ ok: true, order: newOrder });
+});
+
+// ----- ADMIN ORDERS (READ-ONLY FOR NOW) -----
+app.get("/api/admin/orders", authAdmin, (req, res) => {
+  const search = (req.query.search || "").toString().toLowerCase().trim();
+  const orders = loadOrders();
+
+  let filtered = orders.slice();
+
+  if (search) {
+    filtered = filtered.filter((order) => {
+      if (order.id && order.id.toLowerCase().includes(search)) return true;
+
+      const name =
+        order.customer && order.customer.name
+          ? order.customer.name.toLowerCase()
+          : "";
+      const email =
+        order.customer && order.customer.email
+          ? order.customer.email.toLowerCase()
+          : "";
+
+      if (name.includes(search) || email.includes(search)) return true;
+
+      const notes =
+        order.customer && order.customer.notes
+          ? order.customer.notes.toLowerCase()
+          : "";
+      if (notes.includes(search)) return true;
+
+      return false;
+    });
+  }
+
+  filtered.sort(
+    (a, b) =>
+      new Date(b.createdAt || 0).getTime() -
+      new Date(a.createdAt || 0).getTime()
+  );
+
+  res.json(filtered);
+});
+
+// (You can add a PATCH route later for clickable status changes if you want)
+
+// ----- BOOT -----
 app.listen(PORT, () => {
-  console.log(`Faith & Fragrance backend listening on port ${PORT}`);
+  console.log(`Faith & Fragrance backend listening on http://localhost:${PORT}`);
+  console.log("Admin email:", ADMIN_EMAIL);
 });
