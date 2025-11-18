@@ -134,9 +134,10 @@
       margin-bottom: 1.6rem;
     }
 
+    /* SINGLE COLUMN GRID NOW */
     .grid {
       display: grid;
-      grid-template-columns: 1.1fr 1fr;
+      grid-template-columns: minmax(0, 1fr);
       gap: 2rem;
       align-items: flex-start;
       width: 100%;
@@ -306,7 +307,7 @@
       gap: 1rem;
     }
 
-    /* ADMIN TABS INSIDE PANEL */
+    /* ADMIN TABS */
     .admin-tabs {
       margin: 1.2rem 0 1rem;
       display: flex;
@@ -759,7 +760,7 @@
   </p>
 
   <div class="grid">
-    <!-- LOGIN CARD -->
+    <!-- ONLY ONE CARD NOW -->
     <section class="card">
       <div class="card-title">Sign in</div>
 
@@ -925,25 +926,6 @@
           Log out
         </button>
       </div>
-    </section>
-
-    <!-- INFO CARD -->
-    <section class="card">
-      <div class="card-title">Notes</div>
-      <p class="muted">
-        This dashboard is running against your local backend at
-        <code>http://localhost:4000</code>.
-      </p>
-      <p class="muted" style="margin-top:0.9rem;">
-        Current setup:
-      </p>
-      <ul class="muted" style="margin-top:0.5rem; padding-left:1.1rem; font-size:0.85rem;">
-        <li>Hard-coded admin account (email + password) in <code>server.js</code>.</li>
-        <li>JWT token with 2-hour expiry, stored in <code>localStorage</code>.</li>
-        <li>Protected product management routes under <code>/api/admin/products</code>.</li>
-        <li>Orders saved to <code>orders.json</code> and visible here once placed.</li>
-        <li>Email subscribers saved to <code>subscribers.json</code>.</li>
-      </ul>
     </section>
   </div>
 
@@ -1603,7 +1585,7 @@
     loadAdminProducts();
   });
 
-  // ===== ORDERS (READ-ONLY LIST) =====
+  // ===== ORDERS =====
   async function loadAdminOrders() {
     const token = getToken();
     if (!token) {
@@ -1793,7 +1775,7 @@
     });
   }
 
-  // ===== SUBSCRIBERS (EMAIL LIST) =====
+  // ===== SUBSCRIBERS =====
   async function loadAdminSubscribers() {
     const token = getToken();
     if (!token) {
