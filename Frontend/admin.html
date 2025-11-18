@@ -754,7 +754,7 @@ function renderOrders() {
   const page = ordersFiltered.slice(start, start + ORDERS_PER_PAGE);
 
   const rows = page.map(o => `
-    <tr>
+    <tr onclick="window.location='admin-order.html?id=${o.id}'" style="cursor:pointer;">
       <td>${escapeHtml(o.id.slice(0, 10))}</td>
       <td>${escapeHtml(o.customer?.email || "")}</td>
       <td>${formatPrice(o.totals?.totalCents || 0)}</td>

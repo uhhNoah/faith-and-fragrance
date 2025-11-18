@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Order Details – Admin</title>
+  <style>
+    body {
+      background: #050506;
+      color: #f5f3ee;
+      font-family: system-ui, sans-serif;
+      padding: 2rem;
+    }
+    .card {
+      background: #0d0d10;
+      padding: 2rem;
+      border-radius: 18px;
+      border: 1px solid rgba(255,255,255,0.08);
+      max-width: 800px;
+      margin: auto;
+    }
+
+    h1 {
+      margin-bottom: 1rem;
+      font-size: 1.6rem;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+    }
+
+    .section-title {
+      margin-top: 2rem;
+      font-size: 1.1rem;
+      color: #d3b46a;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+    }
+
+    table {
+      width: 100%;
+      margin-top: 1rem;
+      border-collapse: collapse;
+    }
+    th, td {
+      padding: 0.6rem;
+      border-bottom: 1px solid rgba(255,255,255,0.1);
+    }
+    th {
+      color: #d3b46a;
+      text-align: left;
+    }
+
+    input, select {
+      width: 100%;
+      padding: 0.6rem;
+      border-radius: 8px;
+      border: 1px solid rgba(255,255,255,0.2);
+      background: #050506;
+      color: #f5f3ee;
+      margin-top: 0.5rem;
+    }
+
+    button {
+      margin-top: 1.5rem;
+      background: #d3b46a;
+      color: #050506;
+      padding: 0.8rem 1.4rem;
+      border-radius: 999px;
+      border: none;
+      cursor: pointer;
+      font-weight: bold;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+    }
+  </style>
+</head>
+
+<body>
+
+<div class="card">
+  <h1 id="orderId">Order</h1>
+
+  <div id="orderInfo"></div>
+
+  <div class="section-title">Items</div>
+  <table id="itemTable"></table>
+
+  <div class="section-title">Update Order</div>
+
+  <label>Status</label>
+  <select id="statusSelect">
+    <option value="pending">Pending</option>
+    <option value="processing">Processing</option>
+    <option value="shipped">Shipped</option>
+    <option value="completed">Completed</option>
+    <option value="cancelled">Cancelled</option>
+  </select>
+
+  <label>Payment Status</label>
+  <select id="paymentSelect">
+    <option value="unpaid">Unpaid</option>
+    <option value="paid">Paid</option>
+    <option value="refunded">Refunded</option>
+  </select>
+
+  <label>Tracking Number</label>
+  <input id="trackingInput" placeholder="Enter tracking number..." />
+
+  <button onclick="updateOrder()">Save Changes</button>
+
+</div>
+
+<script>
+  const API_BASE = location.hostname.includes("localhost")
+    ? "http://localhost:4000"
+    : "https://faith-fragrance-backend.onrender.com";
+
+  const params = new URLSearchParams(location.search);
+  const id = params.get("id");
+
+  async function loadOrder() {
+    const token = localStorage.getItem("admin_token");
+    if (!token) return alert("Not logged in.");
+
+    const res = await fetch(`${API_BASE}/api/admin/orders`, {
+      headers: { Authorization: "Bearer " + token }
+    });
+
+    const orders = await res.json();
+    const order = orders.find(o => o.id === id);
+
+    if (!order) {
+      document.body.innerHTML = "<p style='color:red;text-align:center;'>Order not found.</p>";
+      return;
+    }
+
+    document.getElementById("orderId").textContent = "Order " + order.id;
+
+    document.getElementById("orderInfo").innerHTML = `
+      <p><strong>Email:</strong> ${order.customer.email}</p>
+      <p><strong>Name:</strong> ${order.customer.name}</p>
+      <p><strong>Date:</strong> ${order.createdAt}</p>
+      <p><strong>Total:</strong> $${(order.totals?.totalCents/100).toFixed(2) || "0.00"}</p>
+    `;
+
+    document.getElementById("statusSelect").value = order.status;
+    document.getElementById("paymentSelect").value = order.paymentStatus;
+    document.getElementById("trackingInput").value = order.trackingNumber || "";
+
+    const table = document.getElementById("itemTable");
+    table.innerHTML = `
+      <tr>
+        <th>Item</th>
+        <th>Qty</th>
+        <th>Price</th>
+      </tr>
+      ${order.items.map(i => `
+        <tr>
+          <td>${i.name}</td>
+          <td>${i.quantity}</td>
+          <td>$${(i.priceCents/100).toFixed(2)}</td>
+        </tr>
+      `).join("")}
+    `;
+  }
+
+  async function updateOrder() {
+    const token = localStorage.getItem("admin_token");
+
+    const body = {
+      status: document.getElementById("statusSelect").value,
+      paymentStatus: document.getElementById("paymentSelect").value,
+      trackingNumber: document.getElementById("trackingInput").value
+    };
+
+    await fetch(`${API_BASE}/api/admin/orders/${id}`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + token
+      },
+      body: JSON.stringify(body)
+    });
+
+    alert("Order updated!");
+    location.reload();
+  }
+
+  loadOrder();
+</script>
+
+</body>
+</html>

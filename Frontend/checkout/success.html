@@ -1,12 +1,71 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-<meta charset="UTF-8">
-<title>Order Cancelled</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Order Successful – Faith & Fragrance</title>
+  <style>
+    body {
+      background: #050506;
+      color: #f5f3ee;
+      font-family: system-ui, sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      text-align: center;
+    }
+    .box {
+      max-width: 480px;
+      padding: 2rem;
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 20px;
+      background: #0d0d10;
+    }
+    a {
+      color: #d3b46a;
+      text-decoration: none;
+      font-size: 1.1rem;
+    }
+  </style>
 </head>
-<body style="background:#050506;color:#f5f3ee;font-family:sans-serif;text-align:center;padding-top:100px;">
-  <h1>Order Canceled</h1>
-  <p>You canceled the payment. No charges were made.</p>
-  <a href="/shop.html" style="color:#d3b46a;">Return to Shop</a>
+<body>
+
+  <div class="box">
+    <h1>Thank you!</h1>
+    <p>Your order has been placed successfully.</p>
+
+    <div id="order"></div>
+
+    <br>
+    <a href="/shop.html">Continue Shopping →</a>
+  </div>
+
+<script>
+  const API_BASE = location.hostname.includes("localhost")
+    ? "http://localhost:4000"
+    : "https://faith-fragrance-backend.onrender.com";
+
+  const params = new URLSearchParams(window.location.search);
+  const orderId = params.get("orderId");
+
+  if (orderId) {
+    fetch(`${API_BASE}/api/order/${orderId}`)
+      .then(res => res.json())
+      .then(data => {
+        const box = document.getElementById("order");
+        if (data.error) {
+          box.innerHTML = "<p>Could not load order details.</p>";
+        } else {
+          box.innerHTML = `
+            <p><strong>Order ID:</strong> ${data.id}</p>
+            <p><strong>Status:</strong> ${data.paymentStatus}</p>
+            <p><strong>Total:</strong> $${(data.totals?.totalCents / 100).toFixed(2)}</p>
+          `;
+        }
+      });
+  }
+</script>
+
 </body>
 </html>
