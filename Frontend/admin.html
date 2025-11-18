@@ -490,6 +490,115 @@
       box-shadow: 0 0 0 1px rgba(211,180,106,0.4);
     }
 
+    /* ORDERS + SUBSCRIBERS */
+    .admin-orders,
+    .admin-subscribers {
+      margin-top: 2rem;
+    }
+
+    .admin-section-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 0.6rem;
+      flex-wrap: wrap;
+      margin-bottom: 0.4rem;
+    }
+
+    .admin-section-header h3 {
+      font-size: 0.9rem;
+      text-transform: uppercase;
+      letter-spacing: 0.18em;
+    }
+
+    .admin-orders-toolbar {
+      margin: 0.4rem 0 0.6rem;
+    }
+
+    .admin-orders-toolbar input[type="text"] {
+      width: 100%;
+      max-width: 320px;
+      padding: 0.55rem 0.8rem;
+      border-radius: var(--radius-pill);
+      border: 1px solid rgba(255,255,255,0.16);
+      background: rgba(5,5,8,0.9);
+      color: var(--text);
+      font-size: 0.82rem;
+      outline: none;
+    }
+
+    .admin-orders-toolbar input[type="text"]:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 1px rgba(211,180,106,0.4);
+    }
+
+    .admin-orders-pagination {
+      display: flex;
+      justify-content: flex-end;
+      gap: 0.5rem;
+      margin-top: 0.6rem;
+    }
+
+    .orders-table-wrapper,
+    .subscribers-table-wrapper {
+      margin-top: 0.6rem;
+      border-radius: 18px;
+      border: 1px solid rgba(255,255,255,0.06);
+      overflow: hidden;
+      background: radial-gradient(circle at top left, #1b1b25, #090910);
+      width: 100%;
+    }
+
+    .orders-table,
+    .subscribers-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.82rem;
+    }
+
+    .orders-table thead,
+    .subscribers-table thead {
+      background: rgba(255,255,255,0.02);
+    }
+
+    .orders-table th,
+    .orders-table td,
+    .subscribers-table th,
+    .subscribers-table td {
+      padding: 0.6rem 0.75rem;
+      border-bottom: 1px solid rgba(255,255,255,0.04);
+      text-align: left;
+      vertical-align: top;
+    }
+
+    .orders-table tr:nth-child(even),
+    .subscribers-table tr:nth-child(even) {
+      background: rgba(255,255,255,0.01);
+    }
+
+    .orders-table tr:hover,
+    .subscribers-table tr:hover {
+      background: rgba(255,255,255,0.03);
+    }
+
+    .order-id-cell {
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+      font-size: 0.78rem;
+    }
+
+    .order-items-cell {
+      max-width: 260px;
+    }
+
+    .subscriber-email {
+      font-size: 0.84rem;
+    }
+
+    .subscriber-date {
+      font-size: 0.8rem;
+      color: var(--muted);
+    }
+
     @media (max-width: 800px) {
       .grid {
         grid-template-columns: 1fr;
@@ -544,6 +653,37 @@
         margin-top: 0.3rem;
       }
     }
+
+    @media (max-width: 650px) {
+      .orders-table thead,
+      .subscribers-table thead {
+        display: none;
+      }
+
+      .orders-table,
+      .orders-table tbody,
+      .orders-table tr,
+      .orders-table td,
+      .subscribers-table,
+      .subscribers-table tbody,
+      .subscribers-table tr,
+      .subscribers-table td {
+        display: block;
+        width: 100%;
+      }
+
+      .orders-table tr,
+      .subscribers-table tr {
+        margin-bottom: 0.6rem;
+        padding-bottom: 0.4rem;
+        border-bottom: 1px solid rgba(255,255,255,0.06);
+      }
+
+      .orders-table td,
+      .subscribers-table td {
+        padding: 0.2rem 0.75rem;
+      }
+    }
   </style>
 </head>
 <body>
@@ -551,7 +691,7 @@
 <header>
   <div class="nav">
     <div class="nav-left">
-      <img src="logo.png" class="site-logo" alt="Faith &amp; Fragrance Co. Logo">
+      <img src="Assets/logo.png" class="site-logo" alt="Faith &amp; Fragrance Co. Logo">
       <div class="logo-text">FAITH &amp; FRAGRANCE CO.</div>
     </div>
 
@@ -609,6 +749,7 @@
           dashboard can manage products; later we’ll bolt on discounts and email tools.
         </p>
 
+        <!-- PRODUCTS -->
         <div class="admin-products">
           <div class="admin-products-header">
             <h3>Products</h3>
@@ -669,6 +810,56 @@
           </div>
         </div>
 
+        <!-- ORDERS -->
+        <div class="admin-orders">
+          <div class="admin-section-header">
+            <h3>Orders</h3>
+            <button class="btn btn-ghost btn-small" id="refreshOrdersButton">
+              Refresh
+            </button>
+          </div>
+          <p class="muted">
+            View orders placed from the checkout page. This is read-only for now;
+            we’ll add status editing once the backend supports it.
+          </p>
+
+          <div class="admin-orders-toolbar">
+            <input
+              type="text"
+              id="ordersSearchInput"
+              placeholder="Search by order ID, customer name, or email"
+            >
+          </div>
+
+          <div id="adminOrdersStatus" class="status"></div>
+          <div id="adminOrdersList"></div>
+
+          <div class="admin-orders-pagination">
+            <button class="btn btn-ghost btn-small" id="ordersPrevPage">
+              Previous
+            </button>
+            <button class="btn btn-ghost btn-small" id="ordersNextPage">
+              Next
+            </button>
+          </div>
+        </div>
+
+        <!-- SUBSCRIBERS -->
+        <div class="admin-subscribers">
+          <div class="admin-section-header">
+            <h3>Email list</h3>
+            <button class="btn btn-ghost btn-small" id="refreshSubscribersButton">
+              Refresh
+            </button>
+          </div>
+          <p class="muted">
+            People who joined the Faith &amp; Fragrance email list from the site footer.
+          </p>
+
+          <div id="adminSubscribersStatus" class="status"></div>
+          <div id="adminSubscribersList"></div>
+        </div>
+
         <p style="margin-top: 1.2rem;">
           Token is saved as <code>ff_admin_token</code> in <code>localStorage</code>.
         </p>
@@ -693,13 +884,15 @@
         <li>Hard-coded admin account (email + password) in <code>server.js</code>.</li>
         <li>JWT token with 2-hour expiry, stored in <code>localStorage</code>.</li>
         <li>Protected product management routes under <code>/api/admin/products</code>.</li>
+        <li>Orders saved to <code>orders.json</code> and visible here once placed.</li>
+        <li>Email subscribers saved to <code>subscribers.json</code>.</li>
       </ul>
       <p class="muted" style="margin-top:0.9rem;">
         Next steps once products feel good:
       </p>
       <ul class="muted" style="margin-top:0.4rem; padding-left:1.1rem; font-size:0.85rem;">
-        <li>Create discount codes (percentage / fixed) from here.</li>
-        <li>View subscribers &amp; send targeted email blasts.</li>
+        <li>Add admin routes to update order status from this dashboard.</li>
+        <li>Expose subscribers via an admin API so this table is live.</li>
         <li>Deploy backend to a proper host so you’re not tied to localhost.</li>
       </ul>
     </section>
@@ -717,7 +910,7 @@
     window.location.hostname === "127.0.0.1"
       ? "http://localhost:4000"
       : "https://faith-fragrance-backend.onrender.com";
-  
+
   const TOKEN_KEY = "ff_admin_token";
 
   const yearEl = document.getElementById("year");
@@ -733,11 +926,27 @@
   const productsListEl = document.getElementById("adminProductsList");
   const refreshProductsButton = document.getElementById("refreshProductsButton");
 
+  const ordersStatusEl = document.getElementById("adminOrdersStatus");
+  const ordersListEl = document.getElementById("adminOrdersList");
+  const ordersSearchInput = document.getElementById("ordersSearchInput");
+  const ordersPrevPageBtn = document.getElementById("ordersPrevPage");
+  const ordersNextPageBtn = document.getElementById("ordersNextPage");
+  const refreshOrdersButton = document.getElementById("refreshOrdersButton");
+
+  const subscribersStatusEl = document.getElementById("adminSubscribersStatus");
+  const subscribersListEl = document.getElementById("adminSubscribersList");
+  const refreshSubscribersButton = document.getElementById("refreshSubscribersButton");
+
   const addProductForm = document.getElementById("adminAddProductForm");
   const addProductButton = document.getElementById("addProductButton");
   const productImageInput = document.getElementById("productImage");
 
   let adminProductsById = {};
+  let adminOrders = [];
+  let filteredAdminOrders = [];
+  let ordersPage = 0;
+  const ORDERS_PER_PAGE = 10;
+  let adminSubscribers = [];
 
   function getToken() {
     return localStorage.getItem(TOKEN_KEY) || "";
@@ -769,6 +978,18 @@
     productsStatusEl.className = "status" + (type ? " " + type : "");
   }
 
+  function setOrdersStatus(message, type = "") {
+    if (!ordersStatusEl) return;
+    ordersStatusEl.textContent = message || "";
+    ordersStatusEl.className = "status" + (type ? " " + type : "");
+  }
+
+  function setSubscribersStatus(message, type = "") {
+    if (!subscribersStatusEl) return;
+    subscribersStatusEl.textContent = message || "";
+    subscribersStatusEl.className = "status" + (type ? " " + type : "");
+  }
+
   function formatPrice(cents) {
     if (typeof cents !== "number") return "";
     return "$" + (cents / 100).toFixed(2);
@@ -785,6 +1006,13 @@
       .replace(/>/g, "&gt;");
   }
 
+  function formatDate(value) {
+    if (!value) return "";
+    const d = new Date(value);
+    if (Number.isNaN(d.getTime())) return String(value);
+    return d.toLocaleString();
+  }
+
   // ===== LOAD PRODUCTS INTO TABLE =====
   async function loadAdminProducts() {
     const token = getToken();
@@ -799,14 +1027,17 @@
     try {
       const res = await fetch(API_BASE + "/api/admin/products", {
         headers: {
-          "Authorization": "Bearer " + token
-        }
+          Authorization: "Bearer " + token,
+        },
       });
 
       const data = await res.json();
 
       if (!res.ok) {
-        setProductsStatus(data.error || "Failed to load products.", "status-error");
+        setProductsStatus(
+          data.error || "Failed to load products.",
+          "status-error"
+        );
         productsListEl.innerHTML = "";
         return;
       }
@@ -849,7 +1080,9 @@
         <td class="price">${formatPrice(p.priceCents || 0)}</td>
         <td class="description">${p.description || ""}</td>
         <td class="status-cell">
-          <span class="status-pill ${isActive ? "status-pill-active" : "status-pill-inactive"}">
+          <span class="status-pill ${
+            isActive ? "status-pill-active" : "status-pill-inactive"
+          }">
             ${isActive ? "Active" : "Hidden"}
           </span>
           <button
@@ -930,9 +1163,9 @@
       {
         method: "POST",
         headers: {
-          "Authorization": "Bearer " + token
+          Authorization: "Bearer " + token,
         },
-        body: formData
+        body: formData,
       }
     );
 
@@ -955,9 +1188,13 @@
     }
 
     const name = document.getElementById("productName").value.trim();
-    const collection = document.getElementById("productCollection").value.trim();
+    const collection = document
+      .getElementById("productCollection")
+      .value.trim();
     const priceStr = document.getElementById("productPrice").value;
-    const description = document.getElementById("productDescription").value.trim();
+    const description = document
+      .getElementById("productDescription")
+      .value.trim();
     const imageFile = productImageInput.files[0] || null;
 
     if (!name || !priceStr) return;
@@ -971,7 +1208,9 @@
     const priceCents = Math.round(priceFloat * 100);
 
     addProductButton.disabled = true;
-    addProductButton.textContent = imageFile ? "Adding + uploading…" : "Adding…";
+    addProductButton.textContent = imageFile
+      ? "Adding + uploading…"
+      : "Adding…";
 
     try {
       // 1) Create product
@@ -979,20 +1218,23 @@
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          "Authorization": "Bearer " + token
+          Authorization: "Bearer " + token,
         },
         body: JSON.stringify({
           name,
           description,
           priceCents,
-          collection
-        })
+          collection,
+        }),
       });
 
       const data = await res.json();
 
       if (!res.ok) {
-        setProductsStatus(data.error || "Failed to add product.", "status-error");
+        setProductsStatus(
+          data.error || "Failed to add product.",
+          "status-error"
+        );
       } else {
         const created = data.product || data;
 
@@ -1058,10 +1300,18 @@
 
       const priceFloat = (product.priceCents || 0) / 100;
 
-      nameTd.innerHTML = `<input type="text" class="inline-input" value="${escapeAttr(product.name || "")}">`;
-      collTd.innerHTML = `<input type="text" class="inline-input" value="${escapeAttr(product.collection || "")}">`;
-      priceTd.innerHTML = `<input type="number" class="inline-input" step="0.01" min="0" value="${priceFloat.toFixed(2)}">`;
-      descTd.innerHTML = `<textarea class="inline-textarea">${escapeHtml(product.description || "")}</textarea>`;
+      nameTd.innerHTML = `<input type="text" class="inline-input" value="${escapeAttr(
+        product.name || ""
+      )}">`;
+      collTd.innerHTML = `<input type="text" class="inline-input" value="${escapeAttr(
+        product.collection || ""
+      )}">`;
+      priceTd.innerHTML = `<input type="number" class="inline-input" step="0.01" min="0" value="${priceFloat.toFixed(
+        2
+      )}">`;
+      descTd.innerHTML = `<textarea class="inline-textarea">${escapeHtml(
+        product.description || ""
+      )}</textarea>`;
 
       actionsTd.innerHTML = `
         <button class="btn btn-primary btn-xs" data-action="save" data-id="${id}">
@@ -1101,7 +1351,10 @@
 
       const priceFloat = parseFloat(priceStr);
       if (Number.isNaN(priceFloat) || priceFloat < 0) {
-        setProductsStatus("Price must be a non-negative number.", "status-error");
+        setProductsStatus(
+          "Price must be a non-negative number.",
+          "status-error"
+        );
         return;
       }
 
@@ -1117,21 +1370,24 @@
             method: "PUT",
             headers: {
               "Content-Type": "application/json",
-              "Authorization": "Bearer " + token
+              Authorization: "Bearer " + token,
             },
             body: JSON.stringify({
               name,
               collection,
               priceCents,
-              description
-            })
+              description,
+            }),
           }
         );
 
         const data = await res.json();
 
         if (!res.ok) {
-          setProductsStatus(data.error || "Failed to save changes.", "status-error");
+          setProductsStatus(
+            data.error || "Failed to save changes.",
+            "status-error"
+          );
         } else {
           adminProductsById[id] = data;
           setProductsStatus("Product updated.", "status-success");
@@ -1167,15 +1423,18 @@
           {
             method: "DELETE",
             headers: {
-              "Authorization": "Bearer " + token
-            }
+              Authorization: "Bearer " + token,
+            },
           }
         );
 
         const data = await res.json();
 
         if (!res.ok) {
-          setProductsStatus(data.error || "Failed to delete.", "status-error");
+          setProductsStatus(
+            data.error || "Failed to delete.",
+            "status-error"
+          );
         } else {
           setProductsStatus("Product deleted.", "status-success");
           await loadAdminProducts();
@@ -1214,18 +1473,21 @@
             method: "PUT",
             headers: {
               "Content-Type": "application/json",
-              "Authorization": "Bearer " + token
+              Authorization: "Bearer " + token,
             },
             body: JSON.stringify({
-              active: newActive
-            })
+              active: newActive,
+            }),
           }
         );
 
         const data = await res.json();
 
         if (!res.ok) {
-          setProductsStatus(data.error || "Failed to toggle status.", "status-error");
+          setProductsStatus(
+            data.error || "Failed to toggle status.",
+            "status-error"
+          );
         } else {
           adminProductsById[id] = data;
           setProductsStatus(
@@ -1277,6 +1539,301 @@
     loadAdminProducts();
   });
 
+  // ===== ORDERS (READ-ONLY LIST) =====
+  async function loadAdminOrders() {
+    const token = getToken();
+    if (!token) {
+      setOrdersStatus("Not logged in.", "status-error");
+      ordersListEl.innerHTML = "";
+      return;
+    }
+
+    setOrdersStatus("Loading orders…");
+
+    try {
+      const res = await fetch(API_BASE + "/api/admin/orders", {
+        headers: {
+          Authorization: "Bearer " + token,
+        },
+      });
+
+      if (res.status === 404) {
+        setOrdersStatus(
+          "Orders endpoint is not enabled on the backend yet.",
+          "status-error"
+        );
+        ordersListEl.innerHTML = "";
+        return;
+      }
+
+      const data = await res.json();
+
+      if (!res.ok) {
+        setOrdersStatus(
+          data.error || "Failed to load orders.",
+          "status-error"
+        );
+        ordersListEl.innerHTML = "";
+        return;
+      }
+
+      adminOrders = Array.isArray(data) ? data : [];
+      filteredAdminOrders = adminOrders.slice();
+      ordersPage = 0;
+      renderOrdersTablePage();
+      if (!adminOrders.length) {
+        setOrdersStatus("No orders have been placed yet.", "status-success");
+      } else {
+        setOrdersStatus("");
+      }
+    } catch (err) {
+      console.error(err);
+      setOrdersStatus("Error contacting backend.", "status-error");
+      ordersListEl.innerHTML = "";
+    }
+  }
+
+  function renderOrdersTablePage() {
+    if (!ordersListEl) return;
+
+    if (!filteredAdminOrders.length) {
+      ordersListEl.innerHTML =
+        '<div class="products-empty">No orders match this view.</div>';
+      return;
+    }
+
+    const totalPages = Math.max(
+      1,
+      Math.ceil(filteredAdminOrders.length / ORDERS_PER_PAGE)
+    );
+    if (ordersPage >= totalPages) ordersPage = totalPages - 1;
+    if (ordersPage < 0) ordersPage = 0;
+
+    const start = ordersPage * ORDERS_PER_PAGE;
+    const pageOrders = filteredAdminOrders.slice(
+      start,
+      start + ORDERS_PER_PAGE
+    );
+
+    const rows = pageOrders
+      .map((order) => {
+        const id = order.id || "";
+        const idShort = id ? id.slice(0, 10) : "(no id)";
+        const customer = order.customer || {};
+        const customerName = customer.name || "";
+        const customerEmail = customer.email || "";
+        const totals = order.totals || {};
+        const totalCents =
+          typeof totals.totalCents === "number" ? totals.totalCents : 0;
+        const statusText = (order.status || "new").replace(/-/g, " ");
+        const created = formatDate(order.createdAt || order.created_at);
+
+        const items = Array.isArray(order.items) ? order.items : [];
+        let itemsSummary = "No line items";
+        if (items.length > 0) {
+          const first = items[0];
+          const qty =
+            first.quantity != null
+              ? first.quantity
+              : first.qty != null
+              ? first.qty
+              : 1;
+          const rest = items.length - 1;
+          itemsSummary =
+            escapeHtml(first.name || "Item") + " × " + String(qty);
+          if (rest > 0) {
+            itemsSummary += " (+" + rest + " more)";
+          }
+        }
+
+        return `
+        <tr>
+          <td class="order-id-cell">${escapeHtml(idShort)}</td>
+          <td>
+            <div>${escapeHtml(customerName || "(no name)")}</div>
+            <div class="muted" style="font-size:0.78rem;">
+              ${escapeHtml(customerEmail || "")}
+            </div>
+          </td>
+          <td>${formatPrice(totalCents)}</td>
+          <td>
+            <span class="status-pill">${escapeHtml(statusText)}</span>
+          </td>
+          <td>${escapeHtml(created)}</td>
+          <td class="order-items-cell">${itemsSummary}</td>
+        </tr>
+      `;
+      })
+      .join("");
+
+    ordersListEl.innerHTML = `
+      <div class="orders-table-wrapper">
+        <table class="orders-table">
+          <thead>
+            <tr>
+              <th>Order</th>
+              <th>Customer</th>
+              <th>Total</th>
+              <th>Status</th>
+              <th>Placed</th>
+              <th>Items</th>
+            </tr>
+          </thead>
+          <tbody>
+            ${rows}
+          </tbody>
+        </table>
+      </div>
+    `;
+  }
+
+  if (ordersSearchInput) {
+    ordersSearchInput.addEventListener("input", () => {
+      const term = ordersSearchInput.value.trim().toLowerCase();
+      if (!term) {
+        filteredAdminOrders = adminOrders.slice();
+      } else {
+        filteredAdminOrders = adminOrders.filter((o) => {
+          const id = (o.id || "").toLowerCase();
+          const name = ((o.customer && o.customer.name) || "").toLowerCase();
+          const email = ((o.customer && o.customer.email) || "").toLowerCase();
+          return (
+            id.includes(term) ||
+            name.includes(term) ||
+            email.includes(term)
+          );
+        });
+      }
+      ordersPage = 0;
+      renderOrdersTablePage();
+    });
+  }
+
+  if (ordersPrevPageBtn) {
+    ordersPrevPageBtn.addEventListener("click", () => {
+      ordersPage -= 1;
+      renderOrdersTablePage();
+    });
+  }
+
+  if (ordersNextPageBtn) {
+    ordersNextPageBtn.addEventListener("click", () => {
+      ordersPage += 1;
+      renderOrdersTablePage();
+    });
+  }
+
+  if (refreshOrdersButton) {
+    refreshOrdersButton.addEventListener("click", () => {
+      loadAdminOrders();
+    });
+  }
+
+  // ===== SUBSCRIBERS (EMAIL LIST) =====
+  async function loadAdminSubscribers() {
+    const token = getToken();
+    if (!token) {
+      setSubscribersStatus("Not logged in.", "status-error");
+      subscribersListEl.innerHTML = "";
+      return;
+    }
+
+    setSubscribersStatus("Loading subscribers…");
+
+    try {
+      const res = await fetch(API_BASE + "/api/admin/subscribers", {
+        headers: {
+          Authorization: "Bearer " + token,
+        },
+      });
+
+      if (res.status === 404) {
+        setSubscribersStatus(
+          "Admin subscribers endpoint is not wired up on the backend yet.",
+          "status-error"
+        );
+        subscribersListEl.innerHTML = "";
+        return;
+      }
+
+      const data = await res.json();
+
+      if (!res.ok) {
+        setSubscribersStatus(
+          data.error || "Failed to load subscribers.",
+          "status-error"
+        );
+        subscribersListEl.innerHTML = "";
+        return;
+      }
+
+      adminSubscribers = Array.isArray(data) ? data : [];
+      renderSubscribersTable(adminSubscribers);
+
+      if (!adminSubscribers.length) {
+        setSubscribersStatus("No subscribers yet.", "status-success");
+      } else {
+        setSubscribersStatus("");
+      }
+    } catch (err) {
+      console.error(err);
+      setSubscribersStatus("Error contacting backend.", "status-error");
+      subscribersListEl.innerHTML = "";
+    }
+  }
+
+  function renderSubscribersTable(list) {
+    if (!subscribersListEl) return;
+
+    if (!Array.isArray(list) || !list.length) {
+      subscribersListEl.innerHTML =
+        '<div class="products-empty">No subscribers yet.</div>';
+      return;
+    }
+
+    const rows = list
+      .map((s) => {
+        const email = s.email || s.address || "";
+        const joined =
+          s.joinedAt || s.createdAt || s.subscribedAt || s.date || "";
+        const source = s.source || s.tag || "";
+
+        return `
+          <tr>
+            <td class="subscriber-email">${escapeHtml(
+              email || "(no email)"
+            )}</td>
+            <td class="subscriber-date">${escapeHtml(formatDate(joined))}</td>
+            <td>${escapeHtml(source || "")}</td>
+          </tr>
+        `;
+      })
+      .join("");
+
+    subscribersListEl.innerHTML = `
+      <div class="subscribers-table-wrapper">
+        <table class="subscribers-table">
+          <thead>
+            <tr>
+              <th>Email</th>
+              <th>Joined</th>
+              <th>Source</th>
+            </tr>
+          </thead>
+          <tbody>
+            ${rows}
+          </tbody>
+        </table>
+      </div>
+    `;
+  }
+
+  if (refreshSubscribersButton) {
+    refreshSubscribersButton.addEventListener("click", () => {
+      loadAdminSubscribers();
+    });
+  }
+
   // ===== LOGIN / LOGOUT =====
   loginForm.addEventListener("submit", async (e) => {
     e.preventDefault();
@@ -1294,9 +1851,9 @@
       const res = await fetch(API_BASE + "/api/admin/login", {
         method: "POST",
         headers: {
-          "Content-Type": "application/json"
+          "Content-Type": "application/json",
         },
-        body: JSON.stringify({ email, password })
+        body: JSON.stringify({ email, password }),
       });
 
       const data = await res.json();
@@ -1311,6 +1868,8 @@
           showAdminPanel();
           setStatus("Signed in successfully.", "status-success");
           await loadAdminProducts();
+          await loadAdminOrders();
+          await loadAdminSubscribers();
         } else {
           setStatus("No token returned from server.", "status-error");
         }
@@ -1328,8 +1887,15 @@
     clearToken();
     hideAdminPanel();
     setStatus("Logged out.", "status-success");
+
     setProductsStatus("");
     productsListEl.innerHTML = "";
+
+    setOrdersStatus("");
+    ordersListEl.innerHTML = "";
+
+    setSubscribersStatus("");
+    subscribersListEl.innerHTML = "";
   });
 
   // ===== AUTO CHECK TOKEN ON LOAD =====
@@ -1340,14 +1906,16 @@
     try {
       const res = await fetch(API_BASE + "/api/admin/me", {
         headers: {
-          "Authorization": "Bearer " + token
-        }
+          Authorization: "Bearer " + token,
+        },
       });
 
       if (res.ok) {
         showAdminPanel();
         setStatus("Welcome back, admin.", "status-success");
         await loadAdminProducts();
+        await loadAdminOrders();
+        await loadAdminSubscribers();
       } else {
         clearToken();
       }
