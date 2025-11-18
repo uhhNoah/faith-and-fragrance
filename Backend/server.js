@@ -244,26 +244,41 @@ app.post("/api/subscribe", (req, res) => {
 // STRIPE CHECKOUT (Stripe handles tax + shipping address)
 // ============================================================================
 app.post("/api/checkout/session", async (req, res) => {
-    if (!stripe) return res.status(500).json({ error: "Stripe not configured" });
+    console.log("CHECKOUT START:", req.body);
 
-    const { items, customer } = req.body;
-
-    const safeItems = resolveCartItems(items);
-    if (!safeItems.length) return res.status(400).json({ error: "Invalid cart" });
-
-    const orderId = "ord-" + Date.now();
-
-    orders.push({
-        id: orderId,
-        items: safeItems,
-        customer: { name: customer.name, email: customer.email },
-        status: "pending",
-        paymentStatus: "unpaid",
-        createdAt: new Date().toISOString(),
-    });
-    saveJson(ORDERS_FILE, orders);
+    if (!stripe) {
+        console.error("❌ Stripe is NOT configured. Missing STRIPE_SECRET_KEY.");
+        return res.status(500).json({ error: "Stripe not configured" });
+    }
 
     try {
+        const { items, customer } = req.body;
+
+        if (!items || !customer) {
+            console.error("❌ Missing items or customer in request.");
+            return res.status(400).json({ error: "Invalid payload" });
+        }
+
+        const safeItems = resolveCartItems(items);
+        if (!safeItems.length) {
+            console.error("❌ No matching cart items found in resolveCartItems.");
+            return res.status(400).json({ error: "Invalid cart" });
+        }
+
+        const orderId = "ord-" + Date.now();
+
+        orders.push({
+            id: orderId,
+            items: safeItems,
+            customer: { name: customer.name, email: customer.email },
+            status: "pending",
+            paymentStatus: "unpaid",
+            createdAt: new Date().toISOString(),
+        });
+        saveJson(ORDERS_FILE, orders);
+
+        console.log("🔥 Creating Stripe Checkout Session...");
+
         const session = await stripe.checkout.sessions.create({
             mode: "payment",
             customer_email: customer.email,
@@ -278,6 +293,7 @@ app.post("/api/checkout/session", async (req, res) => {
             })),
 
             automatic_tax: { enabled: true },
+
             shipping_address_collection: { allowed_countries: ["US"] },
 
             metadata: { orderId },
@@ -286,11 +302,16 @@ app.post("/api/checkout/session", async (req, res) => {
             cancel_url: `${FRONTEND_BASE}/checkout/cancel.html?orderId=${orderId}`,
         });
 
-        res.json({ sessionId: session.id });
+        console.log("✅ Stripe session created:", session.id);
+
+        return res.json({ sessionId: session.id });
+
     } catch (err) {
-        res.status(500).json({ error: "Stripe error" });
+        console.error("❌ STRIPE SESSION ERROR:", err);
+        return res.status(500).json({ error: err.message });
     }
 });
+
 
 // ============================================================================
 // STRIPE WEBHOOK (captures final totals + shipping address)
