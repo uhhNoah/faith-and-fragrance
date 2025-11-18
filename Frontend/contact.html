@@ -1,0 +1,577 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Contact – Faith & Fragrance Co.</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <style>
+    :root {
+      --bg: #050506;
+      --bg-alt: #0d0d10;
+      --bg-soft: #121218;
+      --text: #f5f3ee;
+      --muted: #9a958a;
+      --accent: #d3b46a;
+      --border: #26252f;
+      --radius-lg: 26px;
+      --radius: 16px;
+      --shadow-soft: 0 26px 60px rgba(0,0,0,0.7);
+      --max-width: 1120px;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: radial-gradient(circle at top, #14141b, var(--bg));
+      color: var(--text);
+      line-height: 1.7;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    a {
+      text-decoration: none;
+      color: inherit;
+    }
+
+    /* HEADER / NAV */
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      background: rgba(5,5,8,0.95);
+      backdrop-filter: blur(14px);
+      border-bottom: 1px solid rgba(255,255,255,0.04);
+    }
+
+    .nav {
+      max-width: var(--max-width);
+      margin: 0 auto;
+      padding: 0.7rem 1.3rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1.5rem;
+    }
+
+    .nav-left {
+      display: flex;
+      align-items: center;
+      gap: 0.65rem;
+    }
+
+    .site-logo {
+      height: 40px;
+      width: auto;
+      display: block;
+    }
+
+    .logo-text {
+      font-size: 0.78rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: #f8f5f0;
+      opacity: 0.9;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 1.8rem;
+      font-size: 0.88rem;
+    }
+
+    .nav-links a {
+      color: var(--muted);
+      position: relative;
+      padding-bottom: 0.1rem;
+    }
+
+    .nav-links a::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      bottom: 0;
+      width: 0;
+      height: 1px;
+      background: var(--accent);
+      transition: width 0.18s ease-out;
+    }
+
+    .nav-links a:hover::after {
+      width: 100%;
+    }
+
+    .nav-links a.active {
+      color: var(--text);
+    }
+
+    .nav-links a.active::after {
+      width: 100%;
+    }
+
+    .nav-cta {
+      padding: 0.45rem 1.3rem;
+      border-radius: 999px;
+      border: 1px solid var(--accent);
+      font-size: 0.8rem;
+      background: rgba(211,180,106,0.08);
+      color: var(--text);
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+    }
+
+    .nav-cta:hover {
+      background: var(--accent);
+      color: #050506;
+    }
+
+    main {
+      max-width: var(--max-width);
+      margin: 0 auto;
+      padding: 2.4rem 1.3rem 3.3rem;
+    }
+
+    /* HERO / INTRO */
+    .page-hero {
+      margin-top: 2.2rem;
+      background: radial-gradient(circle at top left, #181824, var(--bg-alt));
+      border-radius: var(--radius-lg);
+      border: 1px solid rgba(255,255,255,0.05);
+      box-shadow: var(--shadow-soft);
+      padding: 2.4rem 2.4rem 2rem;
+      display: grid;
+      grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr);
+      gap: 2.4rem;
+      align-items: flex-start;
+    }
+
+    .page-label {
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.22em;
+      color: var(--muted);
+      margin-bottom: 0.9rem;
+    }
+
+    .page-title {
+      font-size: clamp(2.1rem, 3vw, 2.6rem);
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+      margin-bottom: 1.1rem;
+    }
+
+    .lead {
+      font-size: 0.98rem;
+      color: var(--muted);
+      margin-bottom: 1.1rem;
+      max-width: 520px;
+    }
+
+    .body-text {
+      font-size: 0.9rem;
+      color: var(--muted);
+      margin-bottom: 1rem;
+    }
+
+    .highlight-link {
+      color: var(--accent);
+    }
+
+    .side-card {
+      background: #151521;
+      border-radius: 18px;
+      border: 1px solid rgba(255,255,255,0.06);
+      padding: 1.6rem 1.8rem;
+      font-size: 0.9rem;
+      color: var(--muted);
+    }
+
+    .side-card strong {
+      display: block;
+      font-size: 0.78rem;
+      text-transform: uppercase;
+      letter-spacing: 0.18em;
+      color: var(--accent);
+      margin-bottom: 0.6rem;
+    }
+
+    .side-card a {
+      color: var(--accent);
+    }
+
+    .side-card a:hover {
+      color: #f5f3ee;
+    }
+
+    /* CONTACT FORM SECTION */
+    section {
+      margin-top: 3rem;
+    }
+
+    .section-header {
+      margin-bottom: 1.5rem;
+    }
+
+    .section-label {
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.22em;
+      color: var(--muted);
+      margin-bottom: 0.4rem;
+    }
+
+    .section-title {
+      font-size: 1.2rem;
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+      margin-bottom: 0.4rem;
+    }
+
+    .muted {
+      color: var(--muted);
+    }
+
+    .contact-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr);
+      gap: 2.2rem;
+      align-items: flex-start;
+    }
+
+    .card {
+      background: var(--bg-soft);
+      border-radius: var(--radius);
+      border: 1px solid var(--border);
+      padding: 1.6rem 1.6rem 1.4rem;
+      box-shadow: 0 22px 55px rgba(0,0,0,0.75);
+    }
+
+    label {
+      display: block;
+      margin-bottom: 0.35rem;
+      font-size: 0.78rem;
+      text-transform: uppercase;
+      color: var(--muted);
+      letter-spacing: 0.12em;
+    }
+
+    input, textarea, select {
+      width: 100%;
+      padding: 0.75rem 0.9rem;
+      border-radius: 12px;
+      border: 1px solid rgba(255,255,255,0.14);
+      background: #050507;
+      color: var(--text);
+      font-size: 0.9rem;
+      margin-bottom: 1rem;
+      outline: none;
+      transition: border-color 0.15s ease-out, box-shadow 0.15s ease-out, background 0.15s ease-out;
+    }
+
+    input::placeholder,
+    textarea::placeholder {
+      color: #6f6a61;
+    }
+
+    input:focus,
+    textarea:focus,
+    select:focus {
+      border-color: var(--accent);
+      background: #050506;
+      box-shadow: 0 0 0 1px rgba(211,180,106,0.4);
+    }
+
+    textarea {
+      min-height: 140px;
+      resize: vertical;
+    }
+
+    .btn-primary {
+      padding: 0.8rem 1.8rem;
+      border-radius: 999px;
+      border: none;
+      background: var(--accent);
+      color: #050506;
+      cursor: pointer;
+      font-size: 0.85rem;
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.4rem;
+    }
+
+    .btn-primary:hover {
+      background: #e0c782;
+    }
+
+    .status-message {
+      margin-top: 0.6rem;
+      font-size: 0.82rem;
+      min-height: 1.1em;
+    }
+
+    .status-success {
+      color: #8bd59a;
+    }
+
+    .status-error {
+      color: #f28b82;
+    }
+
+    ul.contact-list {
+      list-style: none;
+      padding-left: 0;
+      margin-top: 0.5rem;
+    }
+
+    ul.contact-list li {
+      margin-bottom: 0.5rem;
+      font-size: 0.9rem;
+      color: var(--muted);
+    }
+
+    ul.contact-list span.label {
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+      font-size: 0.75rem;
+      color: var(--muted);
+      display: block;
+      margin-bottom: 0.1rem;
+    }
+
+    footer {
+      margin-top: 3.4rem;
+      padding-top: 1.7rem;
+      border-top: 1px solid rgba(255,255,255,0.05);
+      font-size: 0.82rem;
+      color: var(--muted);
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      gap: 1rem;
+      align-items: center;
+    }
+
+    .footer-links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+
+    .footer-links a {
+      color: var(--muted);
+    }
+
+    .footer-links a:hover {
+      color: var(--text);
+    }
+
+    @media (max-width: 900px) {
+      .page-hero {
+        grid-template-columns: 1fr;
+        padding: 2rem 1.8rem;
+      }
+      .contact-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .nav-links {
+        display: none;
+      }
+
+      main {
+        padding-inline: 1rem;
+      }
+
+      .page-hero {
+        margin-top: 1.6rem;
+      }
+
+      section {
+        margin-top: 2.4rem;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="nav">
+    <div class="nav-left">
+      <img src="assets/logo.png" class="site-logo" alt="Faith &amp; Fragrance Co. Logo">
+      <div class="logo-text">FAITH &amp; FRAGRANCE CO.</div>
+    </div>
+
+    <nav class="nav-links">
+      <a href="index.html">Home</a>
+      <a href="shop.html">Shop</a>
+      <a href="contact.html" class="active">Contact</a>
+      <a href="about.html">About</a>
+    </nav>
+
+    <a href="shop.html" class="nav-cta">Shop</a>
+  </div>
+</header>
+
+<main>
+  <!-- TOP BLOCK -->
+  <section class="page-hero">
+    <div>
+      <div class="page-label">Get in touch</div>
+      <h1 class="page-title">We’d love to hear from you.</h1>
+      <p class="lead">
+        Questions about an order, wholesale, custom scents, or just want to say hi?
+        Reach out and we’ll get back to you as quickly as we can between life, work, and pouring the next batch.
+      </p>
+      <p class="body-text">
+        We’re a small, hands-on, faith-driven brand — which means every message is read by us personally.
+        Use the form here, or email us directly at
+        <a href="mailto:hello@faithandfragrance.co" class="highlight-link">hello@faithandfragrance.co</a>.
+      </p>
+    </div>
+
+    <aside class="side-card">
+      <strong>Direct contact</strong>
+      <p>Email: <a href="mailto:hello@faithandfragrance.co">hello@faithandfragrance.co</a></p>
+      <p>Instagram: <a href="https://instagram.com/faithandfragranceco" target="_blank">@faithandfragranceco</a></p>
+      <p style="font-size:0.82rem; margin-top:0.7rem; border-top:1px solid rgba(255,255,255,0.12); padding-top:0.8rem;">
+        We typically reply within 1–2 business days. Launch weeks or big life moments may take us a bit longer — thanks for your patience.
+      </p>
+    </aside>
+  </section>
+
+  <!-- CONTACT FORM -->
+  <section>
+    <div class="section-header">
+      <div class="section-label">Contact</div>
+      <h2 class="section-title">Send us a message</h2>
+      <p class="muted">
+        Share a few details so we can route your message correctly. For urgent order issues,
+        include your order ID if you have it.
+      </p>
+    </div>
+
+    <div class="contact-grid">
+      <div class="card">
+        <form id="contactForm">
+          <label for="name">Name</label>
+          <input id="name" name="name" placeholder="Your full name" required>
+
+          <label for="email">Email</label>
+          <input id="email" name="email" type="email" placeholder="you@example.com" required>
+
+          <label for="topic">Reason</label>
+          <select id="topic" name="topic">
+            <option value="order">Order question</option>
+            <option value="wholesale">Wholesale / bulk</option>
+            <option value="custom">Custom scent / event</option>
+            <option value="general">General question</option>
+          </select>
+
+          <label for="message">Message</label>
+          <textarea id="message" name="message" placeholder="Share as much detail as you’d like." required></textarea>
+
+          <button type="submit" class="btn-primary" id="contactSubmit">Send message</button>
+          <p class="status-message" id="contactStatus"></p>
+        </form>
+      </div>
+
+      <div class="card">
+        <div class="section-label" style="margin-bottom:0.6rem;">Helpful details</div>
+        <p class="muted" style="margin-bottom:0.9rem;">
+          Adding a few extra details can help us respond faster and more clearly.
+        </p>
+
+        <ul class="contact-list">
+          <li>
+            <span class="label">Order support</span>
+            Include your order ID, the email you used at checkout, and any photos if there’s a damaged item.
+          </li>
+          <li>
+            <span class="label">Wholesale / bulk</span>
+            Share your business name, location, and approximate quantities you’re interested in.
+          </li>
+          <li>
+            <span class="label">Custom / events</span>
+            Let us know the date, theme, and rough guest count so we can estimate what you’ll need.
+          </li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div>© <span id="year"></span> Faith &amp; Fragrance Co. All rights reserved.</div>
+    <div class="footer-links">
+      <a href="index.html">Home</a>
+      <a href="shop.html">Shop</a>
+      <a href="contact.html">Contact</a>
+      <a href="about.html">About</a>
+    </div>
+  </footer>
+</main>
+
+<script>
+  // Dynamic API base (same pattern as other pages)
+  const API_BASE =
+    window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1"
+      ? "http://localhost:4000"
+      : "https://faith-fragrance-backend.onrender.com";
+
+  document.getElementById("year").textContent = new Date().getFullYear();
+
+  const form = document.getElementById("contactForm");
+  const statusEl = document.getElementById("contactStatus");
+  const submitBtn = document.getElementById("contactSubmit");
+
+  form.addEventListener("submit", async (e) => {
+    e.preventDefault();
+
+    const name = document.getElementById("name").value.trim();
+    const email = document.getElementById("email").value.trim();
+    const topic = document.getElementById("topic").value;
+    const message = document.getElementById("message").value.trim();
+
+    if (!name || !email || !message) return;
+
+    statusEl.textContent = "";
+    statusEl.className = "status-message";
+    submitBtn.disabled = true;
+    submitBtn.textContent = "Sending…";
+
+    try {
+      const res = await fetch(API_BASE + "/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ name, email, topic, message })
+      });
+
+      if (!res.ok) {
+        throw new Error("Bad response");
+      }
+
+      statusEl.textContent = "Thank you — your message has been sent.";
+      statusEl.className = "status-message status-success";
+      form.reset();
+    } catch (err) {
+      statusEl.textContent =
+        "We couldn’t send this through the form. Please email us directly at hello@faithandfragrance.co.";
+      statusEl.className = "status-message status-error";
+    } finally {
+      submitBtn.disabled = false;
+      submitBtn.textContent = "Send message";
+    }
+  });
+</script>
+
+</body>
+</html>
