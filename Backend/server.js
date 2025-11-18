@@ -13,6 +13,18 @@ const bcrypt = require("bcryptjs");
 const nodemailer = require("nodemailer");
 require("dotenv").config();
 
+const mongoose = require("mongoose");
+
+console.log("➡️  Connecting to MongoDB...");
+
+mongoose.connect(process.env.MONGO_URI, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true
+})
+.then(() => console.log("✅ MongoDB Connected"))
+.catch(err => console.error("❌ MongoDB Connection Error:", err));
+
+
 let stripe = null;
 if (process.env.STRIPE_SECRET_KEY) {
     stripe = require("stripe")(process.env.STRIPE_SECRET_KEY);
