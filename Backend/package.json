@@ -1,7 +1,22 @@
 {
+  "name": "faith-fragrance-backend",
+  "version": "1.0.0",
+  "main": "server.js",
+  "type": "commonjs",
+  "scripts": {
+    "start": "node server.js"
+  },
   "dependencies": {
+    "express": "^4.18.2",
+    "cors": "^2.8.5",
+    "multer": "^1.4.5-lts.1",
     "bcryptjs": "^3.0.3",
+    "jsonwebtoken": "^9.0.2",
     "nodemailer": "^7.0.10",
-    "stripe": "^19.3.1"
+    "stripe": "^19.3.1",
+    "dotenv": "^16.4.5",
+    "uuid": "^9.0.1",
+    "body-parser": "^1.20.2",
+    "fs-extra": "^11.1.1"
   }
 }
