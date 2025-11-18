@@ -24,13 +24,17 @@ app.use("/api/contact", require("./routes/contact"));
 
 app.use("/api/checkout", require("./routes/checkout"));
 
-// Admin
+// Admin Login FIRST
+app.use("/api/admin", require("./routes/adminAuth"));
+
+// Admin protected routes
 app.use("/api/admin/products", require("./routes/adminProducts"));
 app.use("/api/admin/orders", require("./routes/adminOrders"));
 app.use("/api/admin/discounts", require("./routes/adminDiscounts"));
 app.use("/api/admin/subscribers", require("./routes/adminSubscribers"));
 app.use("/api/admin/abandoned-carts", require("./routes/adminAbandoned"));
 app.use("/api/admin/pos-sales", require("./routes/adminPOS"));
+
 
 // Root test
 app.get("/", (req, res) => {

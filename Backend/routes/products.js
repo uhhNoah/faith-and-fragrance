@@ -1,22 +1,23 @@
 const router = require("express").Router();
 const Product = require("../models/Product");
 
-// GET ACTIVE PRODUCTS PUBLIC
+// GET all active products (public)
 router.get("/", async (req, res) => {
   try {
     const list = await Product.find({ active: true });
     res.json(list);
   } catch (err) {
+    console.error("PRODUCT GET ERROR:", err);
     res.status(500).json({ error: "Failed to load products" });
   }
 });
 
-// Public single product (optional)
+// Optional single product endpoint
 router.get("/:id", async (req, res) => {
   try {
-    const product = await Product.findOne({ id: req.params.id, active: true });
-    if (!product) return res.status(404).json({ error: "Not found" });
-    res.json(product);
+    const item = await Product.findOne({ id: req.params.id });
+    if (!item) return res.status(404).json({ error: "Not found" });
+    res.json(item);
   } catch (err) {
     res.status(500).json({ error: "Failed to load product" });
   }
